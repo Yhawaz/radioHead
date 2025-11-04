@@ -1,3 +1,7 @@
 /*
 
 !meow
+!hdl/
+!sim/
+!vivado/
+!*.xpr
