@@ -4,5 +4,8 @@
 !hdl/
 !sim/
 !vivado/
-!*.xpr
+!*/audio/
+!*/signals/
 !*.sv
+!*.xpr
+!*.py
