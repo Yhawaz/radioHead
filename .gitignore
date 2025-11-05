@@ -4,4 +4,7 @@
 !hdl/
 !sim/
 !vivado/
+!*/audio/
+!*/signals/
+!*.sv
 !*.xpr
