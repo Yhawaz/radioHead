@@ -24,7 +24,7 @@ logic signed [31:0] angle_dif,res;
 always_comb begin
     angle = m00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
-    angle_dif = $signed({1'b0,angle}) - $signed({1'b0,angle_reg});
+    angle_dif = $signed({1'b0,angle}) - $signed({1'b0,angle_reg}); // derivative issue
     res = angle_dif >>> 1;
 end
 
