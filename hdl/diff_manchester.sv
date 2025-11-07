@@ -17,11 +17,49 @@ module demodulate (
     output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
     output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
+
+
+
+
 //inputs:
+//a 1 or a 0, im gonna assume its the least significant bit 
+//
+//reasoning behind this, bpsk will produce one value for each iq signal, since we're streaming it theres no point in buffering or batching so we're getting and producing 1 bit every cycle(or every iq value)
+
+//outputs
 //a 1 or a 0
-//outputs:
-//a 1 or a 0
-	prev_input<=input
-	output<=(input!=prev_input);
-	//oh yeah baby lets give this a crazy name like "differential manchester en coding"
+
+//stateful
+logic prev_bit;
+
+//comb
+logic out_bit;
+logic in_handshake;
+logic out_handshake
+
+always_comb begin
+	in_handshake = s00_axis_tready && s00_axis_tvalid;
+	out_handshake = m00_axis_tready && m00_axis_tvalid;
+	out_bit = prev_bit != s00_axis_tdata[0];
 end
+
+always_ff@(posedge s00_axis_aclk)begin
+	if(s00_axis_aresetn)begin
+		m00_axis_tvalid<=1;
+	//lowkey might not matter first transcations garbage
+	//who cares?
+	end else begin
+		if(in_handshake)begin
+			prev_bit<=s00_axis_tdata[0];
+			m00_axis_tdata<={31'b0,out_bit};
+			m00_axis_tvalid<=1;
+		end else if (out_handshake)begin
+			m00_axis_tvalid<=0;
+		end
+
+	end
+end
+
+
+end
+endmodule
