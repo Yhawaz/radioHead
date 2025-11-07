@@ -17,34 +17,34 @@ module demodulate (
     output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
     output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
-    // inputs :
-    // iq data from anothe module i think iq framer???
-    // where are the i and the q values going to be coming from???
 
-    // outputs : 
-    // demodulated signal in some bits??
+logic [15:0] angle, angle_reg;
+logic signed [31:0] angle_dif,res;
 
-    // I think I am going to need to orchestrate these signals better to make it axi compliant
+// TODO: wire up oliver's cordic to the input
+always_comb begin
+    angle = m00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
+    s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
+    angle_dif = $signed({1'b0,angle}) - $signed({1'b0,angle_reg}); // derivative issue
+    res = angle_dif >>> 1;
+end
 
-    number_cruncher cordic(
-        .s00_axis_aclk(s00_axis_aclk),
-        .s00_axis_aresetn(),
-        .s00_axis_tlast(),
-        .s00_axis_tvalid(),
-        .s00_axis_tdata(),
-        .s00_axis_tstrb(),
-        .s00_axis_tready(),
-        .m00_axis_tready(),
-        .m00_axis_tvalid(),
-        .m00_axis_tlast(),
-        .m00_axis_tdata(),
-        .m00_axis_tstrb()
-    );
-
-    if(m00_axis_tready && something???)begin
-        final_res <= res >> 1; // step 1 cordic signal // step 2 multiply by 1/2 // step 3 profit????
+always_ff @(posedge s00_axis_aclk)begin
+    if(s00_axis_aresetn)begin
+        // don't do anything
+    end else begin
+        if(s00_axis_tvalid && s00_axis_tready)begin
+            // grab valid data and compute the difference
+            angle_reg <= angle;
+            m00_axis_tdata <= {16'b0,angle_dif[15:0]}// just grabbing the bottom 16 bits
+            m00_axis_tvalid <= 1'b1;
+        end else begin
+            if(m00_axis_tvalid && m00_axis_tready)begin // check if data is grabbed
+                m00_axis_tvalid <= 1'b0;
+            end
+        end
     end
-
+end
 
 endmodule
 
