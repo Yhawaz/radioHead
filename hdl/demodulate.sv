@@ -21,6 +21,7 @@ module demodulate (
 logic [15:0] angle, angle_reg;
 logic signed [31:0] angle_dif,res;
 
+// TODO: wire up oliver's cordic to the input
 always_comb begin
     angle = m00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
