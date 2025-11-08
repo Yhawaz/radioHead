@@ -4,9 +4,12 @@
 !hdl/
 !sim/
 !vivado/
+!sdr/
 !*/audio/
 !*/signals/
 !*.sv
 !*.xpr
 !*.py
+!*.ipynb
 *.swp
+*.npy
