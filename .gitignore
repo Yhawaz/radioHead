@@ -5,7 +5,7 @@
 !sim/
 !vivado/
 !sdr/
-!daw2/
+!daw/
 !*/audio/
 !*/signals/
 !*.sv
