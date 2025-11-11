@@ -149,8 +149,18 @@ sig_out_exp = [] #contains list of expected outputs (Growing)
 
 def bit_2_degree(bit_angle):
 	return (360*bit_angle)/(2**16)
+
 def degree_2_bit(real_angle):
 	return (real_angle/360)*(2**16)
+
+
+def pack_complex(angle,mag):
+	return ((int(angle) & 0xFFFF) << 16) | (int(mag) & 0xFFFF)
+
+def unpack_complex(packed):
+    angle = (packed >> 16) & 0xFFFF
+    magnitude = packed & 0xFFFF
+    return angle, magnitude
 
 def demodulate_model(val):
     global prev_val
@@ -159,7 +169,7 @@ def demodulate_model(val):
         demod = 0.5 * np.angle(prev_val * np.conj(val))
     else:
     #idk how to handle first one being garbage tbh
-    demod= 0 
+		    demod= 0 
     sig_out_exp.append(demod)
 
 @cocotb.test()
@@ -180,14 +190,16 @@ async def test_a(dut):
     cocotb.start_soon(os_monitor(dut))
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-
     for i in range(50):
-        data = {'type':'write_single', "contents":{"data": random.randint(1,255),"last":0}}
+        angle = random.randint(1,(2**16)-1)
+        magnitude=random.randint(1,(2**16)-1)
+        numby=pack_complex(angle,magnitude)
+        data = {'type':'write_single', "contents":{"data": numby,"last":0}}
         ind.append(data)
         pause = {"type":"pause","duration":random.randint(1,6)}
         ind.append(pause)
-    ind.append({'type':'write_burst', "contents": {"data": np.array(list(range(100)))}})
-    ind.append({'type':'pause','duration':2}) #end with pause
+        ind.append({'type':'write_burst', "contents": {"data": np.array(list(range(100)))}})
+        ind.append({'type':'pause','duration':2}) #end with pause
 
     for i in range(50):
         outd.append({'type':'read', "duration":random.randint(1,10)})
@@ -404,7 +416,7 @@ def demodulate_model(val):
         demod = 0.5 * np.angle(prev_val * np.conj(val))
     else:
     #idk how to handle first one being garbage tbh
-    demod= 0 
+        demod = 0 
     sig_out_exp.append(demod)
 
 
