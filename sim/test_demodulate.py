@@ -147,6 +147,11 @@ async def reset(clk,rst, cycles_held = 3,polarity=1):
 sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 
+def bit_2_degree(bit_angle):
+	return (360*bit_angle)/(2**16)
+def degree_2_bit(real_angle):
+	return (real_angle/360)*(2**16)
+
 def demodulate_model(val):
     global prev_val
     sig_in.append(val)

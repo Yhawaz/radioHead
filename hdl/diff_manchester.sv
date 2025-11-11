@@ -46,19 +46,25 @@ always_comb begin
 	in_handshake = s00_axis_tready && s00_axis_tvalid;
 	out_handshake = m00_axis_tready && m00_axis_tvalid;
 	out_bit = prev_bit != s00_axis_tdata[0];
+	m00_axis_tsrb = 4'b1111;
+	
 end
 
 always_ff@(posedge s00_axis_aclk)begin
 	if(s00_axis_aresetn)begin
-	//lowkey might not matter first transcations garbage
-	//who cares?
+		prev_bit<=1;
+		m00_axis_tvalid<=0;
+		m00_axis_tlast<=0;
+		m00_axis_tdata<=0;
 	end else begin
 		if(in_handshake)begin
 			prev_bit<=s00_axis_tdata[0];
 			m00_axis_tdata<={31'b0,out_bit};
 			m00_axis_tvalid<=1;
+			m00_axis_tlast<=s00_axis_tlast;
 		end else if (out_handshake)begin
 			m00_axis_tvalid<=0;
+			m00_axis_tlast<=0;
 		end
 
 	end
