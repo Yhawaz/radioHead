@@ -162,6 +162,7 @@ def unpack_complex(packed):
     magnitude = packed & 0xFFFF
     return angle, magnitude
 
+prev_val = None
 def demodulate_model(val):
     global prev_val
     sig_in.append(val)
@@ -187,7 +188,6 @@ async def test_a(dut):
 
     #cocotb.start_soon(state_monitor(dut)) #feel free to bring back in
     #cocotb.start_soon(state_and_input_monitor(dut)) #feel free to bring back in
-    cocotb.start_soon(os_monitor(dut))
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
     for i in range(50):
@@ -207,9 +207,6 @@ async def test_a(dut):
     await ClockCycles(dut.s00_axis_aclk, 500)
 
     
-    coverage_db.report_coverage(cocotb.log.info, bins=True)
-    coverage_file = os.path.join(os.getenv('sim_result', "./"), 'coverage.xml')
-    coverage_db.export_to_xml(filename=coverage_file)
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
 
 def demodulate_runner():

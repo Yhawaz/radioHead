@@ -1,11 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1762830173" />
-    <testcase name="test_a" classname="test_diff_man" file="/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/test_diff_man.py" lineno="177" time="0.006234169006347656" sim_time_ns="10.001" ratio_time="1604.2234321554229">
-      <failure message="Test failed with RANDOM_SEED=1762830173" />
-    </testcase>
-    <testcase name="test_b" classname="test_diff_man" file="/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/test_diff_man.py" lineno="214" time="3.886222839355469e-05" sim_time_ns="0.0010000000000012221" ratio_time="25.731926380399546">
-      <failure message="Test failed with RANDOM_SEED=1762830173" />
+    <property name="random_seed" value="1762837028" />
+    <testcase name="test_a" classname="test_demodulate" file="/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/test_demodulate.py" lineno="176" time="0.11580181121826172" sim_time_ns="5010.001" ratio_time="43263.58065814029">
+      <failure message="Test failed with RANDOM_SEED=1762837028" />
     </testcase>
   </testsuite>
 </testsuites>
