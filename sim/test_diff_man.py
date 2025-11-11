@@ -148,24 +148,29 @@ sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
-payloads = [1,0,1,0,0,1,0] # First test payload
+#payloads = [1,0,1,0,0,1,0] # First test payload
+payloads = [random.randint(0, 1) for _ in range(100)]
 #payloads = [payload for i in range(5)]
 last_bit = 0
 count = 0
 
 def manchester_encode_diff(current_bit):
     global last_bit
-    """compute the differential manchester encoding of an input vector encoded as a list"""
+    """compute the differential manchester encoding of a bit"""
     decoded_bit = 1 if current_bit != last_bit else 0 # checking for change in bits
     last_bit = current_bit    
     return  decoded_bit
 
 def model_manchester_decode_diff(sample):
     # you have to append one of the results to the sig out exp array
-    global count
+    global count,last_bit
     if count > 0: # First sample is trash
         sig_in.append(sample)
         sig_out_exp.append(manchester_encode_diff(sample))
+    else:
+        sig_in.append(sample)
+        sig_out_exp.append(1 ^ sample)
+        last_bit = sample
     count += 1
 
 
@@ -208,36 +213,36 @@ sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
-# @cocotb.test()
-# async def test_b(dut):
-#     global sig_in,sig_out_exp,sig_out_act
-#     """cocotb test for manchester diff with sporadic backpressure"""
-#     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_skid_buffer)
-#     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
-#     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-#     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
-#     # Create a scoreboard on the stream_out bus
-#     scoreboard = Scoreboard(dut,fail_immediately=False)
-#     scoreboard.add_interface(outm, sig_out_exp)
-#     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
-#     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+@cocotb.test()
+async def test_b(dut):
+    global sig_in,sig_out_exp,sig_out_act
+    """cocotb test for manchester diff with sporadic backpressure"""
+    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_manchester_decode_diff)
+    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+    # Create a scoreboard on the stream_out bus
+    scoreboard = Scoreboard(dut,fail_immediately=False)
+    scoreboard.add_interface(outm, sig_out_exp)
+    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
 
-#     #feed the driver on the M Side:
-#     #for i in range(50):
-#     for i in range(len(payloads)):
-#         data = {'type':'write_single', "contents":{"data": payloads[i],"last":0}}
-#         ind.append(data)
-#         pause = {"type":"pause","duration":random.randint(1,6)}
-#         ind.append(pause)
-#     ind.append({'type':'write_burst', "contents": {"data": payloads}})
-#     ind.append({'type':'pause','duration':5}) #end with pause
-#     #feed the driver on the S Side with on/off backpressure!
-#     for i in range(50):
-#         outd.append({'type':'read', "duration":random.randint(1,10)})
-#         outd.append({'type':'pause', "duration":random.randint(1,10)})
-#     await ClockCycles(dut.s00_axis_aclk, 1000)
-#     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
+    #feed the driver on the M Side:
+    #for i in range(50):
+    for i in range(len(payloads)):
+        data = {'type':'write_single', "contents":{"data": payloads[i],"last":0}}
+        ind.append(data)
+        pause = {"type":"pause","duration":random.randint(1,6)}
+        ind.append(pause)
+    ind.append({'type':'write_burst', "contents": {"data": payloads}})
+    ind.append({'type':'pause','duration':5}) #end with pause
+    #feed the driver on the S Side with on/off backpressure!
+    for i in range(50):
+        outd.append({'type':'read', "duration":random.randint(1,10)})
+        outd.append({'type':'pause', "duration":random.randint(1,10)})
+    await ClockCycles(dut.s00_axis_aclk, 1000)
+    assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
 def diff_manchester_runner():
     """Simulate the Differential Manchester Decoding using the Python runner."""

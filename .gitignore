@@ -1,8 +1,7 @@
 /*
-
 !meow
 !hdl/
-!sim/
+!sim/*.py
 !vivado/
 !sdr/
 !daw/

@@ -46,12 +46,12 @@ always_comb begin
 	in_handshake = s00_axis_tready && s00_axis_tvalid;
 	out_handshake = m00_axis_tready && m00_axis_tvalid;
 	out_bit = prev_bit != s00_axis_tdata[0];
-	m00_axis_tsrb = 4'b1111;
+	m00_axis_tstrb = 4'b1111;
 	
 end
 
 always_ff@(posedge s00_axis_aclk)begin
-	if(s00_axis_aresetn)begin
+	if(s00_axis_aresetn == 1'b0)begin
 		prev_bit<=1;
 		m00_axis_tvalid<=0;
 		m00_axis_tlast<=0;
