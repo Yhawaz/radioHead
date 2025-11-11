@@ -26,7 +26,7 @@ logic signed [31:0] angle_dif,res;
 
 // todo: wire up oliver's cordic to the input
 always_comb begin
-    angle = m00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
+    angle = s00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
     angle_dif = $signed({1'b0,angle}) - $signed({1'b0,angle_reg}); // derivative issue
     res = angle_dif >>> 1;
@@ -35,6 +35,10 @@ end
 always_ff @(posedge s00_axis_aclk)begin
     if(s00_axis_aresetn)begin
         // don't do anything
+        m00_axis_tvalid <= 0;
+        angle_reg <= 0;
+        m00_axis_tdata <= 0;
+        m00_axis_tstrb <= 0;
     end else begin
         if(s00_axis_tvalid && s00_axis_tready)begin
             // grab valid data and compute the difference
