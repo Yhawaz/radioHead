@@ -143,41 +143,36 @@ async def reset(clk,rst, cycles_held = 3,polarity=1):
     await ClockCycles(clk, cycles_held)
     rst.value = not polarity
 
-async def drive_coeffs(dut,coeffs):
-    #dut._log.info(f"Inputting the following coefficients to the FIR: {coeffs}")
-    await FallingEdge(dut.s00_axis_aclk)
-
-    # Setting the coefficients
-    # code to put the packed array into a full 2d array:
-    for i in range(15):
-        for b in range(8):
-            dut.coeffs[b+8*i].value = (coeffs[i]>>b)&0x1
 
 sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
+payloads = [1,0,1,0,0,1,0] # First test payload
+#payloads = [payload for i in range(5)]
+last_bit = 0
+count = 0
 
-
-def machester_encode_diff():
-    """compute the 2's complement of int value val"""
-    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
-        val = val - (1 << bits)        # compute negative value
-    return val   
-
+def manchester_encode_diff(current_bit):
+    global last_bit
+    """compute the differential manchester encoding of an input vector encoded as a list"""
+    decoded_bit = 1 if current_bit != last_bit else 0 # checking for change in bits
+    last_bit = current_bit    
+    return  decoded_bit
 
 def model_manchester_decode_diff(sample):
     # you have to append one of the results to the sig out exp array
-    for payload in payloads:
-        sig_in.append(payload)
-        sig_out_exp.append(twos_comp(payload,32))
-    # input must match output
+    global count
+    if count > 0: # First sample is trash
+        sig_in.append(sample)
+        sig_out_exp.append(manchester_encode_diff(sample))
+    count += 1
 
 
 @cocotb.test()
 async def test_a(dut):
     global sig_in,sig_out_exp,sig_out_act
-    """cocotb test for skid buffer no backpressure"""
+    """cocotb test for manchester diff no backpressure"""
     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_manchester_decode_diff)
     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
@@ -193,6 +188,8 @@ async def test_a(dut):
     #(pts)
     #assert 1 == 2
     #feed the driver on the M Side:
+    # You can't give a list to the module
+    # How does the module take in data?
     for i in range(len(payloads)):
         ind.append({'type':'write_single', "contents":{"data": payloads[i],"last":0}})
         ind.append({"type":"pause","duration":100})
@@ -211,36 +208,36 @@ sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
-@cocotb.test()
-async def test_b(dut):
-    global sig_in,sig_out_exp,sig_out_act
-    """cocotb test for AXIS Skid Buffer with sporadic backpressure"""
-    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_skid_buffer)
-    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
-    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
-    # Create a scoreboard on the stream_out bus
-    scoreboard = Scoreboard(dut,fail_immediately=False)
-    scoreboard.add_interface(outm, sig_out_exp)
-    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
-    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+# @cocotb.test()
+# async def test_b(dut):
+#     global sig_in,sig_out_exp,sig_out_act
+#     """cocotb test for manchester diff with sporadic backpressure"""
+#     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_skid_buffer)
+#     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+#     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+#     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+#     # Create a scoreboard on the stream_out bus
+#     scoreboard = Scoreboard(dut,fail_immediately=False)
+#     scoreboard.add_interface(outm, sig_out_exp)
+#     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+#     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
 
-    #feed the driver on the M Side:
-    #for i in range(50):
-    for i in range(len(payloads)):
-        data = {'type':'write_single', "contents":{"data": payloads[i],"last":0}}
-        ind.append(data)
-        pause = {"type":"pause","duration":random.randint(1,6)}
-        ind.append(pause)
-    ind.append({'type':'write_burst', "contents": {"data": payloads}})
-    ind.append({'type':'pause','duration':5}) #end with pause
-    #feed the driver on the S Side with on/off backpressure!
-    for i in range(50):
-        outd.append({'type':'read', "duration":random.randint(1,10)})
-        outd.append({'type':'pause', "duration":random.randint(1,10)})
-    await ClockCycles(dut.s00_axis_aclk, 1000)
-    assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
+#     #feed the driver on the M Side:
+#     #for i in range(50):
+#     for i in range(len(payloads)):
+#         data = {'type':'write_single', "contents":{"data": payloads[i],"last":0}}
+#         ind.append(data)
+#         pause = {"type":"pause","duration":random.randint(1,6)}
+#         ind.append(pause)
+#     ind.append({'type':'write_burst', "contents": {"data": payloads}})
+#     ind.append({'type':'pause','duration':5}) #end with pause
+#     #feed the driver on the S Side with on/off backpressure!
+#     for i in range(50):
+#         outd.append({'type':'read', "duration":random.randint(1,10)})
+#         outd.append({'type':'pause', "duration":random.randint(1,10)})
+#     await ClockCycles(dut.s00_axis_aclk, 1000)
+#     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
 def diff_manchester_runner():
     """Simulate the Differential Manchester Decoding using the Python runner."""

@@ -11,7 +11,7 @@ module demodulate (
     output logic s00_axis_tready,
 
     // ports of axi master bus interface m00_axis
-    input wire m00_axis_tready,
+    input wire m00_axis_treaidy,
     output logic m00_axis_tvalid,
     output logic m00_axis_tlast,
     output logic [c_m00_axis_tdata_width-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
@@ -38,6 +38,8 @@ always_ff @(posedge s00_axis_aclk)begin
             angle_reg <= angle;
             m00_axis_tdata <= {16'b0,angle_dif[15:0]}// just grabbing the bottom 16 bits
             m00_axis_tvalid <= 1'b1;
+	    m00_axis_tlast <= s00_axis_tlast;
+	    m00_axis_tstrb <= s00_axis_tstrb;
         end else begin
             if(m00_axis_tvalid && m00_axis_tready)begin // check if data is grabbed
                 m00_axis_tvalid <= 1'b0;
