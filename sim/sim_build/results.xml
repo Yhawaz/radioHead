@@ -1,8 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1762837167" />
-    <testcase name="test_a" classname="test_demodulate" file="/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/test_demodulate.py" lineno="176" time="0.1070559024810791" sim_time_ns="5010.001" ratio_time="46797.98949792105">
-      <failure message="Test failed with RANDOM_SEED=1762837167" />
+    <property name="random_seed" value="1762837383" />
+    <testcase name="test_a" classname="test_demodulate" file="/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/test_demodulate.py" lineno="176" time="0.06022930145263672" sim_time_ns="5010.001" ratio_time="83182.12031630117">
+      <failure message="Test failed with RANDOM_SEED=1762837383" />
     </testcase>
   </testsuite>
 </testsuites>

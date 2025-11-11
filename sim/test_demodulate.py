@@ -166,11 +166,21 @@ prev_val = None
 def demodulate_model(val):
     global prev_val
     sig_in.append(val)
-    if(prev_val!=None):
-        demod = 0.5 * np.angle(prev_val * np.conj(val))
+    cur_angle = unpack_complex(val)[0]
+    max=(2**16)-1
+    angl_1=max(prev_val,val)
+    angl_2=min(prev_val,val)
+    if(prev_val is not None):
+	if(prev_val != val):
+		if(max-angl_1<angl_1):
+			demod=(360-angl_1)+angl_2
+		else:
+			demod=angl_1-angle_2
+	else:
+		demod = 0
     else:
-    #idk how to handle first one being garbage tbh
-		    demod= 0 
+	demod = 0 
+    prev_val = val
     sig_out_exp.append(demod)
 
 @cocotb.test()
