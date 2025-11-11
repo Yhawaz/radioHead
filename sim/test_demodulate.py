@@ -18,185 +18,12 @@ from cocotb_bus.monitors import Monitor
 from cocotb_bus.monitors import BusMonitor
 from cocotb_bus.scoreboard import Scoreboard
 import numpy as np
+import numpy
 
 from cocotb_coverage.coverage import CoverCross, CoverPoint, coverage_db, coverage_section
 import constraint
 test_file = os.path.basename(__file__).replace(".py","")
 
-
-#SC = coverage_section (
-#CoverPoint("top.st.state",
-#            xf=lambda s, ns: s,
-#            bins=['EMPTY', 'BUSY', 'FULL']
-#            ),
-#CoverPoint("top.st.next_state",
-#            xf=lambda s, ns: ns,
-#            bins=['EMPTY', 'BUSY', 'FULL']
-#            ),
-#CoverCross("top.st.state.cross",
-#            items=["top.st.state", "top.st.next_state"],
-#           ign_bins=[('FULL','EMPTY'), ('EMPTY','FULL')]
-#           )
-#)
-#
-#@SC
-#def sampling_function(s,ns):
-#    #could maybe do some work on these things right here.
-#    pass
-#
-#async def state_monitor(dut):
-#    states = {0:'EMPTY', 1:'BUSY', 2:'FULL'}
-#    read_only = ReadOnly() #This is
-#    falling_edge = FallingEdge(dut.s00_axis_aclk)
-#    rising_edge = RisingEdge(dut.s00_axis_aclk)
-
-#    await read_only
-#    old_state = dut.state.value
-#    while True:
-#        await rising_edge #when module would change
-#        await read_only
-#        state = dut.state.value
-#        sampling_function(states[old_state], states[state])
-#        old_state = state
-#
-#STS = coverage_section(
-#CoverPoint("top.st_sig.state",
-#            xf=lambda state,sig: state,
-#            bins=['EMPTY', 'BUSY', 'FULL']
-#            ),
-#CoverPoint("top.st_sig.s00_tvalid",
-#            xf=lambda state,sig: sig.get('s00_tvalid'),
-#            bins=[True, False]
-#            ),
-#CoverPoint("top.st_sig.s00_tready",
-#            xf=lambda state,sig: sig.get('s00_tready'),
-#            bins=[True, False]
-#            ),
-#CoverPoint("top.st_sig.m00_tvalid",
-#            xf=lambda state,sig: sig.get('m00_tvalid'),
-#            bins=[True, False]
-#            ),
-#CoverPoint("top.st_sig.m00_tready",
-#            xf=lambda state,sig: sig.get('m00_tready'),
-#            bins=[True, False]
-#            ),
-##CoverCross("top.st_sig.cross",
-##            items=[ "top.st_sig.state",
-##                    "top.st_sig.s00_tvalid",
-##                    "top.st_sig.s00_tready",
-##                    "top.st_sig.m00_tvalid",
-##                    "top.st_sig.m00_tready"],
-#           #ign_bins = [('FULL', False, True), ('FULL', False, False)]
-##            )
-#CoverCross("top.st_sig.scross",
-#            items=[ "top.st_sig.state",
-#                    "top.st_sig.s00_tvalid",
-#                    "top.st_sig.s00_tready"],
-#           ign_bins = [('EMPTY', True, False), ('EMPTY', False, False)]
-#            ),
-#CoverCross("top.st_sig.mcross",
-#            items=[ "top.st_sig.state",
-#                    "top.st_sig.m00_tvalid",
-#                    "top.st_sig.m00_tready"],
-#           ign_bins = [('FULL', False, True), ('FULL', False, False)]
-#            )
-#)
-#
-#@STS
-#def sts_sampling_function(state,sig):
-#  pass
-#
-#async def state_and_input_monitor(dut):
-#    states = {0:'EMPTY', 1:'BUSY', 2:'FULL'}
-#    read_only = ReadOnly()
-#    falling_edge = FallingEdge(dut.s00_axis_aclk)
-#    rising_edge = RisingEdge(dut.s00_axis_aclk)
-#    await read_only
-#    old_state = dut.state.value
-#
-#    while True:
-#        await falling_edge #when module would change
-#        await read_only
-#        state = dut.state.value
-#        sig = { 's00_tvalid':dut.s00_axis_tvalid.value,
-#                's00_tready':dut.s00_axis_tready.value,
-#                'm00_tvalid':dut.m00_axis_tvalid.value,
-#                'm00_tready':dut.m00_axis_tready.value
-#        }
-#        #sts_sampling_function(states[state],sig)
-#        sts_sampling_function(states[old_state],sig)
-#        old_state = state
-
-
-#
-OS = coverage_section(
-CoverPoint("top.os.s00_tvalid",
-	    xf=lambda sig: sig.get('s00_tvalid'),
-	    bins=['V:0->0','V:0->1','V:1->0','V:1->1']
-	    ),
-CoverPoint("top.os.s00_tready",
-	    xf=lambda sig: sig.get('s00_tready'),
-	    bins=['R:0->0','R:0->1','R:1->0','R:1->1']
-	    ),
-CoverPoint("top.os.m00_tvalid",
-	    xf=lambda sig: sig.get('m00_tvalid'),
-	    bins=['V:0->0','V:0->1','V:1->0','V:1->1']
-	    ),
-CoverPoint("top.os.m00_tready",
-	    xf=lambda sig: sig.get('m00_tready'),
-	    bins=['R:0->0','R:0->1','R:1->0','R:1->1']
-	    ),
-CoverCross("top.os.s_cross",
-	    items=[ "top.os.s00_tvalid",
-		    "top.os.s00_tready"],
-	    ),
-CoverCross("top.os.m_cross",
-	    items=[ "top.os.m00_tvalid",
-		    "top.os.m00_tready"],
-	    )
-)
-
-@OS
-def os_sampling_function(sig):
-    pass
-
-def get_rv(dut):
-    return {'s00_tvalid':dut.s00_axis_tvalid.value,
-	    's00_tready':dut.s00_axis_tready.value,
-	    'm00_tvalid':dut.m00_axis_tvalid.value,
-	    'm00_tready':dut.m00_axis_tready.value}
-
-def match(old,new):
-    outstr = ''
-    if old:
-	outstr+='1'
-    else:
-	outstr+='0'
-    outstr += '->'
-    if new:
-	outstr+='1'
-    else:
-	outstr+='0'
-    return outstr
-
-async def os_monitor(dut):
-    read_only = ReadOnly()
-    falling_edge = FallingEdge(dut.s00_axis_aclk)
-    rising_edge = RisingEdge(dut.s00_axis_aclk)
-    await read_only
-    olds = get_rv(dut)
-    while True:
-	await falling_edge #when module would change
-	await read_only
-	news = get_rv(dut)
-	sig = {}
-	for i in ['s00_tvalid','s00_tready','m00_tvalid','m00_tready']:
-	    if 'v' in i:
-		sig[i] = 'V:'+match(olds[i],news[i])
-	    else:
-		sig[i] = 'R:'+match(olds[i],news[i])
-	os_sampling_function(sig)
-	olds = news # remember for future compare
 
 class AXIS_Monitor(BusMonitor):
     """
@@ -320,14 +147,20 @@ async def reset(clk,rst, cycles_held = 3,polarity=1):
 
 sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
-def axis_skid_buffer_model(val):
+def demodulate_model(val):
+    global prev_val
     sig_in.append(val)
-    sig_out_exp.append(val)
+    if(prev_val!=None):
+    	demod = 0.5 * np.angle(prev_val * np.conj(val))
+    else:
+	#idk how to handle first one being garbage tbh
+	demod= 0 
+    sig_out_exp.append(demod)
 
 @cocotb.test()
 async def test_a(dut):
     """cocotb test for averager controller"""
-    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=axis_skid_buffer_model)
+    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=demodulate_model)
     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk)
     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
@@ -362,20 +195,20 @@ async def test_a(dut):
     coverage_db.export_to_xml(filename=coverage_file)
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
 
-def axis_skid_buffer_runner():
-    """Simulate the axis_skid_buffer using the Python runner."""
+def demodulate_runner():
+    """Simulate the demodulate using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     sim = os.getenv("SIM", "icarus")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [proj_path / "hdl" / "axis_skid_buffer.sv"]
+    sources = [proj_path / "hdl" / "demodulate.sv"]
     #sources = [proj_path / "hdl" / "j_math.sv"]
     build_test_args = ["-Wall"]
     parameters = {} #!!!
     sys.path.append(str(proj_path / "sim"))
     runner = get_runner(sim)
-    hdl_toplevel = "axis_skid_buffer"
+    hdl_toplevel = "demodulate"
     runner.build(
 	sources=sources,
 	hdl_toplevel=hdl_toplevel,
@@ -394,6 +227,6 @@ def axis_skid_buffer_runner():
     )
 
 if __name__ == "__main__":
-   axis_skid_buffer_runner()
+   demodulate_runner()
 
 

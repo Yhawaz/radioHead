@@ -1,27 +1,27 @@
 `timescale 1ns / 1ps
 `default_nettype none
 module demodulate (
-    // Ports of Axi Slave Bus Interface S00_AXIS
+    // ports of axi slave bus interface s00_axis
     input wire s00_axis_aclk,
     input wire s00_axis_aresetn,
     input wire s00_axis_tlast,
     input wire s00_axis_tvalid,
-    input wire [C_S00_AXIS_TDATA_WIDTH-1:0] s00_axis_tdata,
-    input wire [(C_S00_AXIS_TDATA_WIDTH/8)-1:0] s00_axis_tstrb,
+    input wire [c_s00_axis_tdata_width-1:0] s00_axis_tdata,
+    input wire [(c_s00_axis_tdata_width/8)-1:0] s00_axis_tstrb,
     output logic s00_axis_tready,
 
-    // Ports of Axi Master Bus Interface M00_AXIS
+    // ports of axi master bus interface m00_axis
     input wire m00_axis_tready,
     output logic m00_axis_tvalid,
     output logic m00_axis_tlast,
-    output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
-    output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
+    output logic [c_m00_axis_tdata_width-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
+    output logic [(c_m00_axis_tdata_width/8)-1:0] m00_axis_tstrb
 );
 
 logic [15:0] angle, angle_reg;
 logic signed [31:0] angle_dif,res;
 
-// TODO: wire up oliver's cordic to the input
+// todo: wire up oliver's cordic to the input
 always_comb begin
     angle = m00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;

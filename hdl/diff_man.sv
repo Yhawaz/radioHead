@@ -1,10 +1,6 @@
 `timescale 1ns / 1ps
 `default_nettype none
-module diff_manchester#(
-    parameter integer C_S00_AXIS_TDATA_WIDTH = 32,
-    parameter integer C_M00_AXIS_TDATA_WIDTH = 32
-
-)(
+module diff_man(
     // Ports of Axi Slave Bus Interface S00_AXIS
     input wire s00_axis_aclk,
     input wire s00_axis_aresetn,
@@ -39,7 +35,7 @@ logic prev_bit;
 //comb
 logic out_bit;
 logic in_handshake;
-logic out_handshake;
+logic out_handshake
 
 always_comb begin
 	in_handshake = s00_axis_tready && s00_axis_tvalid;
@@ -65,4 +61,5 @@ always_ff@(posedge s00_axis_aclk)begin
 end
 
 
+end
 endmodule
