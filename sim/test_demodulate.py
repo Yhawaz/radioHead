@@ -190,7 +190,7 @@ async def test_a(dut):
     #cocotb.start_soon(state_and_input_monitor(dut)) #feel free to bring back in
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-    for i in range(50):
+    for i in range(500):
         angle = random.randint(1,(2**16)-1)
         magnitude=random.randint(1,(2**16)-1)
         numby=pack_complex(angle,magnitude)
@@ -198,8 +198,6 @@ async def test_a(dut):
         ind.append(data)
         pause = {"type":"pause","duration":random.randint(1,6)}
         ind.append(pause)
-        ind.append({'type':'write_burst', "contents": {"data": np.array(list(range(100)))}})
-        ind.append({'type':'pause','duration':2}) #end with pause
 
     for i in range(50):
         outd.append({'type':'read', "duration":random.randint(1,10)})
