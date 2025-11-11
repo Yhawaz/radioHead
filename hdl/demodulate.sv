@@ -33,20 +33,21 @@ always_comb begin
 end
 
 always_ff @(posedge s00_axis_aclk)begin
-    if(s00_axis_aresetn)begin
+    if(!s00_axis_aresetn)begin
         // don't do anything
         m00_axis_tvalid <= 0;
         angle_reg <= 0;
         m00_axis_tdata <= 0;
         m00_axis_tstrb <= 0;
+        m00_axis_tlast <= 0;
     end else begin
         if(s00_axis_tvalid && s00_axis_tready)begin
             // grab valid data and compute the difference
             angle_reg <= angle;
             m00_axis_tdata <= {16'b0,angle_dif[15:0]};// just grabbing the bottom 16 bits
             m00_axis_tvalid <= 1'b1;
-	    m00_axis_tlast <= s00_axis_tlast;
-	    m00_axis_tstrb <= s00_axis_tstrb;
+            m00_axis_tlast <= s00_axis_tlast;
+            m00_axis_tstrb <= s00_axis_tstrb;
         end else begin
             if(m00_axis_tvalid && m00_axis_tready)begin // check if data is grabbed
                 m00_axis_tvalid <= 1'b0;
