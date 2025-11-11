@@ -38,6 +38,7 @@ logic in_handshake;
 logic out_handshake
 
 always_comb begin
+   	s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
 	in_handshake = s00_axis_tready && s00_axis_tvalid;
 	out_handshake = m00_axis_tready && m00_axis_tvalid;
 	out_bit = prev_bit != s00_axis_tdata[0];
@@ -45,7 +46,6 @@ end
 
 always_ff@(posedge s00_axis_aclk)begin
 	if(s00_axis_aresetn)begin
-		m00_axis_tvalid<=1;
 	//lowkey might not matter first transcations garbage
 	//who cares?
 	end else begin
