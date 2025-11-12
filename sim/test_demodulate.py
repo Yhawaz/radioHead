@@ -23,6 +23,107 @@ from cocotb_coverage.coverage import CoverCross, CoverPoint, coverage_db, covera
 import constraint
 test_file = os.path.basename(__file__).replace(".py","")
 
+#helper funcs
+
+fixed_point=1
+def bit_2_degree(bit_angle):
+    return (360*bit_angle)/(2**16)
+
+def degree_2_bit(real_angle):
+        return (real_angle/360)*(2**16)
+
+#this was named wrong, this just unapcks a high low
+def unpack_32bits(packed):
+    high = (packed >> 16) & 0xFFFF
+    low = packed & 0xFFFF
+
+	#im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
+    high = np.array([high], dtype=np.uint16).view(np.int16)[0]
+    low = np.array([low], dtype=np.uint16).view(np.int16)[0]
+
+    return high, low
+
+def pack_32bits(high,low):
+	return ((int(high*fixed_point) & 0xFFFF) << 16) | (int(low*fixed_point) & 0xFFFF)
+#dealing with raw complex numbers
+def complex_bit_to_numpy(complexy):
+	# assuming high is real, and low is imag
+	imag,real = unpack_32bits(complexy)
+	return np.complex128(np.real(real/fixed_point) + 1j*imag/fixed_point)
+
+def get_angle_via_dot(packed_compa, packed_compb):
+    complex_a = complex_bit_to_numpy(packed_compa)
+    complex_b = complex_bit_to_numpy(packed_compb)
+
+    vec_a = np.array([complex_a.real, complex_a.imag])
+    vec_b = np.array([complex_b.real, complex_b.imag])
+    
+    
+    cos_theta = np.dot(vec_a,vec_b) / (np.abs(complex_a) * np.abs(complex_b))
+    
+    diff = np.arccos(cos_theta)
+    return diff
+
+class MeowBoard(Scoreboard):
+    def compare(self, got, exp, log, strict_type=True):
+        # Compare the types
+        correct = abs(got-exp)<10
+        if strict_type and type(got) != type(exp):
+            self.errors += 1
+            log.error("Received transaction type is different than expected")
+            log.info("Received: %s but expected %s" % (str(type(got)), str(type(exp))))
+            if self._imm:
+                assert False, (
+                    "Received transaction of wrong type. "
+                    "Set strict_type=False to avoid this."
+                )
+            return
+        # Or convert to a string before comparison
+        elif not strict_type:
+            got, exp = str(got), str(exp)
+
+        # Compare directly
+        if not correct:
+            self.errors += 1
+
+            # Try our best to print out something useful
+            strgot, strexp = str(got), str(exp)
+
+            log.error("Received transaction differed from expected output")
+            if not strict_type:
+                log.info("Expected:\n" + hexdump(strexp, dump=True))
+            else:
+                log.info("Expected:\n" + repr(exp))
+            if not isinstance(exp, str):
+                try:
+                    for word in exp:
+                        log.info(str(word))
+                except Exception:
+                    pass
+            if not strict_type:
+                log.info("Received:\n" + hexdump(strgot, dump=True))
+            else:
+                log.info("Received:\n" + repr(got))
+            if not isinstance(got, str):
+                try:
+                    for word in got:
+                        log.info(str(word))
+                except Exception:
+                    pass
+            log.warning("Difference:")
+            # NOTE: scapy.utils.hexdiff doesn't return a string but prints!
+            hexdiff(strexp, strgot)
+            if self._imm:
+                assert False, "Received transaction differed from expected transaction"
+        else:
+            # Don't want to fail the test
+            # if we're passed something without __len__
+            try:
+                log.debug("Received expected transaction %d bytes" % (len(got)))
+                log.debug(repr(got))
+            except Exception:
+                pass
+
 
 class AXIS_Monitor(BusMonitor):
     """
@@ -147,41 +248,14 @@ async def reset(clk,rst, cycles_held = 3,polarity=1):
 sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 
-def bit_2_degree(bit_angle):
-	return (360*bit_angle)/(2**16)
 
-def degree_2_bit(real_angle):
-	return (real_angle/360)*(2**16)
-
-
-def pack_complex(angle,mag):
-	return ((int(angle) & 0xFFFF) << 16) | (int(mag) & 0xFFFF)
-
-def unpack_complex(packed):
-    angle = (packed >> 16) & 0xFFFF
-    magnitude = packed & 0xFFFF
-    return angle, magnitude
-
-prev_val = None
+prev_val = 0
 def demodulate_model(val):
-    global prev_val
-    sig_in.append(val)
-    cur_angle = unpack_complex(val)[0]
-    max=(2**16)-1
-    angl_1=max(prev_val,val)
-    angl_2=min(prev_val,val)
-    if(prev_val is not None):
-	if(prev_val != val):
-		if(max-angl_1<angl_1):
-			demod=(360-angl_1)+angl_2
-		else:
-			demod=angl_1-angle_2
-	else:
-		demod = 0
-    else:
-	demod = 0 
-    prev_val = val
-    sig_out_exp.append(demod)
+	global prev_val
+	diff = get_angle_via_dot(val,prev_val)
+	prev_val = val
+	demod = degree_2_bit(np.degrees(diff)+100)
+	sig_out_exp.append(demod)
 
 @cocotb.test()
 async def test_a(dut):
@@ -192,7 +266,7 @@ async def test_a(dut):
     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
 
     # Create a scoreboard on the stream_out bus
-    scoreboard = Scoreboard(dut,fail_immediately=False)
+    scoreboard = MeowBoard(dut,fail_immediately=False)
     scoreboard.add_interface(outm, sig_out_exp)
     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
 
@@ -203,7 +277,7 @@ async def test_a(dut):
     for i in range(500):
         angle = random.randint(1,(2**16)-1)
         magnitude=random.randint(1,(2**16)-1)
-        numby=pack_complex(angle,magnitude)
+        numby=pack_32bits(angle,magnitude)
         data = {'type':'write_single', "contents":{"data": numby,"last":0}}
         ind.append(data)
         pause = {"type":"pause","duration":random.randint(1,6)}
@@ -216,6 +290,9 @@ async def test_a(dut):
 
     
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
+    print(scoreboard.errors)
+    assert scoreboard.errors == 0
+
 
 def demodulate_runner():
     """Simulate the demodulate using the Python runner."""
