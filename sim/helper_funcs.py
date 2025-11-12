@@ -25,11 +25,15 @@ def pack_32bits(high,low):
 
 def nunmpy_to32bit(complexy):
 	return pack_32bits(np.real(complexy),np.imag(complexy))
+
 #dealing with raw complex numbers
+
 def complex_bit_to_numpy(complexy):
 	# assuming high is real, and low is imag
+
 	imag,real = unpack_32bits(complexy)
 	return np.complex128(np.real(real/fixed_point) + 1j*imag/fixed_point)
+
 def get_angle_via_dot(packed_compa, packed_compb):
     complex_a = complex_bit_to_numpy(packed_compa)
     complex_b = complex_bit_to_numpy(packed_compb)
