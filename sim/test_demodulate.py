@@ -48,6 +48,7 @@ def unpack_32bits(packed):
 def pack_32bits(high,low):
 	return ((int(high*fixed_point) & 0xFFFF) << 16) | (int(low*fixed_point) & 0xFFFF)
 #dealing with raw complex numbers
+
 def complex_bit_to_numpy(complexy):
 	# assuming high is real, and low is imag
 	imag,real = unpack_32bits(complexy)
@@ -256,12 +257,20 @@ prev_val = None
 def demodulate_model(val):
 	global prev_val
 
+	#honestly easiest way is to convert the val to a complex num
+	mag = 1
+	ang1 = np.radians(bit_2_degree(unpack_32bits(val)[0]))
+	imag1 = mag * np.sin(ang1)
+	real1 = mag * np.cos(ang1)
+	val = pack_32bits(imag1,real1)
+
 	if(prev_val is None):
 		signed_ang = np.degrees(np.angle(complex_bit_to_numpy(val)))
 		if(signed_ang<0):
 			signed_ang = signed_ang + 360
 		demod_int = int(degree_2_bit(int(signed_ang.item())))
 	else:
+		mag = 4
 		diff = get_angle_via_dot(val,prev_val)
 		demod = degree_2_bit(np.degrees(diff))
 		demod_int = int(demod.item())

@@ -56,8 +56,8 @@ prev_val = None
 
 #this is gonna assume radians but whatever
 
-angle1 =np.radians(215) #30 degrees
-mag = 328.5
+angle1 =np.radians(45) #30 degrees
+mag = 5
 
 angle2 =np.radians(23) #30 degrees
 
