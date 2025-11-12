@@ -38,7 +38,7 @@ always_comb begin
         alpha = angle - angle_reg;
     end
 
-    beta = 16'b1111_1111_1111_1111; // 360 - alpha
+    beta = 16'b1111_1111_1111_1111 - alpha; // 360 - alpha
 
     // angle to find which angle between the vectors is smaller
     if (alpha > beta) begin
