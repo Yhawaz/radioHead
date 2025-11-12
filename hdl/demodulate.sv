@@ -21,15 +21,34 @@ module demodulate #(
     output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
 
-logic [15:0] angle, angle_reg;
-logic signed [31:0] angle_dif,res;
+logic [15:0] angle, angle_reg,alpha,beta;
+logic [15:0] angle_dif,res;
 
 // todo: wire up oliver's cordic to the input
 always_comb begin
     angle = s00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
-    angle_dif = $signed({1'b0,angle}) - $signed({1'b0,angle_reg}); // derivative issue
-    res = angle_dif >>> 1;
+
+    // large derivative resolution logic
+    // alpha is the difference between the bigger and the smaller angle
+    // beta is 360 - alpha
+    if(angle_reg > angle)begin
+        alpha = angle_reg - angle;
+    end else if (angle_reg <= angle) begin // if angle_reg = angle, then alpha must be 0
+        alpha = angle - angle_reg;
+    end
+
+    beta = 16'b1111_1111_1111_1111; // 360 - alpha
+
+    // angle to find which angle between the vectors is smaller
+    if (alpha > beta) begin
+        angle_dif = beta;
+    end else if (alpha < beta) begin
+        angle_dif = alpha;
+    end
+
+    // output logic
+    res = angle_dif >> 1;
 end
 
 always_ff @(posedge s00_axis_aclk)begin
