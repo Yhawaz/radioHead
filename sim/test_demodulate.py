@@ -303,19 +303,19 @@ async def test_a(dut):
     ind.append(data)
 
 
-#    for i in range(100):
-#        angle = random.randint(1,(2**16)-1)
-#        magnitude=random.randint(1,(2**16)-1)
-#        numby=pack_32bits(angle,magnitude)
-#        data = {'type':'write_single', "contents":{"data": numby,"last":0}}
-#        ind.append(data)
-#        pause = {"type":"pause","duration":random.randint(1,6)}
-#        ind.append(pause)
+    for i in range(100):
+        angle = random.randint(1,(2**16)-1)
+        magnitude=random.randint(1,(2**16)-1)
+        numby=pack_32bits(angle,magnitude)
+        data = {'type':'write_single', "contents":{"data": numby,"last":0}}
+        ind.append(data)
+        pause = {"type":"pause","duration":random.randint(1,6)}
+        ind.append(pause)
 
     for i in range(50):
         outd.append({'type':'read', "duration":random.randint(1,10)})
         outd.append({'type':'pause', "duration":random.randint(1,10)})
-    await ClockCycles(dut.s00_axis_aclk, 500)
+    await ClockCycles(dut.s00_axis_aclk, 5000)
 
     
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
