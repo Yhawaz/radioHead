@@ -15,8 +15,8 @@ def unpack_32bits(packed):
     low = packed & 0xFFFF
 
 	#im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
-    high = np.array([high], dtype=np.uint16)[0]
-    low = np.array([low], dtype=np.uint16)[0]
+    high = np.array([high], dtype=np.uint16).view(np.int16)[0]
+    low = np.array([low], dtype=np.uint16).view(np.int16)[0]
 
     return high, low
 
@@ -33,10 +33,6 @@ def complex_bit_to_numpy(complexy):
 
 	imag,real = unpack_32bits(complexy)
 
-	if real > 32767:
-		real = real - 65535
-	if imag > 32767:
-		imag = imag - 65535
 
 	return np.complex128(np.real(real/fixed_point) + 1j*imag/fixed_point)
 

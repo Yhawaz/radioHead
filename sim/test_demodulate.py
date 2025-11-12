@@ -257,11 +257,14 @@ def demodulate_model(val):
 	global prev_val
 
 	if(prev_val is None):
-		demod_int = int(degree_2_bit(np.degrees(np.angle(complex_bit_to_numpy(val)))).item())
+		signed_ang = np.degrees(np.angle(complex_bit_to_numpy(val)))
+		if(signed_ang<0):
+			signed_ang = signed_ang + 360
+		demod_int = int(degree_2_bit(int(signed_ang.item())))
 	else:
 		diff = get_angle_via_dot(val,prev_val)
 		demod = degree_2_bit(np.degrees(diff))
-		demod_int = int(np.nan_to_num(demod, nan=0.0).item())
+		demod_int = int(demod.item())
 	sig_out_exp.append(demod_int)
 	prev_val = val
 
