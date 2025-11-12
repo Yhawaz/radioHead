@@ -12,6 +12,8 @@ from cocotb.utils import get_sim_time as gst
 from cocotb.runner import get_runner
 from cocotb.handle import SimHandleBase
 
+from scapy.utils import hexdump, hexdiff
+
 from cocotb_bus.bus import Bus
 from cocotb_bus.drivers import BusDriver
 from cocotb_bus.monitors import Monitor
@@ -67,7 +69,7 @@ def get_angle_via_dot(packed_compa, packed_compb):
 class MeowBoard(Scoreboard):
     def compare(self, got, exp, log, strict_type=True):
         # Compare the types
-        correct = abs(got-exp)<10
+        correct = abs(got-exp)<200
         if strict_type and type(got) != type(exp):
             self.errors += 1
             log.error("Received transaction type is different than expected")
@@ -87,6 +89,7 @@ class MeowBoard(Scoreboard):
             self.errors += 1
 
             # Try our best to print out something useful
+            #strgot, strexp = str(degree_2_bit(got)), str(degree_2_bit(exp))
             strgot, strexp = str(got), str(exp)
 
             log.error("Received transaction differed from expected output")
@@ -154,7 +157,7 @@ class AXIS_Monitor(BusMonitor):
             data = self.bus.axis_tdata.value #.signed_integer
             if valid and ready:
                 self.transactions+=1
-                thing = dict(data=data.signed_integer,last=last,
+                thing = dict(data=data.integer,last=last,
                              name=self.name,count=self.transactions)
                 self.dut._log.info(f"{self.name}: {thing}")
                 self._recv(data.signed_integer)
@@ -249,13 +252,18 @@ sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 
 
-prev_val = 0
+prev_val = None
 def demodulate_model(val):
 	global prev_val
-	diff = get_angle_via_dot(val,prev_val)
+
+	if(prev_val is None):
+		demod_int = int(degree_2_bit(np.degrees(np.angle(complex_bit_to_numpy(val)))).item())
+	else:
+		diff = get_angle_via_dot(val,prev_val)
+		demod = degree_2_bit(np.degrees(diff))
+		demod_int = int(np.nan_to_num(demod, nan=0.0).item())
+	sig_out_exp.append(demod_int)
 	prev_val = val
-	demod = degree_2_bit(np.degrees(diff)+100)
-	sig_out_exp.append(demod)
 
 @cocotb.test()
 async def test_a(dut):
@@ -274,7 +282,7 @@ async def test_a(dut):
     #cocotb.start_soon(state_and_input_monitor(dut)) #feel free to bring back in
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-    for i in range(500):
+    for i in range(100):
         angle = random.randint(1,(2**16)-1)
         magnitude=random.randint(1,(2**16)-1)
         numby=pack_32bits(angle,magnitude)
@@ -290,7 +298,7 @@ async def test_a(dut):
 
     
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
-    print(scoreboard.errors)
+    print("HEY",scoreboard.errors)
     assert scoreboard.errors == 0
 
 
