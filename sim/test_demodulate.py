@@ -268,9 +268,11 @@ def demodulate_model(val):
     if prev_val is None:
         demod_int = int(angle_bits) & 0xFFFF
     else:
-        cur_val =int(angle_bits) & 0xFFFF
+        cur_val =int(angle_bits) & 0xffff
+
         demod_int = min(cur_val-prev_val,prev_val-cur_val)
-        demod_int = int(demod_int) & 0xFFFF
+
+        demod_int = int(demod_int) & 0xffff
     sig_out_exp.append(demod_int)
     prev_val = angle_bits  # Store as complex for next comparison
 
@@ -290,15 +292,25 @@ async def test_a(dut):
     #cocotb.start_soon(state_monitor(dut)) #feel free to bring back in
     #cocotb.start_soon(state_and_input_monitor(dut)) #feel free to bring back in
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+    magnitude=random.randint(1,(2**16)-1)
+    angle_bits=degree_2_bit(357)
+    angle_bits2=degree_2_bit(3)
+    numby1=pack_32bits(angle_bits,magnitude)
+    numby2=pack_32bits(angle_bits2,magnitude)
+    data = {'type':'write_single', "contents":{"data": numby1,"last":0}}
+    ind.append(data)
+    data = {'type':'write_single', "contents":{"data": numby2,"last":0}}
+    ind.append(data)
 
-    for i in range(100):
-        angle = random.randint(1,(2**16)-1)
-        magnitude=random.randint(1,(2**16)-1)
-        numby=pack_32bits(angle,magnitude)
-        data = {'type':'write_single', "contents":{"data": numby,"last":0}}
-        ind.append(data)
-        pause = {"type":"pause","duration":random.randint(1,6)}
-        ind.append(pause)
+
+#    for i in range(100):
+#        angle = random.randint(1,(2**16)-1)
+#        magnitude=random.randint(1,(2**16)-1)
+#        numby=pack_32bits(angle,magnitude)
+#        data = {'type':'write_single', "contents":{"data": numby,"last":0}}
+#        ind.append(data)
+#        pause = {"type":"pause","duration":random.randint(1,6)}
+#        ind.append(pause)
 
     for i in range(50):
         outd.append({'type':'read', "duration":random.randint(1,10)})

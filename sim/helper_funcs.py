@@ -73,5 +73,17 @@ print(complex2)
 get_angle_via_dot(complex1,complex2)
 
 
-print(bit_2_degree(28966))
-print(bit_2_degree(36570))
+print(bit_2_degree(25858))
+print(bit_2_degree(39678))
+print("nya")
+
+angle_bits=degree_2_bit(357)
+prev_val=degree_2_bit(3)
+
+cur_val =int(angle_bits) & 0xFFFF
+
+demod_int = min(cur_val-prev_val,prev_val-cur_val)
+
+demod_int = int(demod_int) & 0xFFFF
+print(bit_2_degree(demod_int))
+
