@@ -276,6 +276,37 @@ def demodulate_model(val):
     sig_out_exp.append(demod_int)
     prev_val = angle_bits  # Store as complex for next comparison
 
+def demodulate_model2(val):
+    global prev_val
+
+    angle_bits = unpack_32bits(val)[0]
+    angle_rad_cur = np.radians(bit_2_degree(angle_bits))
+
+
+    if prev_val is None:
+        # first case
+        demod_int = int(angle_bits) & 0xFFFF
+    else:
+        # every other case
+        angle_rad_prev = np.radians(bit_2_degree(prev_val))
+
+        cur_x = np.cos(angle_rad_cur)
+        cur_y = np.sin(angle_rad_cur)
+
+        prev_x = np.cos(angle_rad_prev)
+        prev_y = np.sin(angle_rad_prev)
+
+        vec_cur = np.array([cur_x,cur_y])
+        vec_prev = np.array([prev_x,prev_y])
+
+        dot_product = vec_cur @ vec_prev # computing the dot product
+        angle_diff = np.acos(dot_product) # should get me the angle back in radians
+
+        demod_int = int(angle_diff/(2*np.pi)*(2**16-1)) # fixed point angle
+
+    sig_out_exp.append(demod_int)
+    prev_val = angle_bits  # Store as complex for next comparison
+
 @cocotb.test()
 async def test_a(dut):
     """cocotb test for averager controller"""
