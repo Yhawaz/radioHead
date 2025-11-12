@@ -30,25 +30,17 @@ always_comb begin
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
 
     // large derivative resolution logic
-    // alpha is the difference between the bigger and the smaller angle
-    // beta is 360 - alpha
-    if(angle_reg > angle)begin
-        alpha = angle_reg - angle;
-    end else if (angle_reg <= angle) begin // if angle_reg = angle, then alpha must be 0
-        alpha = angle - angle_reg;
-    end
+    alpha = angle - angle_reg; // it should automatically wrap around TODO: Check if this is true in test benching
 
-    beta = 16'b1111_1111_1111_1111 - alpha; // 360 - alpha
-
-    // angle to find which angle between the vectors is smaller
-    if (alpha > beta) begin
-        angle_dif = beta;
-    end else if (alpha < beta) begin
-        angle_dif = alpha;
+    // we need to move the angles to a space where there is oscillation so just -pi to pi
+    if(alpha > 15'b111_1111_1111_1111)begin // if diff > pi
+        angle_dif = alpha - 15'b111_1111_1111_1111;
+    end else if (alpha < 15'b111_1111_1111_1111) begin
+        angle_dif = alpha + 15'b111_1111_1111_1111;
     end
 
     // output logic
-    res = angle_dif >> 1;
+    res = angle_dif; // fix
 end
 
 always_ff @(posedge s00_axis_aclk)begin
