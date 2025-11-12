@@ -15,8 +15,8 @@ def unpack_32bits(packed):
     low = packed & 0xFFFF
 
 	#im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
-    high = np.array([high], dtype=np.uint16).view(np.int16)[0]
-    low = np.array([low], dtype=np.uint16).view(np.int16)[0]
+  #  high = np.array([high], dtype=np.uint16).view(np.uint16)[0]
+  #  low = np.array([low], dtype=np.uint16).view(np.uint16)[0]
 
     return high, low
 
@@ -32,8 +32,6 @@ def complex_bit_to_numpy(complexy):
 	# assuming high is real, and low is imag
 
 	imag,real = unpack_32bits(complexy)
-
-
 	return np.complex128(np.real(real/fixed_point) + 1j*imag/fixed_point)
 
 def get_angle_via_dot(packed_compa, packed_compb):
@@ -56,10 +54,10 @@ prev_val = None
 
 #this is gonna assume radians but whatever
 
-angle1 =np.radians(45) #30 degrees
-mag = 5
+angle1 =np.radians(325) #30 degrees
+mag = 200
 
-angle2 =np.radians(23) #30 degrees
+angle2 =np.radians(255) #30 degrees
 
 imag1 = mag * np.sin(angle1)
 imag2 = mag * np.sin(angle2)
@@ -73,11 +71,8 @@ print(complex1)
 print(complex2)
 
 get_angle_via_dot(complex1,complex2)
-print(bit_2_degree(34966))
-print(bit_2_degree(45820))
-
-print(bit_2_degree(34966))
-print(bit_2_degree(45820))
 
 
-
+print(bit_2_degree(105))
+print(bit_2_degree(52))
+print(bit_2_degree(154))
