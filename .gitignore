@@ -11,5 +11,6 @@
 !*.xpr
 !*.py
 !*.ipynb
+!sim/helper_funcs.py
 *.swp
 *.npy
