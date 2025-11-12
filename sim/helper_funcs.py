@@ -73,6 +73,5 @@ print(complex2)
 get_angle_via_dot(complex1,complex2)
 
 
-print(bit_2_degree(105))
-print(bit_2_degree(52))
-print(bit_2_degree(154))
+print(bit_2_degree(28966))
+print(bit_2_degree(36570))
