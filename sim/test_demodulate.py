@@ -297,9 +297,9 @@ async def test_a(dut):
     angle_bits2=degree_2_bit(3)
     numby1=pack_32bits(angle_bits,magnitude)
     numby2=pack_32bits(angle_bits2,magnitude)
-    data = {'type':'write_single', "contents":{"data": numby1,"last":0}}
-    ind.append(data)
     data = {'type':'write_single', "contents":{"data": numby2,"last":0}}
+    ind.append(data)
+    data = {'type':'write_single', "contents":{"data": numby1,"last":0}}
     ind.append(data)
 
 
