@@ -87,3 +87,12 @@ demod_int = min(cur_val-prev_val,prev_val-cur_val)
 demod_int = int(demod_int) & 0xFFFF
 print(bit_2_degree(demod_int))
 
+print(bit_2_degree(3889))
+print(bit_2_degree(36656))
+
+print(bit_2_degree(8482))
+print(bit_2_degree(24287))
+
+
+
+

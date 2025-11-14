@@ -8,9 +8,9 @@
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
 :vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
-S_0x136f04710 .scope package, "$unit" "$unit" 2 1;
+S_0x121604a70 .scope package, "$unit" "$unit" 2 1;
  .timescale -9 -12;
-S_0x136f04880 .scope module, "demodulate" "demodulate" 3 3;
+S_0x121605db0 .scope module, "demodulate" "demodulate" 3 3;
  .timescale -9 -12;
     .port_info 0 /INPUT 1 "s00_axis_aclk";
     .port_info 1 /INPUT 1 "s00_axis_aresetn";
@@ -24,163 +24,140 @@ S_0x136f04880 .scope module, "demodulate" "demodulate" 3 3;
     .port_info 9 /OUTPUT 1 "m00_axis_tlast";
     .port_info 10 /OUTPUT 32 "m00_axis_tdata";
     .port_info 11 /OUTPUT 4 "m00_axis_tstrb";
-P_0x6000039f4200 .param/l "C_M00_AXIS_TDATA_WIDTH" 0 3 5, +C4<00000000000000000000000000100000>;
-P_0x6000039f4240 .param/l "C_S00_AXIS_TDATA_WIDTH" 0 3 4, +C4<00000000000000000000000000100000>;
-v0x6000025f4000_0 .var "alpha", 15 0;
-v0x6000025f4090_0 .var "angle", 15 0;
-v0x6000025f4120_0 .var "angle_dif", 15 0;
-v0x6000025f41b0_0 .var "angle_reg", 15 0;
-v0x6000025f4240_0 .var "beta", 15 0;
-v0x6000025f42d0_0 .var "m00_axis_tdata", 31 0;
-v0x6000025f4360_0 .var "m00_axis_tlast", 0 0;
-o0x128008160 .functor BUFZ 1, C4<z>; HiZ drive
-v0x6000025f43f0_0 .net "m00_axis_tready", 0 0, o0x128008160;  0 drivers
-v0x6000025f4480_0 .var "m00_axis_tstrb", 3 0;
-v0x6000025f4510_0 .var "m00_axis_tvalid", 0 0;
-v0x6000025f45a0_0 .var "res", 15 0;
-o0x128008220 .functor BUFZ 1, C4<z>; HiZ drive
-v0x6000025f4630_0 .net "s00_axis_aclk", 0 0, o0x128008220;  0 drivers
-o0x128008250 .functor BUFZ 1, C4<z>; HiZ drive
-v0x6000025f46c0_0 .net "s00_axis_aresetn", 0 0, o0x128008250;  0 drivers
-o0x128008280 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
-v0x6000025f4750_0 .net "s00_axis_tdata", 31 0, o0x128008280;  0 drivers
-o0x1280082b0 .functor BUFZ 1, C4<z>; HiZ drive
-v0x6000025f47e0_0 .net "s00_axis_tlast", 0 0, o0x1280082b0;  0 drivers
-v0x6000025f4870_0 .var "s00_axis_tready", 0 0;
-o0x128008310 .functor BUFZ 4, C4<zzzz>; HiZ drive
-v0x6000025f4900_0 .net "s00_axis_tstrb", 3 0, o0x128008310;  0 drivers
-o0x128008340 .functor BUFZ 1, C4<z>; HiZ drive
-v0x6000025f4990_0 .net "s00_axis_tvalid", 0 0, o0x128008340;  0 drivers
-E_0x6000002fc000 .event posedge, v0x6000025f4630_0;
-E_0x6000002fc040 .event anyedge, v0x6000025f4750_0, v0x6000025f43f0_0, v0x6000025f4510_0, v0x6000025f41b0_0;
-S_0x136f04b10 .scope module, "cocotb_iverilog_dump" "cocotb_iverilog_dump" 4 1;
+P_0x600000c08580 .param/l "C_M00_AXIS_TDATA_WIDTH" 0 3 5, +C4<00000000000000000000000000100000>;
+P_0x600000c085c0 .param/l "C_S00_AXIS_TDATA_WIDTH" 0 3 4, +C4<00000000000000000000000000100000>;
+v0x600001008090_0 .var "alpha", 15 0;
+v0x600001008120_0 .var "angle", 15 0;
+v0x6000010081b0_0 .var "angle_dif", 15 0;
+v0x600001008240_0 .var "angle_reg", 15 0;
+v0x6000010082d0_0 .var "m00_axis_tdata", 31 0;
+v0x600001008360_0 .var "m00_axis_tlast", 0 0;
+o0x128040130 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6000010083f0_0 .net "m00_axis_tready", 0 0, o0x128040130;  0 drivers
+v0x600001008480_0 .var "m00_axis_tstrb", 3 0;
+v0x600001008510_0 .var "m00_axis_tvalid", 0 0;
+v0x6000010085a0_0 .var "res", 15 0;
+o0x1280401f0 .functor BUFZ 1, C4<z>; HiZ drive
+v0x600001008630_0 .net "s00_axis_aclk", 0 0, o0x1280401f0;  0 drivers
+o0x128040220 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6000010086c0_0 .net "s00_axis_aresetn", 0 0, o0x128040220;  0 drivers
+o0x128040250 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v0x600001008750_0 .net "s00_axis_tdata", 31 0, o0x128040250;  0 drivers
+o0x128040280 .functor BUFZ 1, C4<z>; HiZ drive
+v0x6000010087e0_0 .net "s00_axis_tlast", 0 0, o0x128040280;  0 drivers
+v0x600001008870_0 .var "s00_axis_tready", 0 0;
+o0x1280402e0 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x600001008900_0 .net "s00_axis_tstrb", 3 0, o0x1280402e0;  0 drivers
+o0x128040310 .functor BUFZ 1, C4<z>; HiZ drive
+v0x600001008990_0 .net "s00_axis_tvalid", 0 0, o0x128040310;  0 drivers
+E_0x600003709e80 .event posedge, v0x600001008630_0;
+E_0x600003709ec0 .event anyedge, v0x600001008750_0, v0x6000010083f0_0, v0x600001008510_0, v0x600001008240_0;
+S_0x121607b50 .scope module, "cocotb_iverilog_dump" "cocotb_iverilog_dump" 4 1;
  .timescale -9 -12;
-    .scope S_0x136f04880;
+    .scope S_0x121605db0;
 T_0 ;
-Ewait_0 .event/or E_0x6000002fc040, E_0x0;
+Ewait_0 .event/or E_0x600003709ec0, E_0x0;
     %wait Ewait_0;
-    %load/vec4 v0x6000025f4750_0;
+    %load/vec4 v0x600001008750_0;
     %parti/s 16, 16, 6;
-    %store/vec4 v0x6000025f4090_0, 0, 16;
-    %load/vec4 v0x6000025f43f0_0;
+    %store/vec4 v0x600001008120_0, 0, 16;
+    %load/vec4 v0x6000010083f0_0;
     %flag_set/vec4 8;
     %flag_get/vec4 8;
     %jmp/1 T_0.0, 8;
-    %load/vec4 v0x6000025f4510_0;
+    %load/vec4 v0x600001008510_0;
     %inv;
     %or;
 T_0.0;
-    %store/vec4 v0x6000025f4870_0, 0, 1;
-    %load/vec4 v0x6000025f4090_0;
-    %load/vec4 v0x6000025f41b0_0;
-    %cmp/u;
-    %jmp/0xz  T_0.1, 5;
-    %load/vec4 v0x6000025f41b0_0;
-    %load/vec4 v0x6000025f4090_0;
+    %store/vec4 v0x600001008870_0, 0, 1;
+    %load/vec4 v0x600001008120_0;
+    %load/vec4 v0x600001008240_0;
     %sub;
-    %store/vec4 v0x6000025f4000_0, 0, 16;
+    %store/vec4 v0x600001008090_0, 0, 16;
+    %load/vec4 v0x600001008090_0;
+    %cmpi/u 32767, 0, 16;
+    %flag_or 5, 4; GT is !LE
+    %flag_inv 5;
+    %jmp/0xz  T_0.1, 5;
+    %load/vec4 v0x600001008090_0;
+    %subi 32767, 0, 16;
+    %store/vec4 v0x6000010081b0_0, 0, 16;
     %jmp T_0.2;
 T_0.1 ;
-    %load/vec4 v0x6000025f41b0_0;
-    %load/vec4 v0x6000025f4090_0;
-    %cmp/u;
-    %flag_or 5, 4;
+    %load/vec4 v0x600001008090_0;
+    %cmpi/u 32767, 0, 16;
     %jmp/0xz  T_0.3, 5;
-    %load/vec4 v0x6000025f4090_0;
-    %load/vec4 v0x6000025f41b0_0;
-    %sub;
-    %store/vec4 v0x6000025f4000_0, 0, 16;
+    %load/vec4 v0x600001008090_0;
+    %addi 32767, 0, 16;
+    %store/vec4 v0x6000010081b0_0, 0, 16;
 T_0.3 ;
 T_0.2 ;
-    %pushi/vec4 65535, 0, 16;
-    %load/vec4 v0x6000025f4000_0;
-    %sub;
-    %store/vec4 v0x6000025f4240_0, 0, 16;
-    %load/vec4 v0x6000025f4240_0;
-    %load/vec4 v0x6000025f4000_0;
-    %cmp/u;
-    %jmp/0xz  T_0.5, 5;
-    %load/vec4 v0x6000025f4240_0;
-    %store/vec4 v0x6000025f4120_0, 0, 16;
-    %jmp T_0.6;
-T_0.5 ;
-    %load/vec4 v0x6000025f4000_0;
-    %load/vec4 v0x6000025f4240_0;
-    %cmp/u;
-    %jmp/0xz  T_0.7, 5;
-    %load/vec4 v0x6000025f4000_0;
-    %store/vec4 v0x6000025f4120_0, 0, 16;
-T_0.7 ;
-T_0.6 ;
-    %load/vec4 v0x6000025f4120_0;
-    %ix/load 4, 1, 0;
-    %flag_set/imm 4, 0;
-    %shiftr 4;
-    %store/vec4 v0x6000025f45a0_0, 0, 16;
+    %load/vec4 v0x6000010081b0_0;
+    %store/vec4 v0x6000010085a0_0, 0, 16;
     %jmp T_0;
     .thread T_0, $push;
-    .scope S_0x136f04880;
+    .scope S_0x121605db0;
 T_1 ;
-    %wait E_0x6000002fc000;
-    %load/vec4 v0x6000025f46c0_0;
+    %wait E_0x600003709e80;
+    %load/vec4 v0x6000010086c0_0;
     %nor/r;
     %flag_set/vec4 8;
     %jmp/0xz  T_1.0, 8;
     %pushi/vec4 0, 0, 1;
-    %assign/vec4 v0x6000025f4510_0, 0;
+    %assign/vec4 v0x600001008510_0, 0;
     %pushi/vec4 0, 0, 16;
-    %assign/vec4 v0x6000025f41b0_0, 0;
+    %assign/vec4 v0x600001008240_0, 0;
     %pushi/vec4 0, 0, 32;
-    %assign/vec4 v0x6000025f42d0_0, 0;
+    %assign/vec4 v0x6000010082d0_0, 0;
     %pushi/vec4 0, 0, 4;
-    %assign/vec4 v0x6000025f4480_0, 0;
+    %assign/vec4 v0x600001008480_0, 0;
     %pushi/vec4 0, 0, 1;
-    %assign/vec4 v0x6000025f4360_0, 0;
+    %assign/vec4 v0x600001008360_0, 0;
     %jmp T_1.1;
 T_1.0 ;
-    %load/vec4 v0x6000025f4990_0;
+    %load/vec4 v0x600001008990_0;
     %flag_set/vec4 9;
     %flag_get/vec4 9;
     %jmp/0 T_1.4, 9;
-    %load/vec4 v0x6000025f4870_0;
+    %load/vec4 v0x600001008870_0;
     %and;
 T_1.4;
     %flag_set/vec4 8;
     %jmp/0xz  T_1.2, 8;
-    %load/vec4 v0x6000025f4090_0;
-    %assign/vec4 v0x6000025f41b0_0, 0;
+    %load/vec4 v0x600001008120_0;
+    %assign/vec4 v0x600001008240_0, 0;
     %pushi/vec4 0, 0, 16;
-    %load/vec4 v0x6000025f4120_0;
+    %load/vec4 v0x6000010081b0_0;
     %concat/vec4; draw_concat_vec4
-    %assign/vec4 v0x6000025f42d0_0, 0;
+    %assign/vec4 v0x6000010082d0_0, 0;
     %pushi/vec4 1, 0, 1;
-    %assign/vec4 v0x6000025f4510_0, 0;
-    %load/vec4 v0x6000025f47e0_0;
-    %assign/vec4 v0x6000025f4360_0, 0;
-    %load/vec4 v0x6000025f4900_0;
-    %assign/vec4 v0x6000025f4480_0, 0;
+    %assign/vec4 v0x600001008510_0, 0;
+    %load/vec4 v0x6000010087e0_0;
+    %assign/vec4 v0x600001008360_0, 0;
+    %load/vec4 v0x600001008900_0;
+    %assign/vec4 v0x600001008480_0, 0;
     %jmp T_1.3;
 T_1.2 ;
-    %load/vec4 v0x6000025f4510_0;
+    %load/vec4 v0x600001008510_0;
     %flag_set/vec4 9;
     %flag_get/vec4 9;
     %jmp/0 T_1.7, 9;
-    %load/vec4 v0x6000025f43f0_0;
+    %load/vec4 v0x6000010083f0_0;
     %and;
 T_1.7;
     %flag_set/vec4 8;
     %jmp/0xz  T_1.5, 8;
     %pushi/vec4 0, 0, 1;
-    %assign/vec4 v0x6000025f4510_0, 0;
+    %assign/vec4 v0x600001008510_0, 0;
 T_1.5 ;
 T_1.3 ;
 T_1.1 ;
     %jmp T_1;
     .thread T_1;
-    .scope S_0x136f04b10;
+    .scope S_0x121607b50;
 T_2 ;
     %vpi_call/w 4 3 "$dumpfile", "/Users/yabi/Documents/Schooly_Stuff/6.s965/radioHead/sim/sim_build/demodulate.fst" {0 0 0};
-    %vpi_call/w 4 4 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x136f04880 {0 0 0};
+    %vpi_call/w 4 4 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x121605db0 {0 0 0};
     %end;
     .thread T_2;
 # The file index is used to find the file name in the following table.

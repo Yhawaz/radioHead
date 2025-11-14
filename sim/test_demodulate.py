@@ -266,13 +266,16 @@ def demodulate_model(val):
     
     
     if prev_val is None:
+
         demod_int = int(angle_bits) & 0xFFFF
+
     else:
         cur_val =int(angle_bits) & 0xffff
 
         demod_int = min(cur_val-prev_val,prev_val-cur_val)
 
         demod_int = int(demod_int) & 0xffff
+
     sig_out_exp.append(demod_int)
     prev_val = angle_bits  # Store as complex for next comparison
 
