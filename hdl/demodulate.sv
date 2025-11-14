@@ -38,9 +38,6 @@ always_comb begin
     end else if (alpha < 15'b111_1111_1111_1111) begin
         angle_dif = alpha + 15'b111_1111_1111_1111;
     end
-
-    // output logic
-    res = angle_dif; // fix
 end
 
 always_ff @(posedge s00_axis_aclk)begin
@@ -55,7 +52,7 @@ always_ff @(posedge s00_axis_aclk)begin
         if(s00_axis_tvalid && s00_axis_tready)begin
             // grab valid data and compute the difference
             angle_reg <= angle;
-            m00_axis_tdata <= {16'b0,angle_dif[15:0]};// just grabbing the bottom 16 bits
+            m00_axis_tdata <= {16'b0,angle_dif};// just grabbing the bottom 16 bits
             m00_axis_tvalid <= 1'b1;
             m00_axis_tlast <= s00_axis_tlast;
             m00_axis_tstrb <= s00_axis_tstrb;
