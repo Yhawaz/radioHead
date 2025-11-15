@@ -2,7 +2,8 @@
 !meow
 !hdl/
 !sim/*.py
-!vivado/
+!vivado/*.xpr
+!vivado/*.srcs/
 !sdr/
 !daw/
 !*/audio/
