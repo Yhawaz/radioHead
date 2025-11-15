@@ -12,5 +12,6 @@
 !*.py
 !*.ipynb
 !sim/helper_funcs.py
+!*.iq
 *.swp
 *.npy
