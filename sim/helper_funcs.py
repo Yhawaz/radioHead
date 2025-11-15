@@ -107,11 +107,14 @@ fm_deviation_hz = 75e3
 baseband_sample_rate_hz = 44_100
 
 act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64) / 30000 # undoing the scaling
+print("nya")
 n = np.arange(len(act_data))
 mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
 baseband = act_data * mix
 b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
 dm_filtered = scipy.signal.lfilter(b, a, baseband)
+
+
 phase_diff1 = np.angle(np.conj(dm_filtered[:-1]) * dm_filtered[1:])
 
 angle_1 = dm_filtered[1:]-dm_filtered[:-1]
