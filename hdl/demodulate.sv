@@ -21,22 +21,22 @@ module demodulate #(
     output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
 
-logic [15:0] angle, angle_reg,alpha,beta;
-logic [15:0] angle_dif,res;
+logic signed [15:0] angle, angle_reg,alpha,beta;
+logic signed [15:0] angle_dif,res;
+logic signed [15:0] fixed_angle; // goes from -pi to pi
 
 // todo: wire up oliver's cordic to the input
 always_comb begin
-    angle = s00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
     s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
+    angle = s00_axis_tdata[31:16]; // grabbing upper 15 bits as the angle
+    //fixed_angle = angle - 16'b0111_1111_1111_1111; // angle - pi to make values between -pi and pi
 
-    // large derivative resolution logic
-    alpha = angle - angle_reg; // it should automatically wrap around TODO: Check if this is true in test benching
+    angle_dif = fixed_angle - angle_reg;
 
-    // we need to move the angles to a space where there is oscillation so just -pi to pi
-    if(alpha > 15'b111_1111_1111_1111)begin // if diff > pi
-        angle_dif = alpha - 15'b111_1111_1111_1111;
-    end else if (alpha < 15'b111_1111_1111_1111) begin
-        angle_dif = alpha + 15'b111_1111_1111_1111;
+    if(angle_dif > 16'b0111_1111_1111_1111) begin // if angle_dif > pi
+        res = angle_dif - $signed(16'b0111_1111_1111_1111) - $signed(16'b0111_1111_1111_1111) // angle - 2pi
+    end else if (angle_dif < 16'b1000_0000_0000_0000)begin // if angle_dif < -pi
+        res = angle_dif + $signed(16'b0111_1111_1111_1111) + $signed(16'b0111_1111_1111_1111) // angle + 2pi
     end
 end
 
