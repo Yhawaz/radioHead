@@ -310,8 +310,10 @@ async def test_a(dut):
 phase_diff_python=[]
 phase_diff_verilog=[]
 
+last_val= None
 def python_model(val):
-	global prev_val
+	global last_val
+	global phase_diff_python
 	sig_in.append(val)
 
 	imag = val & 0xFFFF
@@ -327,20 +329,20 @@ def python_model(val):
 	iamg=np.int16(imag)
 
 	cur_val = real + 1j*imag 
-	if prev_val is None:
+	if last_val is None:
 		#whatever we fail teh first idga
 		demod_int = val
 	else:
-		demod_int = 0.5*np.angle(prev_val*np.conj(cur_val)) 
+		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
 	
 	final_val = int(degree_2_bit(np.degrees(demod_int)))
-	sig_out_exp.append(final_val)
-	prev_val = cur_val
+	phase_diff_verilog.append(final_val)
+	last_val = cur_val
 
 @cocotb.test()
 async def test_b(dut):
-	global correct_angle_list
-	global dut_angle_output
+	global phase_diff_python
+	global phase_diff_verilog
 
 	inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback = python_model)
 	outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: phase_diff_verilog.append(x))
@@ -359,8 +361,6 @@ async def test_b(dut):
 	carrier_frequency_hz = 5e6
 	fm_deviation_hz = 75e3
 	baseband_sample_rate_hz = 44_100
-
-
 
 	act_data = np.load(audio_data).astype(np.complex64) / 30000 # undoing the scaling
 	n = np.arange(len(act_data))
@@ -384,8 +384,14 @@ async def test_b(dut):
 	for i in range(len(real)):
 		outd.append({'type':'read', "duration":random.randint(4,10)})
 		outd.append({'type':'pause', "duration":random.randint(1,10)})
-	await ClockCycles(dut.s00_axis_aclk, len(real)*1.2)
-		
+	await ClockCycles(dut.s00_axis_aclk, len(real)*2)
+	
+	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+	wavfile.write("verilog.wav", 44_100, audio_verilog)
+
+	audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+	wavfile.write("verilog.wav", 44_100, audio_python)
+
 
 def demodulate_runner():
     """Simulate the demodulate using the Python runner."""
