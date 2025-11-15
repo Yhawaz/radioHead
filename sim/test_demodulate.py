@@ -54,19 +54,6 @@ def complex_bit_to_numpy(complexy):
 	imag,real = unpack_32bits(complexy)
 	return np.complex128(np.real(real/fixed_point) + 1j*imag/fixed_point)
 
-def get_angle_via_dot(packed_compa, packed_compb):
-    complex_a = complex_bit_to_numpy(packed_compa)
-    complex_b = complex_bit_to_numpy(packed_compb)
-
-    vec_a = np.array([complex_a.real, complex_a.imag])
-    vec_b = np.array([complex_b.real, complex_b.imag])
-    
-    
-    cos_theta = np.dot(vec_a,vec_b) / (np.abs(complex_a) * np.abs(complex_b))
-    
-    diff = np.arccos(cos_theta)
-    return diff
-
 class MeowBoard(Scoreboard):
     def compare(self, got, exp, log, strict_type=True):
         # Compare the types
@@ -255,60 +242,36 @@ sig_out_exp = [] #contains list of expected outputs (Growing)
 
 prev_val = None
 def demodulate_model(val):
-    global prev_val
+	global prev_val
     
-    angle_bits, mag_bits = unpack_32bits(val)
-    angle_rad = np.radians(bit_2_degree(angle_bits))
+	angle_bits, mag_bits = unpack_32bits(val)
+	angle_rad = np.radians(bit_2_degree(angle_bits))
     
-    mag = 200 
-    real = mag * np.cos(angle_rad)
-    imag = mag * np.sin(angle_rad)
+	mag = 200 
+	real = mag * np.cos(angle_rad)
+	imag = mag * np.sin(angle_rad)
     
     
-    if prev_val is None:
+	if prev_val is None:
+		demod_int = int(angle_bits) & 0xFFFF
+	else:
+		cur_val =int(angle_bits) & 0xffff
 
-        demod_int = int(angle_bits) & 0xFFFF
+		demod_int = cur_val-prev_val
+		
+		half_pi = (2**15)-1
+		twopi = (2**16)-1
+		
+		demod_int=demod_int + twopi
+		if(demod_int > half_pi):
+			demod_int=demod_int-half_pi 
+		elif (demod_int<half_pi):
+			demod_int=demod_int+half_pi
 
-    else:
-        cur_val =int(angle_bits) & 0xffff
+			demod_int = int(demod_int) & 0xffff
 
-        demod_int = min(cur_val-prev_val,prev_val-cur_val)
-
-        demod_int = int(demod_int) & 0xffff
-
-    sig_out_exp.append(demod_int)
-    prev_val = angle_bits  # Store as complex for next comparison
-
-def demodulate_model2(val):
-    global prev_val
-
-    angle_bits = unpack_32bits(val)[0]
-    angle_rad_cur = np.radians(bit_2_degree(angle_bits))
-
-
-    if prev_val is None:
-        # first case
-        demod_int = int(angle_bits) & 0xFFFF
-    else:
-        # every other case
-        angle_rad_prev = np.radians(bit_2_degree(prev_val))
-
-        cur_x = np.cos(angle_rad_cur)
-        cur_y = np.sin(angle_rad_cur)
-
-        prev_x = np.cos(angle_rad_prev)
-        prev_y = np.sin(angle_rad_prev)
-
-        vec_cur = np.array([cur_x,cur_y])
-        vec_prev = np.array([prev_x,prev_y])
-
-        dot_product = vec_cur @ vec_prev # computing the dot product
-        angle_diff = np.acos(dot_product) # should get me the angle back in radians
-
-        demod_int = int(angle_diff/(2*np.pi)*(2**16-1)) # fixed point angle
-
-    sig_out_exp.append(demod_int)
-    prev_val = angle_bits  # Store as complex for next comparison
+	sig_out_exp.append(int(demod_int))
+	prev_val = angle_bits  # Store as complex for next comparison
 
 @cocotb.test()
 async def test_a(dut):
@@ -337,7 +300,7 @@ async def test_a(dut):
     ind.append(data)
 
 
-    for i in range(100):
+    for i in range(500):
         angle = random.randint(1,(2**16)-1)
         magnitude=random.randint(1,(2**16)-1)
         numby=pack_32bits(angle,magnitude)
@@ -346,7 +309,7 @@ async def test_a(dut):
         pause = {"type":"pause","duration":random.randint(1,6)}
         ind.append(pause)
 
-    for i in range(50):
+    for i in range(60):
         outd.append({'type':'read', "duration":random.randint(1,10)})
         outd.append({'type':'pause', "duration":random.randint(1,10)})
     await ClockCycles(dut.s00_axis_aclk, 5000)

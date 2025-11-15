@@ -90,8 +90,8 @@ print(bit_2_degree(demod_int))
 print(bit_2_degree(3889))
 print(bit_2_degree(36656))
 
-print(bit_2_degree(8482))
-print(bit_2_degree(24287))
+print(bit_2_degree(546))
+print(bit_2_degree(33313))
 
 
 
