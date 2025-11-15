@@ -1,4 +1,8 @@
 import numpy as np
+import scipy
+from scipy.signal import firwin
+from scipy.io import wavfile
+
 #fighting with functions lmao
 
 fixed_point=1
@@ -93,6 +97,26 @@ print(bit_2_degree(36656))
 print(bit_2_degree(546))
 print(bit_2_degree(33313))
 
+print(degree_2_bit(np.degrees(-np.pi)))
 
+#audio testing
+
+adc_sample_rate_hz = 64e6
+carrier_frequency_hz = 5e6
+fm_deviation_hz = 75e3
+baseband_sample_rate_hz = 44_100
+
+act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64) / 30000 # undoing the scaling
+n = np.arange(len(act_data))
+mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
+baseband = act_data * mix
+b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
+dm_filtered = scipy.signal.lfilter(b, a, baseband)
+phase_diff1 = np.angle(np.conj(dm_filtered[:-1]) * dm_filtered[1:])
+
+angle_1 = dm_filtered[1:]-dm_filtered[:-1]
+audio_44k1 = scipy.signal.resample_poly(phase_diff1, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+
+wavfile.write("coorect.wav", 44_100, audio_44k1)
 
 
