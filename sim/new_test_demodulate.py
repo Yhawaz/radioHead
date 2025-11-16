@@ -334,7 +334,7 @@ def python_model(val):
 	else:
 		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
 	
-	final_val = int(degree_2_bit(np.degrees(demod_int)))
+	final_val = int(demod_int)
 	phase_diff_python.append(final_val)
 	last_val = cur_val
 
