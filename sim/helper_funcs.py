@@ -32,6 +32,38 @@ def nunmpy_to32bit(complexy):
 
 #dealing with raw complex numbers
 
+
+phase_diff_python=[]
+phase_diff_verilog=[]
+
+last_val= None
+def python_model(val):
+	global last_val
+	global phase_diff_python
+
+	imag = val & 0xFFFF
+	real = (val >> 16)
+
+	if(imag>(2**15)-1):
+		imag=(2**16)-1-imag
+
+	if(real>(2**15)-1):
+		real=(2**16)-1-real
+
+	real=np.int16(real)
+	iamg=np.int16(imag)
+
+	cur_val = real + 1j*imag 
+	if last_val is None:
+		#whatever we fail teh first idga
+		demod_int = val
+	else:
+		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
+	
+	final_val = int(degree_2_bit(np.degrees(demod_int)))
+	phase_diff_python.append(final_val)
+	last_val = cur_val
+
 def complex_bit_to_numpy(complexy):
 	# assuming high is real, and low is imag
 
@@ -94,8 +126,8 @@ print(bit_2_degree(demod_int))
 print(bit_2_degree(3889))
 print(bit_2_degree(36656))
 
-print(bit_2_degree(546))
-print(bit_2_degree(33313))
+print(bit_2_degree(3936))
+print(bit_2_degree(7870))
 
 print(degree_2_bit(np.degrees(-np.pi)))
 
@@ -106,20 +138,30 @@ carrier_frequency_hz = 5e6
 fm_deviation_hz = 75e3
 baseband_sample_rate_hz = 44_100
 
-act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64) / 30000 # undoing the scaling
+act_data = np.fromfile(r"../sdr/15khz_tone_at_5_mhz.raw").astype(np.complex64) / 30000 # undoing the scaling
 print("nya")
 n = np.arange(len(act_data))
 mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
-baseband = act_data * mix
+big_baseband = act_data * mix
+half_big=int(.25*len(big_baseband))
+baseband=big_baseband[0:half_big]
 b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
 dm_filtered = scipy.signal.lfilter(b, a, baseband)
 
+real=dm_filtered.real.astype(np.int16)
+imag=dm_filtered.imag.astype(np.int16)
+complex_val=np.zeros(len(real),dtype=np.uint32)
+
+for i in range(len(real)):
+	python_model(complex_val[i])
 
 phase_diff1 = np.angle(np.conj(dm_filtered[:-1]) * dm_filtered[1:])
 
-angle_1 = dm_filtered[1:]-dm_filtered[:-1]
 audio_44k1 = scipy.signal.resample_poly(phase_diff1, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
 
 wavfile.write("coorect.wav", 44_100, audio_44k1)
 
+audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+
+wavfile.write("python.wav", 44_100, audio_python)
 

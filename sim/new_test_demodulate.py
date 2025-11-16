@@ -335,7 +335,7 @@ def python_model(val):
 		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
 	
 	final_val = int(degree_2_bit(np.degrees(demod_int)))
-	phase_diff_verilog.append(final_val)
+	phase_diff_python.append(final_val)
 	last_val = cur_val
 
 @cocotb.test()
@@ -393,7 +393,7 @@ async def test_b(dut):
 	wavfile.write("verilog.wav", 44_100, audio_verilog)
 
 	audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
-	wavfile.write("verilog.wav", 44_100, audio_python)
+	wavfile.write("python.wav", 44_100, audio_python)
 
 
 def demodulate_runner():
