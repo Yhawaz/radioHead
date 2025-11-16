@@ -1,7 +1,9 @@
 /*
 !meow
 !hdl/
+!sim/
 !sim/*.py
+*.pyc
 !vivado/*.xpr
 !vivado/*.srcs/
 !sdr/
