@@ -382,9 +382,9 @@ async def test_b(dut):
 		pause = {"type":"pause","duration":random.randint(1,6)}
 		ind.append(pause)
 	for i in range(len(real)):
-		outd.append({'type':'read', "duration":random.randint(4,10)})
+		outd.append({'type':'read', "duration":random.randint(10,20)})
 		outd.append({'type':'pause', "duration":random.randint(1,10)})
-	await ClockCycles(dut.s00_axis_aclk, len(real)*2)
+	await ClockCycles(dut.s00_axis_aclk, len(real)*1.5)
 	
 	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
 	wavfile.write("verilog.wav", 44_100, audio_verilog)
