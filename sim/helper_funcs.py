@@ -5,6 +5,7 @@ from scipy.io import wavfile
 
 #fighting with functions lmao
 
+FIXED_SCALE= 32767.0 
 fixed_point=1
 #angle stuff
 def bit_2_degree(bit_angle):
@@ -50,7 +51,7 @@ def python_model(val):
 		real=real-(2**16)-1
 
 	real=np.int16(real)
-	iamg=np.int16(imag)
+	imag=np.int16(imag)
 
 	cur_val = real + 1j*imag 
 	if last_val is None:
@@ -92,7 +93,8 @@ fm_deviation_hz = 75e3
 baseband_sample_rate_hz = 44_100
 
 #yoink data
-act_data = np.fromfile(r"../sdr/15khz_tone_at_5_mhz.raw",dtype=np.complex64).astype(np.complex64) / 30000 # undoing the scaling
+act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64)
+print(act_data)
 
 
 print("nya")
@@ -108,9 +110,12 @@ b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
 dm_filtered = scipy.signal.lfilter(b, a, baseband)
 
 #turn it into "bit data", just to emulate our cocotb model
+
 real=dm_filtered.real.astype(np.int16)
 imag=dm_filtered.imag.astype(np.int16)
 complex_val=np.zeros(len(real),dtype=np.uint32)
+print(real)
+print(imag)
 
 #now that we have that run it through what our python model is doing
 for i in range(len(real)):
