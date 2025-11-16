@@ -384,10 +384,10 @@ async def test_b(dut):
 		ind.append(data)
 		pause = {"type":"pause","duration":random.randint(1,6)}
 		ind.append(pause)
-	for i in range(len(real)):
+	for i in range(int(len(real)*1.25)):
 		outd.append({'type':'read', "duration":random.randint(10,20)})
 		outd.append({'type':'pause', "duration":random.randint(1,10)})
-	await ClockCycles(dut.s00_axis_aclk, len(real)*1.5)
+	await ClockCycles(dut.s00_axis_aclk, int(len(real)*1.25))
 	
 	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
 	wavfile.write("verilog.wav", 44_100, audio_verilog)
@@ -416,14 +416,14 @@ def demodulate_runner():
         build_args=build_test_args,
         parameters=parameters,
         timescale = ('1ns','1ps'),
-        waves=True
+        waves=False
     )
     run_test_args = []
     runner.test(
         hdl_toplevel=hdl_toplevel,
         test_module=test_file,
         test_args=run_test_args,
-        waves=True
+        waves=False
     )
 
 if __name__ == "__main__":
