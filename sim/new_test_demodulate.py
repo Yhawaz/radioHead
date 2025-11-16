@@ -282,7 +282,6 @@ async def test_a(dut):
     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
 
-    # Create a scoreboard on the stream_out bus
     scoreboard = MeowBoard(dut,fail_immediately=False)
     scoreboard.add_interface(outm, sig_out_exp)
     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
@@ -353,7 +352,7 @@ async def test_b(dut):
 
 	proj_path = Path(__file__).resolve().parent.parent
 
-	audio_data= str(proj_path) + "/sdr/" + "quick_brown_fox_at_5_mhz_plusnoise.npy"
+	audio_data= str(proj_path) + "/sdr/" + "15khz_tone_at_5_mhz.raw"
 
 	#big woke and their hard coded constants
 	
@@ -362,16 +361,20 @@ async def test_b(dut):
 	fm_deviation_hz = 75e3
 	baseband_sample_rate_hz = 44_100
 
-	act_data = np.load(audio_data).astype(np.complex64) / 30000 # undoing the scaling
+	act_data = np.fromfile(audio_data).astype(np.complex64) / 30000 # undoing the scaling
 	n = np.arange(len(act_data))
 	mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
-	baseband = act_data * mix
+
+	#making it mangeable
+	big_baseband = act_data * mix
+	half_big=int(.25*len(big_baseband))
+	baseband=big_baseband[0:half_big]
+
 	b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
 	dm_filtered = scipy.signal.lfilter(b, a, baseband)
 	real=dm_filtered.real.astype(np.int16)
 	imag=dm_filtered.imag.astype(np.int16)
 	complex_val=np.zeros(len(real),dtype=np.uint32)
-	
 
 	for i in range(len(real)):
 		complex_val[i]=(real[i].astype(np.int32) << 16) | (imag[i].astype(np.uint32) & 0xFFFF)
