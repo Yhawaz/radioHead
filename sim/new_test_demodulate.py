@@ -248,14 +248,14 @@ def demodulate_model(val):
 	global prev_val
 	sig_in.append(val)
 
-	imag = val & 0xFFFF
-	real =(val >> 16)
+	real = val & 0xFFFF
+	imag = (val >> 16)
 
 	if(imag>(2**15)-1):
-		imag=(2**16)-1-imag
+		imag=imag-(2**16)-1
 
 	if(real>(2**15)-1):
-		real=(2**16)-1-real
+		real=real-(2**16)-1
 
 	real=np.int16(real)
 	iamg=np.int16(imag)
