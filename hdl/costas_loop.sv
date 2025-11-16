@@ -26,6 +26,8 @@ module costas_loop #(
     // a zero value at the input y of the incoming cordic module
     // TODO: the data coming into this will have already had the frequency shifted down by 57 kHz
     // TODO: Then a LPF will be used to filter for the RDS
+    // TODO: Decimate data also
+    // TODO: also resample the signal to 19 kHz
 
 
 
