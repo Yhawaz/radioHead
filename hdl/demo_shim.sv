@@ -15,6 +15,7 @@ module demo_shim #(
 
     // ports of axi master bus interface m00_axis
     input wire m00_axis_tready,
+	input wire [3:0] sw,
     output logic m00_axis_tvalid,
     output logic m00_axis_tlast,
     output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
@@ -56,7 +57,8 @@ module demo_shim #(
 		.m00_axis_tvalid(m00_axis_tvalid),
 		.m00_axis_tlast(m00_axis_tlast),
 		.m00_axis_tdata(m00_axis_tdata),
-		.m00_axis_tstrb(m00_axis_tstrb)
+		.m00_axis_tstrb(m00_axis_tstrb),
+		.sw(sw)
 	);
 
 endmodule

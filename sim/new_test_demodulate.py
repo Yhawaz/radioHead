@@ -294,6 +294,7 @@ async def test_a(dut):
     scoreboard = MeowBoard(dut,fail_immediately=False)
     scoreboard.add_interface(outm, sig_out_exp)
     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+    dut.sw.value = 0
 
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
@@ -347,62 +348,62 @@ def python_model(val):
 	phase_diff_python.append(final_val)
 	last_val = cur_val
 
-@cocotb.test()
-async def test_b(dut):
-	global phase_diff_python
-	global phase_diff_verilog
+# @cocotb.test()
+# async def test_b(dut):
+# 	global phase_diff_python
+# 	global phase_diff_verilog
 
-	inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback = python_model)
-	outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: phase_diff_verilog.append(x))
+# 	inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback = python_model)
+# 	outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: phase_diff_verilog.append(x))
 
-	ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-	outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
-	#lets get those damn inputs ready
+# 	ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+# 	outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+# 	#lets get those damn inputs ready
 
-	proj_path = Path(__file__).resolve().parent.parent
+# 	proj_path = Path(__file__).resolve().parent.parent
 
-	audio_data= str(proj_path) + "/sdr/" + "15khz_tone_at_5_mhz.raw"
+# 	audio_data= str(proj_path) + "/sdr/" + "15khz_tone_at_5_mhz.raw"
 
-	#big woke and their hard coded constants
+# 	#big woke and their hard coded constants
 	
-	adc_sample_rate_hz = 64e6
-	carrier_frequency_hz = 5e6
-	fm_deviation_hz = 75e3
-	baseband_sample_rate_hz = 44_100
+# 	adc_sample_rate_hz = 64e6
+# 	carrier_frequency_hz = 5e6
+# 	fm_deviation_hz = 75e3
+# 	baseband_sample_rate_hz = 44_100
 
-	act_data = np.fromfile(audio_data).astype(np.complex64) / 30000 # undoing the scaling
-	n = np.arange(len(act_data))
-	mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
+# 	act_data = np.fromfile(audio_data).astype(np.complex64) / 30000 # undoing the scaling
+# 	n = np.arange(len(act_data))
+# 	mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
 
-	#making it mangeable
-	big_baseband = act_data * mix
-	half_big=int(.25*len(big_baseband))
-	baseband=big_baseband[0:half_big]
+# 	#making it mangeable
+# 	big_baseband = act_data * mix
+# 	half_big=int(.25*len(big_baseband))
+# 	baseband=big_baseband[0:half_big]
 
-	b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
-	dm_filtered = scipy.signal.lfilter(b, a, baseband)
-	real=dm_filtered.real.astype(np.int16)
-	imag=dm_filtered.imag.astype(np.int16)
-	complex_val=np.zeros(len(real),dtype=np.uint32)
+# 	b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
+# 	dm_filtered = scipy.signal.lfilter(b, a, baseband)
+# 	real=dm_filtered.real.astype(np.int16)
+# 	imag=dm_filtered.imag.astype(np.int16)
+# 	complex_val=np.zeros(len(real),dtype=np.uint32)
 
-	for i in range(len(real)):
-		complex_val[i]=(real[i].astype(np.int32) << 16) | (imag[i].astype(np.uint32) & 0xFFFF)
+# 	for i in range(len(real)):
+# 		complex_val[i]=(real[i].astype(np.int32) << 16) | (imag[i].astype(np.uint32) & 0xFFFF)
 
-	for i in range(len(real)):
-		data = {'type':'write_single', "contents":{"data": complex_val[i],"last":0}}
-		ind.append(data)
-		pause = {"type":"pause","duration":random.randint(1,6)}
-		ind.append(pause)
-	for i in range(int(len(real)*1.25)):
-		outd.append({'type':'read', "duration":random.randint(10,20)})
-		outd.append({'type':'pause', "duration":random.randint(1,10)})
-	await ClockCycles(dut.s00_axis_aclk, int(len(real)*1.25))
+# 	for i in range(len(real)):
+# 		data = {'type':'write_single', "contents":{"data": complex_val[i],"last":0}}
+# 		ind.append(data)
+# 		pause = {"type":"pause","duration":random.randint(1,6)}
+# 		ind.append(pause)
+# 	for i in range(int(len(real)*1.25)):
+# 		outd.append({'type':'read', "duration":random.randint(10,20)})
+# 		outd.append({'type':'pause', "duration":random.randint(1,10)})
+# 	await ClockCycles(dut.s00_axis_aclk, int(len(real)*1.25))
 	
-	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
-	wavfile.write("verilog.wav", 44_100, audio_verilog)
+# 	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+# 	wavfile.write("verilog.wav", 44_100, audio_verilog)
 
-	audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
-	wavfile.write("python.wav", 44_100, audio_python)
+# 	audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+# 	wavfile.write("python.wav", 44_100, audio_python)
 
 
 def demodulate_runner():

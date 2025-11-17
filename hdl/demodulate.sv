@@ -5,6 +5,7 @@ module demodulate #(
    parameter integer C_M00_AXIS_TDATA_WIDTH = 32
 )(
    // ports of axi slave bus interface s00_axis
+   
    input wire s00_axis_aclk,
    input wire s00_axis_aresetn,
    input wire s00_axis_tlast,
@@ -12,6 +13,7 @@ module demodulate #(
    input wire [C_S00_AXIS_TDATA_WIDTH-1:0] s00_axis_tdata,
    input wire [(C_S00_AXIS_TDATA_WIDTH/8)-1:0] s00_axis_tstrb,
    output logic s00_axis_tready,
+   input wire [3:0] sw, 
 
    // ports of axi master bus interface m00_axis
    input wire m00_axis_tready,
@@ -24,6 +26,7 @@ module demodulate #(
 logic signed [15:0] angle, angle_reg,alpha,beta;
 logic signed [15:0] angle_dif,res;
 logic signed [15:0] fixed_angle; // goes from -pi to pi
+logic [31:0] counter;
 
 // todo: wire up oliver's cordic to the input
 always_comb begin
@@ -32,12 +35,20 @@ always_comb begin
    //fixed_angle = angle - 16'b0111_1111_1111_1111; // angle - pi to make values between -pi and pi
 
    angle_dif = angle - angle_reg;
+    if(sw == 3)begin
+        alpha = counter;
+    end else begin
+        if(angle_dif > $signed(16'b0111_1111_1111_1111)) begin // if angle_dif > pi
+            res = angle_dif - $signed(16'b0111_1111_1111_1111) - $signed(16'b0111_1111_1111_1111); // angle - 2pi
+        end else if (angle_dif < $signed(16'b1000_0000_0000_0000))begin // if angle_dif < -pi
+            res = angle_dif + $signed(16'b0111_1111_1111_1111) + $signed(16'b0111_1111_1111_1111); // angle + 2pi
+        end else begin
+            res = angle_dif;
+        end
+	    alpha = res >>> 1;
 
-   if(angle_dif > 16'b0111_1111_1111_1111) begin // if angle_dif > pi
-       res = angle_dif - $signed(16'b0111_1111_1111_1111) - $signed(16'b0111_1111_1111_1111); // angle - 2pi
-   end else if (angle_dif < 16'b1000_0000_0000_0000)begin // if angle_dif < -pi
-       res = angle_dif + $signed(16'b0111_1111_1111_1111) + $signed(16'b0111_1111_1111_1111); // angle + 2pi
-   end
+    end
+
 end
 
 always_ff @(posedge s00_axis_aclk)begin
@@ -48,11 +59,14 @@ always_ff @(posedge s00_axis_aclk)begin
        m00_axis_tdata <= 0;
        m00_axis_tstrb <= 0;
        m00_axis_tlast <= 0;
+       counter <= 0;
    end else begin
+        m00_axis_tdata <= 32'hffff_ffff;
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference
+           counter <= counter + 1;
            angle_reg <= angle;
-           m00_axis_tdata <= {16'b0,res};// just grabbing the bottom 16 bits
+           m00_axis_tdata <= {16'b0,alpha};// just grabbing the bottom 16 bits
            m00_axis_tvalid <= 1'b1;
            m00_axis_tlast <= s00_axis_tlast;
            m00_axis_tstrb <= s00_axis_tstrb;
