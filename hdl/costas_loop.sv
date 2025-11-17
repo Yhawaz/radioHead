@@ -29,11 +29,6 @@ module costas_loop #(
     // TODO: Decimate data also
     // TODO: also resample the signal to 19 kHz
 
-
-
-
-
-
 endmodule
 
 `default_nettype wire

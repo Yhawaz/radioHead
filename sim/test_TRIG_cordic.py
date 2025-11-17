@@ -154,10 +154,6 @@ sig_out_act = [] #contains list of expected outputs (Growing)
 
 
 
-# def j_math_model(val):
-#     sig_in.append(val)
-#     result = 3*val + 10000
-#     sig_out_exp.append(result)
 def twos_comp(val, bits):
     """compute the 2's complement of int value val"""
     if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255

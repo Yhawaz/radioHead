@@ -32,6 +32,12 @@ test_file = os.path.basename(__file__).replace(".py","")
 
 fixed_point=1
 
+def twos_comp(val, bits):
+    """compute the 2's complement of int value val"""
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    return val   
+
 def bit_2_degree(bit_angle):
     return (360*bit_angle)/(2**16)
 
@@ -55,6 +61,8 @@ def pack_32bits(high,low):
 class MeowBoard(Scoreboard):
     def compare(self, got, exp, log, strict_type=True):
         # Compare the types
+        got=twos_comp(got,16)
+
         correct = abs(got-exp)<50
 
         strict_type=False
