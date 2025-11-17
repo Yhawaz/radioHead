@@ -61,6 +61,7 @@ def pack_32bits(high,low):
 class MeowBoard(Scoreboard):
     def compare(self, got, exp, log, strict_type=True):
         # Compare the types
+        got = got & 0xFFFF
         got=twos_comp(got,16)
 
         correct = abs(got-exp)<50
@@ -266,7 +267,7 @@ def demodulate_model(val):
 		real=real-(2**16)-1
 
 	real=np.int16(real)
-	iamg=np.int16(imag)
+	imag=np.int16(imag)
 
 	cur_val = real + 1j*imag 
 	if prev_val is None:
