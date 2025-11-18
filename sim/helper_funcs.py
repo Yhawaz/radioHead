@@ -7,6 +7,12 @@ from scipy.io import wavfile
 
 FIXED_SCALE= 32767.0 
 fixed_point=1
+
+def twos_comp(val, bits):
+    """compute the 2's complement of int value val"""
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    return val   
 #angle stuff
 def bit_2_degree(bit_angle):
     return (360*bit_angle)/(2**16)
@@ -31,6 +37,17 @@ def pack_32bits(high,low):
 def nunmpy_to32bit(complexy):
 	return pack_32bits(np.real(complexy),np.imag(complexy))
 
+def get_deg(int):
+	real,imag = unpack_32bits(int)
+	a = complex(real,imag)
+	return np.angle(a)*180/np.pi
+
+def get_comp(int):
+	real,imag = unpack_32bits(int)
+	real = twos_comp(real,16)
+	imag = twos_comp(imag,16)
+	a = complex(real,imag)
+	return a
 #dealing with raw complex numbers
 phase_diff_python=[]
 phase_diff_verilog=[]
@@ -92,44 +109,44 @@ carrier_frequency_hz = 5e6
 fm_deviation_hz = 75e3
 baseband_sample_rate_hz = 44_100
 
-#yoink data
-act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64)
-print(act_data)
+# #yoink data
+# act_data = np.load(r"../sdr/quick_brown_fox_at_5_mhz_plusnoise.npy").astype(np.complex64)
+# print(act_data)
 
 
-print("nya")
-n = np.arange(len(act_data))
+# print("nya")
+# n = np.arange(len(act_data))
 
-#mix it mix it mix it
-mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
-#only wokr with 1/4 so i dont wait a fucking hour
-big_baseband = act_data * mix
-half_big=int(.25*len(big_baseband))
-baseband=big_baseband[0:half_big]
-b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
-dm_filtered = scipy.signal.lfilter(b, a, baseband)
+# #mix it mix it mix it
+# mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
+# #only wokr with 1/4 so i dont wait a fucking hour
+# big_baseband = act_data * mix
+# half_big=int(.25*len(big_baseband))
+# baseband=big_baseband[0:half_big]
+# b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
+# dm_filtered = scipy.signal.lfilter(b, a, baseband)
 
-#turn it into "bit data", just to emulate our cocotb model
+# #turn it into "bit data", just to emulate our cocotb model
 
-real=dm_filtered.real.astype(np.int16)
-imag=dm_filtered.imag.astype(np.int16)
-complex_val=np.zeros(len(real),dtype=np.uint32)
-print(real)
-print(imag)
+# real=dm_filtered.real.astype(np.int16)
+# imag=dm_filtered.imag.astype(np.int16)
+# complex_val=np.zeros(len(real),dtype=np.uint32)
+# print(real)
+# print(imag)
 
-#now that we have that run it through what our python model is doing
-for i in range(len(real)):
-	python_model((imag[i].astype(np.int32) << 16) | (real[i].astype(np.uint32) & 0xFFFF))
+# #now that we have that run it through what our python model is doing
+# for i in range(len(real)):
+# 	python_model((imag[i].astype(np.int32) << 16) | (real[i].astype(np.uint32) & 0xFFFF))
 
 
-#make da audio
-audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+# #make da audio
+# audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
 
-wavfile.write("python.wav", 44_100, audio_python)
-#heres our right answer
-phase_diff1 = np.angle(np.conj(dm_filtered[:-1]) * dm_filtered[1:])
+# wavfile.write("python.wav", 44_100, audio_python)
+# #heres our right answer
+# phase_diff1 = np.angle(np.conj(dm_filtered[:-1]) * dm_filtered[1:])
 
-audio_44k1 = scipy.signal.resample_poly(phase_diff1, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
+# audio_44k1 = scipy.signal.resample_poly(phase_diff1, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
 
-wavfile.write("coorect.wav", 44_100, audio_44k1)
+# wavfile.write("coorect.wav", 44_100, audio_44k1)
 

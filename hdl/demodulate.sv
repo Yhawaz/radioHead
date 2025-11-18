@@ -24,7 +24,7 @@ module demodulate #(
 );
 
 logic signed [15:0] angle, angle_reg,alpha,beta;
-logic signed [15:0] angle_dif,res;
+logic signed [15:0]  angle_dif,res;
 logic signed [15:0] fixed_angle; // goes from -pi to pi
 logic [31:0] counter;
 
@@ -39,14 +39,22 @@ always_comb begin
         alpha = counter;
     end else begin
         if(angle_dif > $signed(16'b0111_1111_1111_1111)) begin // if angle_dif > pi
-            res = angle_dif - $signed(16'b0111_1111_1111_1111) - $signed(16'b0111_1111_1111_1111); // angle - 2pi
+            res = angle_dif + $signed(16'b1000_0000_0000_0000) + $signed(16'b1000_0000_0000_0000); // angle - 2pi
         end else if (angle_dif < $signed(16'b1000_0000_0000_0000))begin // if angle_dif < -pi
             res = angle_dif + $signed(16'b0111_1111_1111_1111) + $signed(16'b0111_1111_1111_1111); // angle + 2pi
         end else begin
             res = angle_dif;
         end
-	    alpha = res >>> 1;
+        // if(angle_dif > 16'b0111_1111_1111_1111)begin
+        //     res = angle_dif - 16'b1111_1111_1111_1111;
+        // end else if (angle_dif < 16'b0111_1111_1111_1111) begin
+        //     res = angle_dif + 16'b1111_1111_1111_1111;
+        // end else begin
+        //     res = angle_dif;
+        // end
 
+	    alpha = res >> 1;
+        // alpha = 0;
     end
 
 end
@@ -61,12 +69,11 @@ always_ff @(posedge s00_axis_aclk)begin
        m00_axis_tlast <= 0;
        counter <= 0;
    end else begin
-        m00_axis_tdata <= 32'hffff_ffff;
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference
            counter <= counter + 1;
            angle_reg <= angle;
-           m00_axis_tdata <= {16'b0,alpha};// just grabbing the bottom 16 bits
+           m00_axis_tdata <= alpha;// just grabbing the bottom 16 bits
            m00_axis_tvalid <= 1'b1;
            m00_axis_tlast <= s00_axis_tlast;
            m00_axis_tstrb <= s00_axis_tstrb;

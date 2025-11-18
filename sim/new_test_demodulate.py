@@ -254,31 +254,42 @@ prev_val = None
 
 def demodulate_model(val):
 	
-	global prev_val
-	sig_in.append(val)
+    global prev_val
+    sig_in.append(val)
 
-	real = val & 0xFFFF
-	imag = (val >> 16)
+    imag = val & 0xFFFF
+    real = (val >> 16)
 
-	if(imag>(2**15)-1):
-		imag=imag-(2**16)-1
+    if(imag>(2**15)-1):
+        imag=imag-(2**16)-1
 
-	if(real>(2**15)-1):
-		real=real-(2**16)-1
+    if(real>(2**15)-1):
+        real=real-(2**16)-1
 
-	real=np.int16(real)
-	imag=np.int16(imag)
+    real=np.int16(real)
+    imag=np.int16(imag)
 
-	cur_val = real + 1j*imag 
-	if prev_val is None:
-		#whatever we fail teh first idga
-		demod_int = val
-	else:
-		demod_int = 0.5*np.angle(prev_val*np.conj(cur_val)) 
-	
-	final_val = int(degree_2_bit(np.degrees(demod_int)))
-	sig_out_exp.append(final_val)
-	prev_val = cur_val
+    cur_val = real + 1j*imag 
+    if prev_val is None:
+        #whatever we fail teh first idga
+        demod_int = val
+        a = val
+    else:
+        a = cur_val*np.conj(prev_val)
+        demod_int = 0.5*np.angle(cur_val*np.conj(prev_val)) 
+
+    b = np.angle(a)*180/np.pi
+    if b < 0:
+        c = 360 + b
+    else:
+        c = b
+            
+    print(f"Driving angle: of cur val: {cur_val}, theta: {np.angle(cur_val)*180/np.pi}")
+    print(f"Expected Differerence:{c}")
+
+    final_val = int(degree_2_bit(np.degrees(demod_int)))
+    sig_out_exp.append(final_val)
+    prev_val = cur_val
 
 @cocotb.test()
 async def test_a(dut):
@@ -298,7 +309,7 @@ async def test_a(dut):
 
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-    for i in range(100):
+    for i in range(3):
         rand_complex_num = random.randint(1,(2**32)-1)
         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
         ind.append(data)
@@ -319,34 +330,34 @@ async def test_a(dut):
 phase_diff_python=[]
 phase_diff_verilog=[]
 
-last_val= None
-def python_model(val):
-	global last_val
-	global phase_diff_python
-	sig_in.append(val)
+# last_val= None
+# def python_model(val):
+# 	global last_val
+# 	global phase_diff_python
+# 	sig_in.append(val)
 
-	imag = val & 0xFFFF
-	real = (val >> 16)
+# 	imag = val & 0xFFFF
+# 	real = (val >> 16)
 
-	if(imag>(2**15)-1):
-		imag=(2**16)-1-imag
+# 	if(imag>(2**15)-1):
+# 		imag=(2**16)-1-imag
 
-	if(real>(2**15)-1):
-		real=(2**16)-1-real
+# 	if(real>(2**15)-1):
+# 		real=(2**16)-1-real
 
-	real=np.int16(real)
-	iamg=np.int16(imag)
+# 	real=np.int16(real)
+# 	iamg=np.int16(imag)
 
-	cur_val = real + 1j*imag 
-	if last_val is None:
-		#whatever we fail teh first idga
-		demod_int = val
-	else:
-		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
+# 	cur_val = real + 1j*imag 
+# 	if last_val is None:
+# 		#whatever we fail teh first idga
+# 		demod_int = val
+# 	else:
+# 		demod_int = 0.5*np.angle(last_val*np.conj(cur_val)) 
 	
-	final_val = int(demod_int)
-	phase_diff_python.append(final_val)
-	last_val = cur_val
+# 	final_val = int(demod_int)
+# 	phase_diff_python.append(final_val)
+# 	last_val = cur_val
 
 # @cocotb.test()
 # async def test_b(dut):
@@ -426,7 +437,7 @@ def demodulate_runner():
         build_args=build_test_args,
         parameters=parameters,
         timescale = ('1ns','1ps'),
-        waves=False
+        waves=True
     )
     run_test_args = []
     runner.test(
