@@ -23,9 +23,9 @@ module demodulate #(
    output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
 
-logic signed [15:0] angle, angle_reg,alpha,beta;
-logic signed [15:0]  angle_dif,res;
-logic signed [15:0] fixed_angle; // goes from -pi to pi
+logic [15:0] angle, angle_reg,alpha,beta;
+logic [15:0]  angle_dif,res;
+logic [15:0] fixed_angle; // goes from -pi to pi
 logic [31:0] counter;
 
 // todo: wire up oliver's cordic to the input
@@ -38,22 +38,10 @@ always_comb begin
     if(sw == 3)begin
         alpha = counter;
     end else begin
-        if(angle_dif > $signed(16'b0111_1111_1111_1111)) begin // if angle_dif > pi
-            res = angle_dif + $signed(16'b1000_0000_0000_0000) + $signed(16'b1000_0000_0000_0000); // angle - 2pi
-        end else if (angle_dif < $signed(16'b1000_0000_0000_0000))begin // if angle_dif < -pi
-            res = angle_dif + $signed(16'b0111_1111_1111_1111) + $signed(16'b0111_1111_1111_1111); // angle + 2pi
-        end else begin
-            res = angle_dif;
-        end
-        // if(angle_dif > 16'b0111_1111_1111_1111)begin
-        //     res = angle_dif - 16'b1111_1111_1111_1111;
-        // end else if (angle_dif < 16'b0111_1111_1111_1111) begin
-        //     res = angle_dif + 16'b1111_1111_1111_1111;
-        // end else begin
-        //     res = angle_dif;
-        // end
+        res = angle_dif;
+        
 
-	    alpha = res >> 1;
+	    alpha = res >>> 1;
         // alpha = 0;
     end
 

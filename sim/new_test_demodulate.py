@@ -42,7 +42,7 @@ def bit_2_degree(bit_angle):
     return (360*bit_angle)/(2**16)
 
 def degree_2_bit(real_angle):
-        return (real_angle/360)*(2**16)
+        return (real_angle/360)*(2**16-1)
 
 #this was named wrong, this just unapcks a high low
 def unpack_32bits(packed):
@@ -260,11 +260,8 @@ def demodulate_model(val):
     real = val & 0xFFFF
     imag = (val >> 16)
 
-    if(imag>(2**15)-1):
-        imag=imag-(2**16)-1
-
-    if(real>(2**15)-1):
-        real=real-(2**16)-1
+    real = twos_comp(real,16)
+    imag = twos_comp(imag,16)
 
     real=np.int16(real)
     imag=np.int16(imag)
@@ -308,9 +305,10 @@ async def test_a(dut):
     dut.sw.value = 0
 
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
-
+    vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
     for i in range(6):
-        rand_complex_num = random.randint(1,(2**32)-1)
+        #rand_complex_num = random.randint(1,(2**32)-1)
+        rand_complex_num = vals[i]
         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
         ind.append(data)
         pause = {"type":"pause","duration":random.randint(1,6)}
