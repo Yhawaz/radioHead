@@ -257,8 +257,8 @@ def demodulate_model(val):
     global prev_val
     sig_in.append(val)
 
-    imag = val & 0xFFFF
-    real = (val >> 16)
+    real = val & 0xFFFF
+    imag = (val >> 16)
 
     if(imag>(2**15)-1):
         imag=imag-(2**16)-1
@@ -309,7 +309,7 @@ async def test_a(dut):
 
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-    for i in range(3):
+    for i in range(6):
         rand_complex_num = random.randint(1,(2**32)-1)
         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
         ind.append(data)
