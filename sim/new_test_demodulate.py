@@ -442,7 +442,7 @@ def demodulate_runner():
         hdl_toplevel=hdl_toplevel,
         test_module=test_file,
         test_args=run_test_args,
-        waves=False
+        waves=True
     )
 
 if __name__ == "__main__":
