@@ -83,9 +83,7 @@ always_ff @(posedge s00_axis_aclk)begin
            m00_axis_tlast <= s00_axis_tlast;
            m00_axis_tstrb <= s00_axis_tstrb;
        end else begin
-           if(m00_axis_tvalid && m00_axis_tready)begin // check if data is grabbed
-               m00_axis_tvalid <= 1'b0;
-           end
+           m00_axis_tvalid <= 1'b0;
        end
    end
 end
