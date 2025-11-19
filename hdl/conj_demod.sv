@@ -22,7 +22,8 @@ module conj_demod #(
    output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
 
-logic [31:0] val_reg
+logic [31:0] val_reg;
+logic [31:0] alpha;
 
 // todo: wire up oliver's cordic to the input
 
@@ -69,11 +70,10 @@ always_ff @(posedge s00_axis_aclk)begin
    if(!s00_axis_aresetn)begin
        // don't do anything
        m00_axis_tvalid <= 0;
-       angle_reg <= 0;
+       val_reg <= 0;
        m00_axis_tdata <= 0;
        m00_axis_tstrb <= 0;
        m00_axis_tlast <= 0;
-       counter <= 0;
    end else begin
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference

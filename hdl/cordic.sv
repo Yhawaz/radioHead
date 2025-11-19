@@ -99,7 +99,7 @@ module cordic #(
     assign x_i_0 = pre_x_i_0<0?-pre_x_i_0:pre_x_i_0;
     assign y_i_0 = pre_x_i_0<0?-pre_y_i_0:pre_y_i_0;
     assign z_i_0 = 0;
-    assign flips_i_0 = (pre_y_i_0 > 0) ? (pre_x_i_0<0) : (pre_x_i_0<=0);
+    assign flips_i_0 = (pre_x_i_0<=0 && pre_y_i_0<=0);
 
     always_ff @(posedge s00_axis_aclk) begin
         if (m00_axis_tready) begin
