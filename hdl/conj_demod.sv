@@ -77,7 +77,6 @@ always_ff @(posedge s00_axis_aclk)begin
    end else begin
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference
-           counter <= counter + 1;
            val_reg <= s00_axis_tdata;
            m00_axis_tdata <= alpha;// just grabbing the bottom 16 bits
            m00_axis_tvalid <= 1'b1;

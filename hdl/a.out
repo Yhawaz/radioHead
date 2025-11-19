@@ -1,0 +1,180 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
+S_0x14ae04580 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x14ae04740 .scope module, "conj_demod" "conj_demod" 3 3;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "s00_axis_aclk";
+    .port_info 1 /INPUT 1 "s00_axis_aresetn";
+    .port_info 2 /INPUT 1 "s00_axis_tlast";
+    .port_info 3 /INPUT 1 "s00_axis_tvalid";
+    .port_info 4 /INPUT 32 "s00_axis_tdata";
+    .port_info 5 /INPUT 4 "s00_axis_tstrb";
+    .port_info 6 /OUTPUT 1 "s00_axis_tready";
+    .port_info 7 /INPUT 1 "m00_axis_tready";
+    .port_info 8 /OUTPUT 1 "m00_axis_tvalid";
+    .port_info 9 /OUTPUT 1 "m00_axis_tlast";
+    .port_info 10 /OUTPUT 32 "m00_axis_tdata";
+    .port_info 11 /OUTPUT 4 "m00_axis_tstrb";
+P_0x600000478080 .param/l "C_M00_AXIS_TDATA_WIDTH" 0 3 5, +C4<00000000000000000000000000100000>;
+P_0x6000004780c0 .param/l "C_S00_AXIS_TDATA_WIDTH" 0 3 4, +C4<00000000000000000000000000100000>;
+v0x60000187c000_0 .var/s "ac", 15 0;
+v0x60000187c090_0 .var/s "ad", 15 0;
+v0x60000187c120_0 .var "alpha", 31 0;
+v0x60000187c1b0_0 .var/s "bc", 15 0;
+v0x60000187c240_0 .var/s "bd", 15 0;
+v0x60000187c2d0_0 .var/s "cur_imag", 15 0;
+v0x60000187c360_0 .var/s "cur_real", 15 0;
+v0x60000187c3f0_0 .var/s "final_imag", 15 0;
+v0x60000187c480_0 .var/s "final_real", 15 0;
+v0x60000187c510_0 .var "m00_axis_tdata", 31 0;
+v0x60000187c5a0_0 .var "m00_axis_tlast", 0 0;
+o0x150018220 .functor BUFZ 1, C4<z>; HiZ drive
+v0x60000187c630_0 .net "m00_axis_tready", 0 0, o0x150018220;  0 drivers
+v0x60000187c6c0_0 .var "m00_axis_tstrb", 3 0;
+v0x60000187c750_0 .var "m00_axis_tvalid", 0 0;
+v0x60000187c7e0_0 .var/s "prev_imag", 15 0;
+v0x60000187c870_0 .var/s "prev_real", 15 0;
+o0x150018310 .functor BUFZ 1, C4<z>; HiZ drive
+v0x60000187c900_0 .net "s00_axis_aclk", 0 0, o0x150018310;  0 drivers
+o0x150018340 .functor BUFZ 1, C4<z>; HiZ drive
+v0x60000187c990_0 .net "s00_axis_aresetn", 0 0, o0x150018340;  0 drivers
+o0x150018370 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v0x60000187ca20_0 .net "s00_axis_tdata", 31 0, o0x150018370;  0 drivers
+o0x1500183a0 .functor BUFZ 1, C4<z>; HiZ drive
+v0x60000187cab0_0 .net "s00_axis_tlast", 0 0, o0x1500183a0;  0 drivers
+v0x60000187cb40_0 .var "s00_axis_tready", 0 0;
+o0x150018400 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v0x60000187cbd0_0 .net "s00_axis_tstrb", 3 0, o0x150018400;  0 drivers
+o0x150018430 .functor BUFZ 1, C4<z>; HiZ drive
+v0x60000187cc60_0 .net "s00_axis_tvalid", 0 0, o0x150018430;  0 drivers
+v0x60000187ccf0_0 .var "val_reg", 31 0;
+E_0x600003f78340 .event posedge, v0x60000187c900_0;
+E_0x600003f78380/0 .event anyedge, v0x60000187c630_0, v0x60000187c750_0, v0x60000187ca20_0, v0x60000187ca20_0;
+E_0x600003f78380/1 .event anyedge, v0x60000187ccf0_0, v0x60000187ccf0_0;
+E_0x600003f78380 .event/or E_0x600003f78380/0, E_0x600003f78380/1;
+    .scope S_0x14ae04740;
+T_0 ;
+Ewait_0 .event/or E_0x600003f78380, E_0x0;
+    %wait Ewait_0;
+    %load/vec4 v0x60000187c630_0;
+    %flag_set/vec4 8;
+    %flag_get/vec4 8;
+    %jmp/1 T_0.0, 8;
+    %load/vec4 v0x60000187c750_0;
+    %inv;
+    %or;
+T_0.0;
+    %store/vec4 v0x60000187cb40_0, 0, 1;
+    %load/vec4 v0x60000187ca20_0;
+    %parti/s 16, 0, 2;
+    %store/vec4 v0x60000187c360_0, 0, 16;
+    %load/vec4 v0x60000187ca20_0;
+    %parti/s 16, 16, 6;
+    %store/vec4 v0x60000187c2d0_0, 0, 16;
+    %load/vec4 v0x60000187ccf0_0;
+    %parti/s 16, 0, 2;
+    %store/vec4 v0x60000187c870_0, 0, 16;
+    %load/vec4 v0x60000187ccf0_0;
+    %parti/s 16, 16, 6;
+    %store/vec4 v0x60000187c7e0_0, 0, 16;
+    %load/vec4 v0x60000187c360_0;
+    %load/vec4 v0x60000187c870_0;
+    %mul;
+    %store/vec4 v0x60000187c000_0, 0, 16;
+    %load/vec4 v0x60000187c2d0_0;
+    %load/vec4 v0x60000187c7e0_0;
+    %mul;
+    %store/vec4 v0x60000187c240_0, 0, 16;
+    %load/vec4 v0x60000187c2d0_0;
+    %load/vec4 v0x60000187c870_0;
+    %mul;
+    %store/vec4 v0x60000187c1b0_0, 0, 16;
+    %load/vec4 v0x60000187c360_0;
+    %load/vec4 v0x60000187c7e0_0;
+    %mul;
+    %store/vec4 v0x60000187c090_0, 0, 16;
+    %load/vec4 v0x60000187c000_0;
+    %load/vec4 v0x60000187c240_0;
+    %add;
+    %store/vec4 v0x60000187c480_0, 0, 16;
+    %load/vec4 v0x60000187c1b0_0;
+    %load/vec4 v0x60000187c090_0;
+    %sub;
+    %store/vec4 v0x60000187c3f0_0, 0, 16;
+    %load/vec4 v0x60000187c3f0_0;
+    %load/vec4 v0x60000187c480_0;
+    %concat/vec4; draw_concat_vec4
+    %store/vec4 v0x60000187c120_0, 0, 32;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0x14ae04740;
+T_1 ;
+    %wait E_0x600003f78340;
+    %load/vec4 v0x60000187c990_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v0x60000187c750_0, 0;
+    %pushi/vec4 0, 0, 32;
+    %assign/vec4 v0x60000187ccf0_0, 0;
+    %pushi/vec4 0, 0, 32;
+    %assign/vec4 v0x60000187c510_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v0x60000187c6c0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v0x60000187c5a0_0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v0x60000187cc60_0;
+    %flag_set/vec4 9;
+    %flag_get/vec4 9;
+    %jmp/0 T_1.4, 9;
+    %load/vec4 v0x60000187cb40_0;
+    %and;
+T_1.4;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.2, 8;
+    %load/vec4 v0x60000187ca20_0;
+    %assign/vec4 v0x60000187ccf0_0, 0;
+    %load/vec4 v0x60000187c120_0;
+    %assign/vec4 v0x60000187c510_0, 0;
+    %pushi/vec4 1, 0, 1;
+    %assign/vec4 v0x60000187c750_0, 0;
+    %load/vec4 v0x60000187cab0_0;
+    %assign/vec4 v0x60000187c5a0_0, 0;
+    %load/vec4 v0x60000187cbd0_0;
+    %assign/vec4 v0x60000187c6c0_0, 0;
+    %jmp T_1.3;
+T_1.2 ;
+    %load/vec4 v0x60000187c750_0;
+    %flag_set/vec4 9;
+    %flag_get/vec4 9;
+    %jmp/0 T_1.7, 9;
+    %load/vec4 v0x60000187c630_0;
+    %and;
+T_1.7;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.5, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v0x60000187c750_0, 0;
+T_1.5 ;
+T_1.3 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    "conj_demod.sv";
