@@ -15,10 +15,10 @@ def twos_comp(val, bits):
     return val   
 #angle stuff
 def bit_2_degree(bit_angle):
-    return (360*bit_angle)/(2**16)
+    return (360*bit_angle)/(2**16-1)
 
 def degree_2_bit(real_angle):
-    return (real_angle/360)*(2**16)
+    return (real_angle/360)*(2**16-1)
 
 #this was named wrong, this just unapcks a high low
 def unpack_32bits(packed):

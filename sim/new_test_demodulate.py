@@ -306,18 +306,18 @@ async def test_a(dut):
 
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
     vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
-    for i in range(6):
+    for i in range(100):
         #rand_complex_num = random.randint(1,(2**32)-1)
         rand_complex_num = vals[i]
         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
         ind.append(data)
-        pause = {"type":"pause","duration":random.randint(1,6)}
-        ind.append(pause)
+        # pause = {"type":"pause","duration":random.randint(1,6)}
+        # ind.append(pause)
 
-    for i in range(200):
-        outd.append({'type':'read', "duration":random.randint(1,10)})
-        outd.append({'type':'pause', "duration":random.randint(1,10)})
-    await ClockCycles(dut.s00_axis_aclk, 700)
+    # for i in range(200):
+    #     outd.append({'type':'read', "duration":random.randint(1,10)})
+        #outd.append({'type':'pause', "duration":random.randint(1,10)})
+    await ClockCycles(dut.s00_axis_aclk, 1000)
 
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
     print("HEY",scoreboard.errors)

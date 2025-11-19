@@ -38,10 +38,13 @@ always_comb begin
     if(sw == 3)begin
         alpha = counter;
     end else begin
-        res = angle_dif;
-        
+        if(angle_reg > angle)begin
+            res = 16'b1111_1111_1111_1111 - angle_dif;
+        end else begin
+            res = angle_dif;
+        end        
 
-	    alpha = res >>> 1;
+	    alpha = res >> 1;
         // alpha = 0;
     end
 
