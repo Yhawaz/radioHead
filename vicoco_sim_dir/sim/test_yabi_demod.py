@@ -91,20 +91,20 @@ class TrigBoard(Scoreboard):
             strgot, strexp = str(got), str(exp)
 
             log.error("Received transaction differed from expected output")
-            if not strict_type:
+            #if not strict_type:
                 #log.info("Expected:\n" + hexdump(strexp, dump=True))
-            else:
-                log.info("Expected:\n" + repr(exp))
+            #else:
+            log.info("Expected:\n" + repr(exp))
             if not isinstance(exp, str):
                 try:
                     for word in exp:
                         log.info(str(word))
                 except Exception:
                     pass
-            if not strict_type:
+            #if not strict_type:
                 #log.info("Received:\n" + hexdump(strgot, dump=True))
-            else:
-                log.info("Received:\n" + repr(got))
+            #else:
+            log.info("Received:\n" + repr(got))
             if not isinstance(got, str):
                 try:
                     for word in got:
