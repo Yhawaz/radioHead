@@ -376,7 +376,10 @@ def verilog_modelr(val):
 
     real = twos_comp(real,16)
     imag = twos_comp(imag,16)
-    verilog_model.append(real)
+
+    complex_num = complex(real,imag)
+
+    verilog_model.append(np.angle(complex_num))
 
 @cocotb.test()
 async def test_b(dut):
@@ -414,7 +417,7 @@ async def test_b(dut):
     real_prod = np.int16(c_data.real)
     #plt.plot(real_prod[:100])
 
-    samples=300
+    samples=500
 
     for i in range(samples):
         complex_num = c_data[i]
@@ -432,13 +435,12 @@ async def test_b(dut):
     await ClockCycles(dut.s00_axis_aclk, samples)
 
     assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
-    plt.plot(python_model[:200],"o-")
+    #plt.plot(python_model[:samples],"o-",color="red")
+    plt.plot(verilog_model[:samples],"o-",color="purple")
+    plt.show()
     #plt.plot(verilog_model)
     #plt.plot(real_plot[:100],"o-",color="red")
     #plt.plot(imag_plot[:100],"o-",color="blue")
-
-    plt.show()
-
 
 def demodulate_runner():
     """Simulate the demodulate using the Python runner."""
