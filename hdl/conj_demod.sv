@@ -27,15 +27,11 @@ logic [31:0] alpha;
 
 // todo: wire up oliver's cordic to the input
 
-logic signed [15:0] ac;
-logic signed [15:0] bd;
+logic signed [31:0] ac;
+logic signed [31:0] bd;
 
-logic signed [15:0] bc;
-logic signed [15:0] ad;
-
-
-logic signed [15:0] imag_product_b;
-logic signed [15:0] imag_sum;
+logic signed [31:0] bc;
+logic signed [31:0] ad;
 
 logic signed [15:0] cur_real; //a
 logic signed [15:0] prev_real; //c
@@ -43,8 +39,8 @@ logic signed [15:0] prev_real; //c
 logic signed [15:0] cur_imag; //b
 logic signed [15:0] prev_imag; //d
 
-logic signed [15:0] final_real;
-logic signed [15:0] final_imag;
+logic signed [31:0] final_real;
+logic signed [31:0] final_imag;
 
 always_comb begin
 	s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
@@ -63,7 +59,7 @@ always_comb begin
 
 	final_real  = ac + bd;
 	final_imag  = bc - ad; 
-	alpha = {final_imag,final_real};
+	alpha = {final_imag[31:16],final_real[31:16]};
 end
 
 always_ff @(posedge s00_axis_aclk)begin

@@ -1,4 +1,5 @@
 import cocotb
+import struct
 import os
 import random
 import sys
@@ -10,6 +11,7 @@ from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout, NextTimeStep
 from cocotb.utils import get_sim_time as gst
 from cocotb.runner import get_runner
+#from vicoco.vivado_runner import get_runner
 from cocotb.handle import SimHandleBase
 
 from scapy.utils import hexdump, hexdiff
@@ -25,6 +27,7 @@ import numpy as np
 from cocotb_coverage.coverage import CoverCross, CoverPoint, coverage_db, coverage_section
 import constraint
 test_file = os.path.basename(__file__).replace(".py","")
+import matplotlib.pyplot as plt
 
 #sometimes letting go is part of getting better
 
@@ -49,14 +52,14 @@ def unpack_32bits(packed):
     high = (packed >> 16) & 0xFFFF
     low = packed & 0xFFFF
 
-	#im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
+    #im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
     high = np.array([high], dtype=np.uint16).view(np.int16)[0]
     low = np.array([low], dtype=np.uint16).view(np.int16)[0]
 
     return high, low
 
 def pack_32bits(high,low):
-	return ((int(high*fixed_point) & 0xFFFF) << 16) | (int(low*fixed_point) & 0xFFFF)
+    return ((int(high*fixed_point) & 0xFFFF) << 16) | (int(low*fixed_point) & 0xFFFF)
 
 class TrigBoard(Scoreboard):
     def compare(self, got, exp, log, strict_type=True):
@@ -112,7 +115,7 @@ class TrigBoard(Scoreboard):
                     pass
             log.warning("Difference:")
             # NOTE: scapy.utils.hexdiff doesn't return a string but prints!
-            hexdiff(strexp, strgot)
+            #hexdiff(strexp, strgot)
             if self._imm:
                 assert False, "Received transaction differed from expected transaction"
         else:
@@ -250,10 +253,11 @@ sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
 prev_I = None
+prev_Q = None
 
 
 def demodulate_model(val):
-	
+    
     global prev_I,prev_Q
     sig_in.append(val)
     # takes in 32 bit complex I and Q value with I "real" bits on the bottom and Q on the top
@@ -318,68 +322,101 @@ async def test_a(dut):
     print("HEY",scoreboard.errors)
     assert scoreboard.errors == 1
 
-# @cocotb.test()
-# async def test_b(dut):
-# 	global phase_diff_python
-# 	global phase_diff_verilog
 
-# 	inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback = python_model)
-# 	outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: phase_diff_verilog.append(x))
+python_model=[]
+verilog_model=[]
 
-# 	ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-# 	outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
-# 	#lets get those damn inputs ready
+prevy_I = None
+prevy_Q = None
 
-# 	proj_path = Path(__file__).resolve().parent.parent
 
-# 	audio_data= str(proj_path) + "/sdr/" + "15khz_tone_at_5_mhz.raw"
+def python_modelr(val):
 
-# 	#big woke and their hard coded constants
-	
-# 	adc_sample_rate_hz = 64e6
-# 	carrier_frequency_hz = 5e6
-# 	fm_deviation_hz = 75e3
-# 	baseband_sample_rate_hz = 44_100
+    global prevy_I,prevy_Q
+    sig_in.append(val)
+    # takes in 32 bit complex I and Q value with I "real" bits on the bottom and Q on the top
 
-# 	act_data = np.fromfile(audio_data).astype(np.complex64) / 30000 # undoing the scaling
-# 	n = np.arange(len(act_data))
-# 	mix = np.exp(-1j * 2 * np.pi * carrier_frequency_hz * n / adc_sample_rate_hz)
+    real = (val & 0xFFFF) # I
+    imag = (val >> 16) # Q
 
-# 	#making it mangeable
-# 	big_baseband = act_data * mix
-# 	half_big=int(.25*len(big_baseband))
-# 	baseband=big_baseband[0:half_big]
+    real = twos_comp(real,16)
+    imag = twos_comp(imag,16)
+    #real,imag = struct.unpack("hh",val)
 
-# 	b, a = scipy.signal.butter(3, 3e5 / (0.5 * adc_sample_rate_hz))
-# 	dm_filtered = scipy.signal.lfilter(b, a, baseband)
-# 	real=dm_filtered.real.astype(np.int16)
-# 	imag=dm_filtered.imag.astype(np.int16)
-# 	complex_val=np.zeros(len(real),dtype=np.uint32)
+    print(f"Driving complex value: {real} + {imag} j")
 
-# 	for i in range(len(real)):
-# 		complex_val[i]=(real[i].astype(np.int32) << 16) | (imag[i].astype(np.uint32) & 0xFFFF)
+    if prevy_I is None:
+        res = val
+    else:
 
-# 	for i in range(len(real)):
-# 		data = {'type':'write_single', "contents":{"data": complex_val[i],"last":0}}
-# 		ind.append(data)
-# 		pause = {"type":"pause","duration":random.randint(1,6)}
-# 		ind.append(pause)
-# 	for i in range(int(len(real)*1.25)):
-# 		outd.append({'type':'read', "duration":random.randint(10,20)})
-# 		outd.append({'type':'pause', "duration":random.randint(1,10)})
-# 	await ClockCycles(dut.s00_axis_aclk, int(len(real)*1.25))
-	
-# 	audio_verilog = scipy.signal.resample_poly(phase_diff_verilog, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
-# 	wavfile.write("verilog.wav", 44_100, audio_verilog)
+        cur_num = complex(real,imag)
+        prevy_num = complex(prevy_I,prevy_Q)
 
-# 	audio_python = scipy.signal.resample_poly(phase_diff_python, baseband_sample_rate_hz, int(adc_sample_rate_hz),window=('kaiser', 8.6))
-# 	wavfile.write("python.wav", 44_100, audio_python)
+        perf_prod = cur_num * np.conjugate(prevy_num)
+
+        print(perf_prod)
+        print(perf_prod.real,perf_prod.imag)
+
+        python_model.append(perf_prod.real) 
+    prevy_I = real
+    prevy_Q = imag
+
+def verilog_modelr(val):
+    #real,imag = struct.unpack("hh",val)
+    real = (val & 0xFFFF) # I
+    imag = (val >> 16) # Q
+
+    real = twos_comp(real,16)
+    imag = twos_comp(imag,16)
+    verilog_model.append(real)
+
+@cocotb.test()
+async def test_b(dut):
+    """cocotb test for averager controller"""
+    global python_model
+    global verilog_model
+
+    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=python_modelr)
+    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=verilog_modelr)
+    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+
+    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+
+    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+
+    proj_path = Path(__file__).resolve().parent.parent
+    iq_data= str(proj_path) + "/sdr/" + "iq_data_15kHz_tone.npy"
+    c_data=np.load(iq_data).astype(np.complex64)
+
+    c_data= c_data[:500] * (2**14)
+
+    samples=300
+    for i in range(samples):
+        complex_num = c_data[i]
+        real_prod = np.int16(complex_num.real)
+        imag_prod = np.int16(complex_num.imag)
+        res = int((imag_prod.astype(np.int32) << 16) | (real_prod.astype(np.int32) & 0xFFFF))
+        print("res",hex(res))
+
+        data = {'type':'write_single', "contents":{"data": res,"last":0}}
+        ind.append(data)
+
+    for i in range(samples):
+        outd.append({'type':'read', "duration":random.randint(1,10)})
+        #outd.append({'type':'pause', "duration":random.randint(1,10)})
+    await ClockCycles(dut.s00_axis_aclk, samples)
+
+    assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
+    plt.plot(python_model[:200])
+    #plt.plot(verilog_model)
+    plt.show()
 
 
 def demodulate_runner():
     """Simulate the demodulate using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM","icarus")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
