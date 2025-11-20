@@ -35,14 +35,14 @@ import matplotlib.pyplot as plt
 
 fixed_point=1
 
-def twos_comp(val, bits):
+def twos_comp(val, bits): 
     """compute the 2's complement of int value val"""
     if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
         val = val - (1 << bits)        # compute negative value
     return val   
 
 def bit_2_degree(bit_angle):
-    return (360*bit_angle)/(2**16)
+    return (360*bit_angle)/(2**8)
 
 def degree_2_bit(real_angle):
         return (real_angle/360)*(2**16-1)
@@ -329,10 +329,14 @@ verilog_model=[]
 prevy_I = None
 prevy_Q = None
 
+real_plot =[]
+imag_plot = []
+
 
 def python_modelr(val):
 
     global prevy_I,prevy_Q
+    global real_plot,imag_plot
     sig_in.append(val)
     # takes in 32 bit complex I and Q value with I "real" bits on the bottom and Q on the top
 
@@ -341,6 +345,10 @@ def python_modelr(val):
 
     real = twos_comp(real,16)
     imag = twos_comp(imag,16)
+
+    real_plot.append(real)
+    imag_plot.append(imag)
+    
     #real,imag = struct.unpack("hh",val)
 
     print(f"Driving complex value: {real} + {imag} j")
@@ -352,12 +360,12 @@ def python_modelr(val):
         cur_num = complex(real,imag)
         prevy_num = complex(prevy_I,prevy_Q)
 
-        perf_prod = cur_num * np.conjugate(prevy_num)
+        perf_prod = np.angle(cur_num * np.conjugate(prevy_num))
 
-        print(perf_prod)
-        print(perf_prod.real,perf_prod.imag)
+        #print(perf_prod)
+        #print(perf_prod.real,perf_prod.imag)
 
-        python_model.append(perf_prod.real) 
+        python_model.append(perf_prod) 
     prevy_I = real
     prevy_Q = imag
 
@@ -386,12 +394,28 @@ async def test_b(dut):
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
     proj_path = Path(__file__).resolve().parent.parent
-    iq_data= str(proj_path) + "/sdr/" + "iq_data_15kHz_tone.npy"
-    c_data=np.load(iq_data).astype(np.complex64)
 
-    c_data= c_data[:500] * (2**14)
+    iq_data= str(proj_path) + "/sdr/" + "iq_data_15kHz_tone.npy"
+
+    c_data=np.load(iq_data).astype(np.complex64)
+    print("MAXXXXX",np.max(c_data))
+    print("MINNNNNN",np.min(c_data))
+    #plt.plot(c_data.imag)
+
+    #plt.plot(c_data.real[:100],"o-",color="red")
+    #plt.plot(c_data.imag[:100],"o-",color="blue")
+    #plt.show()
+
+    c_data= c_data[:500] * (2**15)/np.max(abs(c_data))
+
+    print("NEW MAXXXXX",np.max(c_data.real))
+    print("NEW MAXXXXX",np.max(c_data.imag))
+    print("NEW MAXXXXX",np.max(abs(c_data)))
+    real_prod = np.int16(c_data.real)
+    #plt.plot(real_prod[:100])
 
     samples=300
+
     for i in range(samples):
         complex_num = c_data[i]
         real_prod = np.int16(complex_num.real)
@@ -408,8 +432,11 @@ async def test_b(dut):
     await ClockCycles(dut.s00_axis_aclk, samples)
 
     assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
-    plt.plot(python_model[:200])
+    plt.plot(python_model[:200],"o-")
     #plt.plot(verilog_model)
+    #plt.plot(real_plot[:100],"o-",color="red")
+    #plt.plot(imag_plot[:100],"o-",color="blue")
+
     plt.show()
 
 
