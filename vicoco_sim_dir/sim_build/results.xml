@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1763634102" />
+    <testcase name="test_a" classname="test_yabi_demod" file="/home/fpga/worker_place/temp/temp/e266dfd8cddc4b19bfe777093ab69fae/sim/test_yabi_demod.py" lineno="288" time="0.0025887489318847656" sim_time_ns="25.001" ratio_time="9657.560720574693">
+      <failure message="Test failed with RANDOM_SEED=1763634102" />
+    </testcase>
+  </testsuite>
+</testsuites>
