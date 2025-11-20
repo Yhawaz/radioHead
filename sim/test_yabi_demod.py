@@ -265,13 +265,18 @@ def demodulate_model(val):
     if prev_I is None:
         res = val
     else:
+
         cur_num = complex(real,imag)
         prev_num = complex(prev_I,prev_Q)
+
         perf_prod = cur_num * np.conjugate(prev_num)
+
         print(perf_prod)
         print(perf_prod.real,perf_prod.imag)
+
         real_prod = np.int64(round(perf_prod.real))
         imag_prod = np.int64(round(perf_prod.imag))
+
         res = (imag_prod.astype(np.int32) << 16) | (real_prod.astype(np.uint32) & 0xFFFF)
 
 
