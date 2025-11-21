@@ -57,9 +57,9 @@ always_comb begin
 	bc = cur_imag * prev_real;
 	ad = cur_real * prev_imag;
 
-	final_real  = ac + bd;
-	final_imag  = bc - ad; 
-	alpha = {final_imag[31:16],final_real[31:16]};
+	final_real  = (ac + bd) >>> 16;
+	final_imag  = (bc - ad) >>> 16; 
+	alpha = {final_imag[15:0],final_real[15:0]};
 end
 
 always_ff @(posedge s00_axis_aclk)begin
