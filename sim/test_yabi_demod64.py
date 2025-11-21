@@ -10,8 +10,8 @@ from pathlib import Path
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout, NextTimeStep
 from cocotb.utils import get_sim_time as gst
-from cocotb.runner import get_runner
-#from vicoco.vivado_runner import get_runner
+#from cocotb.runner import get_runner
+from vicoco.vivado_runner import get_runner
 from cocotb.handle import SimHandleBase
 
 from scapy.utils import hexdump, hexdiff
@@ -374,7 +374,7 @@ def python_modelr(val):
     prevy_Q = imag
 
 def verilog_modelr(val):
-    imag, real = struct.unpack(">ii", val)
+    imag, real = struct.unpack(">ll", val)
     #real = (val & 0xFFFF) # I
     #imag = (val >> 16) # Q
 
@@ -402,7 +402,7 @@ async def test_b(dut):
 
     proj_path = Path(__file__).resolve().parent.parent
 
-    iq_data= str(proj_path) + "/iq_data_15khz_tone.npy"
+    iq_data= str(proj_path) + "/sdr/iq_15khz_amped_raw.npy"
 
     c_data=np.load(iq_data)
     #print("MAXXXXX",np.max(c_data))
@@ -449,7 +449,7 @@ async def test_b(dut):
 def demodulate_runner():
     """Simulate the demodulate using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM","icarus")
+    sim = os.getenv("SIM","vivado")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))

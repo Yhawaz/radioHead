@@ -1,0 +1,184 @@
+/*
+
+AMD Vivado v2025.1 (64-bit) [Major: 2025, Minor: 1]
+SW Build: 6140274 on Wed May 21 22:58:25 MDT 2025
+IP Build: 6138677 on Thu May 22 03:10:11 MDT 2025
+IP Build: 6138677 on Thu May 22 03:10:11 MDT 2025
+
+Process ID (PID): 557325
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Fri Nov 21 14:21:15 EST 2025
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Ubuntu
+OS Version: 6.14.0-35-generic
+OS Architecture: amd64
+Available processors (cores): 16
+LSB Release Description: DISTRIB_ID=Ubuntu
+
+Display: 1
+Screen size: 3840x2160
+Local screen bounds: x = 66, y = 32, width = 3774, height = 2128
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+OS font scaling: 100%
+Anti-Alias Enabled: false
+
+Java version: 	21.0.1 64-bit
+
+Java home: 	/tools/Xilinx/2025.1/tps/lnx64/jre21.0.1_12
+Java executable: 	/tools/Xilinx/2025.1/tps/lnx64/jre21.0.1_12/bin/java
+Java arguments: 	[-Dsun.java2d.pmoffscreen=false, -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2, -Dsun.java2d.xrender=false, -Dsun.java2d.uiScale.enabled=false, -Dswing.aatext=true, -XX:-UsePerfData, -Djdk.map.althashing.threshold=512, -XX:StringTableSize=4072, -XX:+UseStringDeduplication, -XX:MaxGCPauseMillis=200, -XX:ParallelGCThreads=4, -XX:+ParallelRefProcEnabled, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.desktop/sun.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/java.awt.event=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.base/java.nio=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.table=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED, --add-exports=java.base/sun.security.action=ALL-UNNAMED, --add-exports=java.desktop/sun.font=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, -XX:NewSize=80m, -XX:MaxNewSize=80m, -Xms812m, -Xmx6144m, -Xss10m, -Xrs]
+Java initial memory (-Xms): 	812 MB
+Java maximum memory (-Xmx):	 6 GB
+
+User name: 	yhawaz
+User home directory: /home/yhawaz
+User working directory: /home/yhawaz/radioHead/sim
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /tools/Xilinx/2025.1
+HDI_APPROOT: /tools/Xilinx/2025.1/Vivado
+RDI_DATADIR: /tools/Xilinx/2025.1/data
+RDI_BINDIR: /tools/Xilinx/2025.1/Vivado/bin
+
+Vivado preferences file: /home/yhawaz/.Xilinx/Vivado/2025.1/vivado.xml
+Vivado preferences directory: /home/yhawaz/.Xilinx/Vivado/2025.1/
+Vivado layouts directory: /home/yhawaz/.Xilinx/Vivado/2025.1/data/layouts
+PlanAhead jar file: 	/tools/Xilinx/2025.1/Vivado/lib/classes/planAhead.jar
+Vivado log file: 	/home/yhawaz/radioHead/sim/vivado.log
+Vivado journal file: 	/home/yhawaz/radioHead/sim/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-557325-eecs-digital-48
+Non-Default Parameters:	[]
+
+Xilinx & AMD Environment Variables
+--------------------------------------------------------------------------------------------
+GNOME_SHELL_SESSION_MODE: ubuntu
+RDI_APPROOT: /tools/Xilinx/2025.1/Vivado
+RDI_BASEROOT: /tools/Xilinx/2025.1
+RDI_BINROOT: /tools/Xilinx/2025.1/Vivado/bin
+RDI_BUILD: yes
+RDI_DATADIR: /tools/Xilinx/2025.1/Vivado/data
+RDI_INSTALLROOT: /tools/Xilinx
+RDI_INSTALLVER: Vivado
+RDI_JAVA_PLATFORM: 
+RDI_JAVA_VERSION: 21.0.1_12
+RDI_LIBDIR: /tools/Xilinx/2025.1/Vivado/lib/lnx64.o/Ubuntu/24:/tools/Xilinx/2025.1/Vivado/lib/lnx64.o/Ubuntu:/tools/Xilinx/2025.1/Vivado/lib/lnx64.o
+RDI_OPT_EXT: .o
+RDI_PATCHROOT: 
+RDI_PLATFORM: lnx64
+RDI_PREPEND_PATH: /tools/Xilinx/2025.1/Vitis/bin:/tools/Xilinx/2025.1/Vivado/ids_lite/ISE/bin/lin64
+RDI_PROG: /tools/Xilinx/2025.1/Vivado/bin/unwrapped/lnx64.o/vivado
+RDI_SESSION_INFO: /home/yhawaz/radioHead/sim:eecs-digital-48_1763752863_557236
+RDI_SHARED_DATA: /tools/Xilinx/SharedData/Vivado/data
+RDI_TPS_ROOT: /tools/Xilinx/2025.1/Vivado/tps/lnx64
+RDI_USE_JDK21: True
+SHELL: /bin/bash
+XILINX: /tools/Xilinx/2025.1/Vivado/ids_lite/ISE
+XILINX_DSP: /tools/Xilinx/2025.1/Vivado/ids_lite/ISE
+XILINX_HLS: /tools/Xilinx/2025.1/Vitis
+XILINX_PLANAHEAD: /tools/Xilinx/2025.1/Vivado
+XILINX_SDK: /tools/Xilinx/2025.1/Vitis
+XILINX_VITIS: /tools/Xilinx/2025.1/Vitis
+XILINX_VIVADO: /tools/Xilinx/2025.1/Vivado
+
+
+GUI allocated memory:	812 MB
+GUI max memory:		6,144 MB
+Engine allocated memory: 1,888 MB
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,888 MB. GUI used memory: 91 MB. Current time: 11/21/25, 2:21:16 PM EST
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_PROJECT, "Open Project"); // t (PAResourceEtoH.GettingStartedView_OPEN_PROJECT)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_PROJECT
+// Elapsed time: 24 seconds
+setFileChooser("/home/yhawaz/radio_proj_demod/rfsoc64/lab6.xpr");
+// [GUI Memory]: 166 MB (+171323kb) [00:01:27]
+// [Engine Memory]: 1,889 MB (+1828833kb) [00:01:27]
+// Opening Vivado Project: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.xpr. Version: Vivado v2025.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,926 MB. GUI used memory: 88 MB. Current time: 11/21/25, 2:22:36 PM EST
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [Engine Memory]: 2,295 MB (+326610kb) [00:01:31]
+// WARNING: HEventQueue.dispatchEvent() is taking  1805 ms.
+// Tcl Message: open_project /home/yhawaz/radio_proj_demod/rfsoc64/lab6.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories 
+// Tcl Message: INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/yhawaz/iq_framer'. INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/tools/Xilinx/2025.1/Vivado/data/ip'. 
+// [GUI Memory]: 176 MB (+1517kb) [00:01:32]
+// Project name: lab6; location: /home/yhawaz/radio_proj_demod/rfsoc64; part: xczu48dr-ffvg1517-2-e
+dismissDialog("Open Project"); // bk (Open Project Progress)
+// [Engine Memory]: 2,721 MB (+327069kb) [00:01:36]
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: DG_GRAPH_GENERATED
+// Tcl Message: update_compile_order -fileset sources_1 

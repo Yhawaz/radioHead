@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# Vivado v2025.1 (64-bit)
+# SW Build 6140274 on Wed May 21 22:58:25 MDT 2025
+# IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
+# SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
+# Start of session at: Fri Nov 21 14:21:04 2025
+# Process ID         : 557325
+# Current directory  : /home/yhawaz/radioHead/sim
+# Command line       : vivado
+# Log file           : /home/yhawaz/radioHead/sim/vivado.log
+# Journal file       : /home/yhawaz/radioHead/sim/vivado.jou
+# Running On         : eecs-digital-48
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.3 LTS
+# Processor Detail   : AMD Ryzen 7 5825U with Radeon Graphics
+# CPU Frequency      : 1095.000 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 29342 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 37932 MB
+# Available Virtual  : 33901 MB
+#-----------------------------------------------------------
+start_gui
+open_project /home/yhawaz/radio_proj_demod/rfsoc64/lab6.xpr
+update_compile_order -fileset sources_1

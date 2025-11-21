@@ -74,7 +74,7 @@ always_ff @(posedge s00_axis_aclk)begin
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference
            val_reg <= s00_axis_tdata;
-           m00_axis_tdata <= alpha[31:0];
+           m00_axis_tdata <= alpha;
            m00_axis_tvalid <= 1'b1;
            m00_axis_tlast <= s00_axis_tlast;
            m00_axis_tstrb <= 255;
