@@ -26,7 +26,6 @@ logic [31:0] val_reg;
 logic [63:0] alpha;
 
 // todo: wire up oliver's cordic to the input
-
 logic signed [31:0] ac;
 logic signed [31:0] bd;
 
@@ -45,21 +44,23 @@ logic signed [31:0] final_imag;
 always_comb begin
 	s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
 
-	cur_real = $signed(s00_axis_tdata[15:0]);
-	cur_imag = $signed(s00_axis_tdata[31:16]);
+	cur_real =  s00_axis_tdata[15:0];
+	cur_imag =  s00_axis_tdata[31:16];
 
-	prev_real = $signed(val_reg[15:0]);
-	prev_imag = $signed(val_reg[31:16]);
+	prev_real =  val_reg[15:0];
+	prev_imag =  val_reg[31:16];
 
-	ac = (cur_real * prev_real) >>> 1; //
-	bd = (cur_imag * prev_imag) >>> 1;
+	ac = ($signed(cur_real) * $signed(prev_real)) >>> 3; //
+	bd = ($signed(cur_imag) * $signed(prev_imag)) >>> 3;
 	
-	bc = (cur_imag * prev_real) >>> 1;
-	ad = (cur_real * prev_imag) >>> 1;
+	bc = ($signed(cur_imag) * $signed(prev_real)) >>> 3;
+	ad = ($signed(cur_real) * $signed(prev_imag)) >>> 3;
 
-	final_real  = (ac + bd);
-	final_imag  = (bc - ad); 
+	final_real  = $signed(ac + bd);
+	final_imag  = $signed(bc - ad); 
+
 	alpha = {final_imag,final_real};
+//	alpha = {16'b0,cur_imag,16'b0,cur_real};
 end
 
 always_ff @(posedge s00_axis_aclk)begin

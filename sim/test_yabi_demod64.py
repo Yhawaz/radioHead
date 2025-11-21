@@ -163,7 +163,7 @@ class AXIS_Monitor(BusMonitor):
                 self.transactions+=1
                 thing = dict(data=data.signed_integer,last=last,
                              name=self.name,count=self.transactions)
-                self.dut._log.info(f"{self.name}: {thing}")
+                #self.dut._log.info(f"{self.name}: {thing}")
                 self._recv(data.buff)
 
 class AXIS_Driver(BusDriver):
@@ -336,6 +336,10 @@ prevy_Q = None
 real_plot =[]
 imag_plot = []
 
+ac_plot =[]
+ad_plot =[]
+bc_plot =[]
+bd_plot =[]
 
 def python_modelr(val):
     val = int.from_bytes(val,"big")
@@ -419,7 +423,7 @@ async def test_b(dut):
     #real_prod = np.int16(c_data.real)
     #plt.plot(real_prod[:100])
 
-    samples=30000
+    samples=3000
 
     for i in range(samples):
 ##        complex_num = c_data[i]
@@ -438,7 +442,7 @@ async def test_b(dut):
     await ClockCycles(dut.s00_axis_aclk, samples)
 
     assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
-    #plt.plot(python_model[:samples],"o-",color="red")
+    plt.plot(python_model[:samples],"o-",color="red")
     plt.plot(verilog_model[:samples],"o-",color="purple")
     plt.show()
     #plt.plot(verilog_model)
