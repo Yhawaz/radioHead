@@ -51,11 +51,11 @@ always_comb begin
 	prev_real = $signed(val_reg[15:0]);
 	prev_imag = $signed(val_reg[31:16]);
 
-	ac = cur_real * prev_real; //
-	bd = cur_imag * prev_imag;
+	ac = (cur_real * prev_real) >>> 1; //
+	bd = (cur_imag * prev_imag) >>> 1;
 	
-	bc = cur_imag * prev_real;
-	ad = cur_real * prev_imag;
+	bc = (cur_imag * prev_real) >>> 1;
+	ad = (cur_real * prev_imag) >>> 1;
 
 	final_real  = (ac + bd);
 	final_imag  = (bc - ad); 
@@ -74,7 +74,7 @@ always_ff @(posedge s00_axis_aclk)begin
        if(s00_axis_tvalid && s00_axis_tready)begin
            // grab valid data and compute the difference
            val_reg <= s00_axis_tdata;
-           m00_axis_tdata <= alpha;// just grabbing the bottom 16 bits
+           m00_axis_tdata <= alpha[31:0];
            m00_axis_tvalid <= 1'b1;
            m00_axis_tlast <= s00_axis_tlast;
            m00_axis_tstrb <= 255;

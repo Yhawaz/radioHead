@@ -374,7 +374,7 @@ def python_modelr(val):
     prevy_Q = imag
 
 def verilog_modelr(val):
-    imag, real = struct.unpack(">hh", val)
+    imag, real = struct.unpack(">ii", val)
     #real = (val & 0xFFFF) # I
     #imag = (val >> 16) # Q
 
@@ -453,12 +453,12 @@ def demodulate_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [ proj_path / "hdl" / "conj_demod.sv"]
+    sources = [ proj_path / "hdl" / "demod64.sv"]
     parameters = {} #!!!
     build_test_args=[]
     sys.path.append(str(proj_path / "sim"))
     runner = get_runner(sim)
-    hdl_toplevel = "conj_demod"
+    hdl_toplevel = "demod64"
     runner.build(
         sources=sources,
         hdl_toplevel=hdl_toplevel,
