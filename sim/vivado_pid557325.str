@@ -1612,3 +1612,890 @@ selectCodeEditor("demod64.sv", 198, 933); // ae (demod64.sv)
 selectCodeEditor("demod64.sv", 262, 936); // ae (demod64.sv)
 selectCodeEditor("demod64.sv", 351, 932); // ae (demod64.sv)
 selectCodeEditor("demod64.sv", 303, 946); // ae (demod64.sv)
+// Elapsed time: 904 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, demod_w (demod_w.v), demody : demod64 (demod64.sv)]", 18, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, demod_w (demod_w.v), demody : demod64 (demod64.sv)]", 18, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+selectCodeEditor("demod64.sv", 365, 943); // ae (demod64.sv)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,280 MB. GUI used memory: 147 MB. Current time: 11/21/25, 4:48:51 PM EST
+// Elapsed time: 515 seconds
+selectCodeEditor("demod64.sv", 678, 896); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 54, 931); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 350, 945); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 397, 929); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 390, 931); // ae (demod64.sv)
+// Elapsed time: 22 seconds
+selectCodeEditor("demod64.sv", 129, 956); // ae (demod64.sv)
+// Elapsed time: 10 seconds
+selectCodeEditor("demod64.sv", 397, 982); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 968, 507); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:31m:14s
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:31m:16s
+// Elapsed time: 28 seconds
+selectCodeEditor("demod64.sv", 376, 937); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 157, 956); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 227, 958); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 234, 944); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 234, 950); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:32m:00s
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:32m:02s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true, false, false, false, true, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ap (PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, generate_composite_file_menu)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate", "Generate Output Products"); // f (PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: generate_target all [get_files  /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// Tcl Message: INFO: [BD 41-1637] Generated targets are already up-to-date for block design 'design_1' - hence not re-generating. 
+// Tcl Message: export_ip_user_files -of_objects [get_files /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet 
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,327 MB. GUI used memory: 151 MB. Current time: 11/21/25, 4:54:51 PM EST
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: launch_runs design_1_demod_w_0_1_synth_1 -jobs 8 
+// Tcl Message: [Fri Nov 21 16:54:51 2025] Launched design_1_demod_w_0_1_synth_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/design_1_demod_w_0_1_synth_1/runme.log 
+// TclEventType: PROJECT_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// 'bD' command handler elapsed time: 36 seconds
+// Elapsed time: 30 seconds
+selectButton("OptionPane.button", "OK", "Generate Output Products"); // JButton (OptionPane.button)
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:32m:42s
+selectCodeEditor("demod64.sv", 166, 958); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 167, 956); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:32m:44s
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 26 seconds
+selectCodeEditor("demod64.sv", 264, 1071); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:10s
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:12s
+selectCodeEditor("demod64.sv", 233, 953); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true, false, false, false, true, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Popup Trigger - Node
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:20s
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+// [Engine Memory]: 3,511 MB (+28397kb) [02:34:53]
+// TclEventType: DG_GRAPH_GENERATED
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // am (PAResourceQtoS.SrcMenu_IP_HIERARCHY, IP Hierarchy)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ap (PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, generate_composite_file_menu)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate", "Generate Output Products"); // f (PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: generate_target all [get_files  /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// Tcl Message: INFO: [BD 41-1637] Generated targets are already up-to-date for block design 'design_1' - hence not re-generating. 
+// Tcl Message: export_ip_user_files -of_objects [get_files /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet 
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,414 MB. GUI used memory: 153 MB. Current time: 11/21/25, 4:56:03 PM EST
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: launch_runs design_1_demod_w_0_1_synth_1 -jobs 8 
+// Tcl Message: [Fri Nov 21 16:56:03 2025] Launched design_1_demod_w_0_1_synth_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/design_1_demod_w_0_1_synth_1/runme.log 
+// TclEventType: PROJECT_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_STATUS_CHANGE
+// 'bD' command handler elapsed time: 8 seconds
+selectButton("OptionPane.button", "OK", "Generate Output Products"); // JButton (OptionPane.button)
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:32s
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:54s
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:33m:56s
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 45 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 21, false); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton(RDIResource.BaseDialog_YES, "Yes", "Synthesis is Out-of-date"); // f (RDIResource.BaseDialog_YES)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+dismissDialog("Synthesis is Out-of-date"); // x (dialog29)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: reset_run synth_1 
+// Tcl Message: INFO: [Project 1-1161] Replacing file /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/utils_1/imports/synth_1/design_1_wrapper.dcp with file /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/synth_1/design_1_wrapper.dcp 
+// TclEventType: FILE_SET_CHANGE
+selectButton(RDIResource.BaseDialog_OK, "OK", "Launch Runs"); // f (RDIResource.BaseDialog_OK)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,423 MB. GUI used memory: 154 MB. Current time: 11/21/25, 4:56:58 PM EST
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+dismissDialog("Launch Runs"); // cP (dialog30)
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 8 
+// Tcl Message: [Fri Nov 21 16:56:58 2025] Launched synth_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/synth_1/runme.log [Fri Nov 21 16:56:58 2025] Launched impl_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+selectCodeEditor("demod64.sv", 650, 875); // ae (demod64.sv)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 270 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel", "Bitstream Generation Completed"); // f (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Bitstream Generation Completed"); // W.a (dialog31)
+selectButton(PAResourceTtoZ.TouchpointSurveyDialog_REMIND_ME_LATER, "Remind me Later", "Feedback Request"); // f (PAResourceTtoZ.TouchpointSurveyDialog_REMIND_ME_LATER, PAResourceTtoZ.TouchpointSurveyDialog_CANCEL)
+dismissDialog("Feedback Request"); // aw (dialog32)
+// Elapsed time: 654 seconds
+selectCodeEditor("demod64.sv", 225, 958); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 48, 951); // ae (demod64.sv)
+// Elapsed time: 13 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true, false, false, false, true, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // am (PAResourceQtoS.SrcMenu_IP_HIERARCHY, IP Hierarchy)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // am (PAResourceQtoS.SrcMenu_IP_HIERARCHY, IP Hierarchy)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // am (PAResourceQtoS.SrcMenu_IP_HIERARCHY, IP Hierarchy)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // am (PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, Hierarchy Update)
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ap (PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, generate_composite_file_menu)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate", "Generate Output Products"); // f (PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: generate_target all [get_files  /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// Tcl Message: INFO: [BD 41-1637] Generated targets are already up-to-date for block design 'design_1' - hence not re-generating. 
+// Tcl Message: export_ip_user_files -of_objects [get_files /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet 
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// 'bD' command handler elapsed time: 6 seconds
+dismissDialog("Managing Output Products"); // bk (Managing Output Products Progress)
+// Elapsed time: 99 seconds
+selectCodeEditor("demod64.sv", 329, 952); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 345, 940); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 273, 918); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 213, 955); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 195, 923); // ae (demod64.sv)
+selectCodeEditor("demod64.sv", 461, 470); // ae (demod64.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:52m:17s
+// HMemoryUtils.trashcanNow. Engine heap size: 3,650 MB. GUI used memory: 159 MB. Current time: 11/21/25, 5:14:56 PM EST
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, design_1_wrapper (design_1_wrapper.v), design_1_i : design_1 (design_1.bd)]", 2, true, false, false, false, true, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_OPEN_FILE_WITH, "Open With"); // am (PAResourceCommand.PACommandNames_OPEN_FILE_WITH, Open With)
+// TclEventType: DG_GRAPH_GENERATED
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ap (PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, generate_composite_file_menu)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate", "Generate Output Products"); // f (PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: generate_target all [get_files  /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// Tcl Message: INFO: [BD 41-1637] Generated targets are already up-to-date for block design 'design_1' - hence not re-generating. 
+// Tcl Message: export_ip_user_files -of_objects [get_files /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] -no_script -sync -force -quiet 
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/sources_1/bd/design_1/design_1.bd] 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,432 MB. GUI used memory: 158 MB. Current time: 11/21/25, 5:14:59 PM EST
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: launch_runs design_1_demod_w_0_1_synth_1 -jobs 8 
+// Tcl Message: [Fri Nov 21 17:14:59 2025] Launched design_1_demod_w_0_1_synth_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/design_1_demod_w_0_1_synth_1/runme.log 
+// TclEventType: PROJECT_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RUN_STATUS_CHANGE
+// 'bD' command handler elapsed time: 27 seconds
+// Elapsed time: 26 seconds
+selectButton("OptionPane.button", "OK", "Generate Output Products"); // JButton (OptionPane.button)
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:52m:47s
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:52m:49s
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed Time for: 'PAResourceItoN.MsgLongTask_MESSAGE_LONG_TASK/L.f': 02h:52m:51s
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 121 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 21, false); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton(RDIResource.BaseDialog_YES, "Yes", "Synthesis is Out-of-date"); // f (RDIResource.BaseDialog_YES)
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+dismissDialog("Synthesis is Out-of-date"); // x (dialog35)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// [GUI Memory]: 268 MB (+646kb) [02:56:20]
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: reset_run synth_1 
+// Tcl Message: INFO: [Project 1-1161] Replacing file /home/yhawaz/radio_proj_demod/rfsoc64/lab6.srcs/utils_1/imports/synth_1/design_1_wrapper.dcp with file /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/synth_1/design_1_wrapper.dcp 
+// TclEventType: FILE_SET_CHANGE
+selectButton(RDIResource.BaseDialog_OK, "OK", "Launch Runs"); // f (RDIResource.BaseDialog_OK)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,430 MB. GUI used memory: 160 MB. Current time: 11/21/25, 5:17:28 PM EST
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+dismissDialog("Launch Runs"); // cP (dialog36)
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 8 
+// Tcl Message: [Fri Nov 21 17:17:28 2025] Launched synth_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/synth_1/runme.log [Fri Nov 21 17:17:28 2025] Launched impl_1... Run output will be captured here: /home/yhawaz/radio_proj_demod/rfsoc64/lab6.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 272 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel", "Bitstream Generation Completed"); // f (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Bitstream Generation Completed"); // W.a (dialog37)
+selectButton(PAResourceTtoZ.TouchpointSurveyDialog_REMIND_ME_LATER, "Remind me Later", "Feedback Request"); // f (PAResourceTtoZ.TouchpointSurveyDialog_REMIND_ME_LATER, PAResourceTtoZ.TouchpointSurveyDialog_CANCEL)
+dismissDialog("Feedback Request"); // aw (dialog38)
+// Elapsed time: 259 seconds
+selectCodeEditor("demod64.sv", 407, 219); // ae (demod64.sv)
+typeControlKey((HResource) null, "demod64.sv", 'c'); // ae (demod64.sv)
+typeControlKey((HResource) null, "demod64.sv", 'c'); // ae (demod64.sv)
+typeControlKey((HResource) null, "demod64.sv", 'c'); // ae (demod64.sv)

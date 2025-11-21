@@ -5,7 +5,7 @@ module demod64 #(
    parameter integer C_M00_AXIS_TDATA_WIDTH = 64
 )(
    // ports of axi slave bus interface s00_axis
-   
+
    input wire s00_axis_aclk,
    input wire s00_axis_aresetn,
    input wire s00_axis_tlast,
@@ -42,25 +42,26 @@ logic signed [31:0] final_real;
 logic signed [31:0] final_imag;
 
 always_comb begin
-	s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
+        s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
 
-	cur_real =  s00_axis_tdata[15:0];
-	cur_imag =  s00_axis_tdata[31:16];
+        cur_real =  s00_axis_tdata[15:0];
+        cur_imag =  s00_axis_tdata[31:16];
 
-	prev_real =  val_reg[15:0];
-	prev_imag =  val_reg[31:16];
+        prev_real =  val_reg[15:0];
+        prev_imag =  val_reg[31:16];
 
-	ac = ($signed(cur_real) * $signed(prev_real)) >>> 3; //
-	bd = ($signed(cur_imag) * $signed(prev_imag)) >>> 3;
-	
-	bc = ($signed(cur_imag) * $signed(prev_real)) >>> 3;
-	ad = ($signed(cur_real) * $signed(prev_imag)) >>> 3;
+        ac = ($signed(cur_real) * $signed(prev_real)) >>> 3; //
+        bd = ($signed(cur_imag) * $signed(prev_imag)) >>> 3;
 
-	final_real  = $signed(ac + bd);
-	final_imag  = $signed(bc - ad); 
+        bc = ($signed(cur_imag) * $signed(prev_real)) >>> 3;
+        ad = ($signed(cur_real) * $signed(prev_imag)) >>> 3;
 
-	alpha = {final_imag,final_real};
-//	alpha = {16'b0,cur_imag,16'b0,cur_real};
+        final_real  = $signed(ac + bd);
+        final_imag  = $signed(bc - ad);
+
+        alpha = {final_imag,final_real};
+       //alpha = {16'b0,cur_imag,16'b0,cur_real};
+       //alpha = {32'hDEADDEAD,32'hBEEFBEEF};
 end
 
 always_ff @(posedge s00_axis_aclk)begin
