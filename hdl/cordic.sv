@@ -1,11 +1,10 @@
 `timescale 1ns / 1ps
 `default_nettype none
 module cordic #(
-    parameter integer C_S00_AXIS_TDATA_WIDTH = 32,
-    parameter integer C_M00_AXIS_TDATA_WIDTH = 32,
+    parameter integer C_S00_AXIS_TDATA_WIDTH = 64,
+    parameter integer C_M00_AXIS_TDATA_WIDTH = 64,
     parameter integer C_NUM_CORDIC_ITERATIONS = 16,
-    parameter integer C_CORDIC_FRAC_WIDTH = 16,
-    parameter integer C_CORDIC_GAIN = 39796
+    parameter integer C_CORDIC_FRAC_WIDTH = 32
 )(
     // Ports of Axi Slave Bus Interface S00_AXIS
     input wire s00_axis_aclk,
@@ -26,25 +25,29 @@ module cordic #(
     localparam integer C_CORDIC_LOG2_FRAC_WIDTH = $clog2(C_CORDIC_FRAC_WIDTH);
     localparam integer C_CORDIC_FIXED_WIDTH = (C_S00_AXIS_TDATA_WIDTH/2) + C_CORDIC_FRAC_WIDTH + 1; // +1 is hack to make everything positive
 
-    logic [15:0] angles [0:15];
+    logic [31:0] angles [0:15];
+    logic [31:0] fixed_gain;
+    logic [31:0] angle1;
+    assign angle1 = angles[0];
+    assign fixed_gain = 2608131502;
 
     initial begin
-        angles[0] = 16'd8191;
-        angles[1] = 16'd4835;
-        angles[2] = 16'd2555;
-        angles[3] = 16'd1297;
-        angles[4] = 16'd651;
-        angles[5] = 16'd325;
-        angles[6] = 16'd162;
-        angles[7] = 16'd81;
-        angles[8] = 16'd40;
-        angles[9] = 16'd20;
-        angles[10] = 16'd10;
-        angles[11] = 16'd5;
-        angles[12] = 16'd2;
-        angles[13] = 16'd1;
-        angles[14] = 16'd0;
-        angles[15] = 16'd0;
+        angles[0] = 32'd536871365;
+        angles[1] = 32'd316933673;
+        angles[2] = 32'd167459048;
+        angles[3] = 32'd85004827;
+        angles[4] = 32'd42667367;
+        angles[5] = 32'd21354483;
+        angles[6] = 32'd10679847;
+        angles[7] = 32'd5340249;
+        angles[8] = 32'd2670165;
+        angles[9] = 32'd1335087;
+        angles[10] = 32'd667544;
+        angles[11] = 32'd333772;
+        angles[12] = 32'd166886;
+        angles[13] = 32'd83443;
+        angles[14] = 32'd41721;
+        angles[15] = 32'd10430;
     end
     // Helper functions
     function logic [C_CORDIC_FIXED_WIDTH-1:0] rnd2zerodiv(
@@ -68,17 +71,17 @@ module cordic #(
         end
     endfunction
 
-    initial begin
-        assert(C_CORDIC_FRAC_WIDTH == 16) else $fatal("C_CORDIC_FRAC_WIDTH must be 16, or fix the CORDIC gain const.");
-    end
+    // initial begin
+    //     assert(C_CORDIC_FRAC_WIDTH == 16) else $fatal("C_CORDIC_FRAC_WIDTH must be 16, or fix the CORDIC gain const.");
+    // end
 
     function logic [C_CORDIC_FIXED_WIDTH-1:0] abs_scale(
         input logic signed [C_S00_AXIS_TDATA_WIDTH/2-1:0] x
     );
         if ($signed(x) < 0) begin
-            abs_scale = $signed(-x) * $signed(C_CORDIC_GAIN);
+            abs_scale = $signed(-x) * $signed(fixed_gain);
         end else begin
-            abs_scale = x * C_CORDIC_GAIN;
+            abs_scale = x * fixed_gain;
         end
     endfunction
 
@@ -133,9 +136,9 @@ module cordic #(
         end
     end endgenerate
 
-    logic [15:0] mag;
-    logic [15:0] rotate_angle, regular_angle;
-    assign rotate_angle     = z_i[C_NUM_CORDIC_ITERATIONS]-32768;
+    logic [31:0] mag;
+    logic [31:0] rotate_angle, regular_angle;
+    assign rotate_angle     = z_i[C_NUM_CORDIC_ITERATIONS]-2147483648;
     assign regular_angle    =  z_i[C_NUM_CORDIC_ITERATIONS];
     assign mag =  x_i[C_NUM_CORDIC_ITERATIONS][C_CORDIC_FIXED_WIDTH-2:C_CORDIC_FRAC_WIDTH];
     assign m00_axis_tvalid = tvalid_i[C_NUM_CORDIC_ITERATIONS];
