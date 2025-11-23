@@ -255,9 +255,11 @@ def model_cordic(sample):
     # now I am getting a 64 bit iq value
     # real is lower 32
     # imag is upper 32
+
     x = twos_comp(sample & 0xFFFF_FFFF,32)
     y = twos_comp((sample & 0xFFFF_FFFF_0000_0000)>>32,32) # shift everything that uses this
-    
+    print("oi bruv")
+    print(x,y)
     # y is upper 15
     exp_angle = float(np.atan2(y,x)*180/np.pi)
     if exp_angle < 0:
