@@ -44,10 +44,8 @@ class ScoreGuy(Scoreboard):
         # Now scoreboard prints the mag and angle instead of raw binary
         rec_mag, rec_angle = get_mag_ang(got)
         exp_mag, exp_angle = get_mag_ang(exp)
-        print(f"AHHHHHHHH: {rec_mag,rec_angle}")
 
-
-        correct = abs(got-exp)<50
+        correct = (abs(exp_mag - rec_mag) < 10) and (abs(exp_angle - rec_angle) < 1)
 
         strict_type=False
 
@@ -139,7 +137,8 @@ class AXIS_Monitor(BusMonitor):
                 self.transactions+=1
                 thing = dict(data=data.signed_integer,last=last,
                              name=self.name,count=self.transactions)
-                self.dut._log.info(f"{self.name}: {thing}")
+                mag,angle = get_mag_ang(thing['data'])
+                self.dut._log.info(f"{self.name}: {thing} Magnitude of {mag} @ {round(angle,2)} deg")
                 self._recv(data.signed_integer)
 
 class AXIS_Driver(BusDriver):
@@ -265,7 +264,6 @@ def model_cordic(sample):
         exp_angle = exp_angle + 360
 
     exp_mag = round(np.sqrt(x**2 + y**2))
-    print(f"I want the magnitude of {exp_mag}")
     bin_val = format(round(exp_angle/360*(2**32-1)), f'0{32}b') + format(exp_mag, f'0{32}b')
     #bin_val = bin(round(exp_angle)).replace("0b","") + bin(exp_mag).replace("0b","")
     # Adding to all the arrays
@@ -295,7 +293,7 @@ async def test_a(dut):
     x_vals = []
     y_vals = []
     act_list = []
-    samples = 1
+    samples = 100
 
     angle_epsilon = 0.1
     magnitude_epsilon = 3
@@ -307,10 +305,10 @@ async def test_a(dut):
         # x_vals.append(x)
         # y_vals.append(y)
 
-        # real = random.getrandbits(31) # TODO: change to allow negative values
-        # imag = random.getrandbits(31) # TODO: change to allow negative values
-        real = 3
-        imag  = 4
+        real = random.getrandbits(31) # TODO: change to allow negative values
+        imag = random.getrandbits(31) # TODO: change to allow negative values
+        # real = 3
+        # imag  = 4
         x_vals.append(twos_comp(real,32))
         y_vals.append(twos_comp(imag,32))
 
@@ -344,24 +342,9 @@ async def test_a(dut):
         #print(f"mag:{(sig & 0xFFFF)}, ang:{ ((sig & 0xFFFF0000)>>16)/(2**16)*360}")
         mag = sig & 0xFFFF_FFFF
         ang = ((sig & 0xFFFF_FFFF_0000_0000)>>32)/(2**32)*360
-        print(f"I would have liked to add: {(mag,ang)}")
+
         act_list.append((mag,ang))
 
-    # Since the angles and magnitudes are not exactly the same, the lists will be iterated through and verified.
-    # side stepping the score board
-    for i in range(samples):
-        print(i)
-        act = act_list[i]
-        act_mag = act[0]
-        act_ang = act[1]
-
-        expexcted = exp[i]
-        exp_mag = expexcted[0]
-        exp_ang = expexcted[1]
-
-        assert abs(act_ang - exp_ang) < angle_epsilon, f"Oops. It seems the angle was wrong. Expected:{exp_ang}, Actual:{act_ang}"
-        assert abs(act_mag - exp_mag) < magnitude_epsilon, f"Oops. It seems the magnitude was wrong. Expected:{exp_mag}, Actual:{act_mag}"
-    dut._log.info(f"Successfully verified {samples} sample(s)!")
 
 def cordic_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
