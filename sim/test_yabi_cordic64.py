@@ -31,7 +31,6 @@ test_file = os.path.basename(__file__).replace(".py","")
 # TODO: Run with more data
 
 def get_mag_ang(input):
-    # Assuming an unsigned input
     mag = input & 0xFFFF_FFFF # magnitude is the bottom bits
     pre_angle = (input & 0xFFFF_FFFF_0000_0000)>>32 # angle is the top bits
     act_angle = pre_angle/(2**32-1)*360
@@ -43,6 +42,7 @@ class ScoreGuy(Scoreboard):
         got = got
         # Now scoreboard prints the mag and angle instead of raw binary
         rec_mag, rec_angle = get_mag_ang(got)
+        print(f"this is what im expecting:{exp}")
         exp_mag, exp_angle = get_mag_ang(exp)
 
         correct = (abs(exp_mag - rec_mag) < 10) and (abs(exp_angle - rec_angle) < 1)
@@ -247,11 +247,11 @@ def twos_comp(val, bits):
         val = val - (1 << bits)        # compute negative value
     return val   
 
-exp = []
+exp1 = []
 
 
 def model_cordic(sample):
-    global exp
+    global exp1
     # now I am getting a 64 bit iq value
     # real is lower 32
     # imag is upper 32
@@ -269,7 +269,8 @@ def model_cordic(sample):
     # Adding to all the arrays
     sig_in.append(sample)
     sig_out_exp.append(int(bin_val,2))
-    exp.append((exp_mag,exp_angle))
+    exp1.append((exp_mag,exp_angle))
+    print(exp1)
 
 
 
@@ -293,7 +294,7 @@ async def test_a(dut):
     x_vals = []
     y_vals = []
     act_list = []
-    samples = 100
+    samples = 1
 
     angle_epsilon = 0.1
     magnitude_epsilon = 3
@@ -306,16 +307,17 @@ async def test_a(dut):
         # y_vals.append(y)
 
         real = random.getrandbits(31) # TODO: change to allow negative values
-        imag = random.getrandbits(31) # TODO: change to allow negative values
+        imag = random.getrandbits(32) # TODO: change to allow negative values
         # real = 3
         # imag  = 4
-        x_vals.append(twos_comp(real,32))
-        y_vals.append(twos_comp(imag,32))
 
         # x is lower 32 and y is upper 32
         bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
         #print(f"bin: {bin_val},{len(bin_val)}")
-        inputs.append(int(bin_val,2))
+        # inputs.append(int(bin_val,2))
+        bin_val = -3838493923411046419
+        inputs.append(bin_val)
+
         #dut._log.info(f"Sending x:{twos_comp(x,16)} and y:{twos_comp(y,16)} as {int(bin_val,2)}")
 
     #(pts)
@@ -341,7 +343,7 @@ async def test_a(dut):
         #print(f"angle: {(sig & 0xFFFF0000) >> 16},ang: {(sig & 0xFFFF)/2**16*2*np.pi}")
         #print(f"mag:{(sig & 0xFFFF)}, ang:{ ((sig & 0xFFFF0000)>>16)/(2**16)*360}")
         mag = sig & 0xFFFF_FFFF
-        ang = ((sig & 0xFFFF_FFFF_0000_0000)>>32)/(2**32)*360
+        ang = ((sig & 0xFFFF_FFFF_0000_0000)>>32)/(2**32-1)*360
 
         act_list.append((mag,ang))
 

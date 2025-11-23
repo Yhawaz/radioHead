@@ -140,7 +140,7 @@ module cordic #(
     logic [31:0] rotate_angle, regular_angle;
     assign rotate_angle     = z_i[C_NUM_CORDIC_ITERATIONS]-2147483648;
     assign regular_angle    =  z_i[C_NUM_CORDIC_ITERATIONS];
-    assign mag =  x_i[C_NUM_CORDIC_ITERATIONS][C_CORDIC_FIXED_WIDTH-2:C_CORDIC_FRAC_WIDTH];
+    assign mag =  x_i[C_NUM_CORDIC_ITERATIONS][C_CORDIC_FIXED_WIDTH-2:C_CORDIC_FRAC_WIDTH]; // this is supposed to do the right shifting
     assign m00_axis_tvalid = tvalid_i[C_NUM_CORDIC_ITERATIONS];
     assign m00_axis_tlast = tlast_i[C_NUM_CORDIC_ITERATIONS];
     //assign m00_axis_tdata = x_i[C_NUM_CORDIC_ITERATIONS][C_CORDIC_FIXED_WIDTH-2:C_CORDIC_FRAC_WIDTH]; // remove the extra bit with -2 instead of -1
