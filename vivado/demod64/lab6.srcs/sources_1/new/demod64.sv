@@ -42,8 +42,9 @@ logic signed [31:0] final_real;
 logic signed [31:0] final_imag;
 
 always_comb begin
-        s00_axis_tready = m00_axis_tready || ~m00_axis_tvalid;
-
+        s00_axis_tready = m00_axis_tready;// || ~m00_axis_tvalid;
+        m00_axis_tstrb = 255; // rewrite to respect valid handshake and test that it respects back pressure
+        
         cur_real =  s00_axis_tdata[15:0];
         cur_imag =  s00_axis_tdata[31:16];
 
@@ -58,7 +59,7 @@ always_comb begin
 
         final_real  = $signed(ac + bd);
         final_imag  = $signed(bc - ad);
-
+        
         alpha = {final_imag,final_real};
        //alpha = {16'b0,cur_imag,16'b0,cur_real};
        //alpha = {32'hDEADDEAD,32'hBEEFBEEF};
@@ -70,7 +71,7 @@ always_ff @(posedge s00_axis_aclk)begin
        m00_axis_tvalid <= 0;
        val_reg <= 0;
        m00_axis_tdata <= 0;
-       m00_axis_tstrb <= 0;
+       //m00_axis_tstrb <= 0;
        m00_axis_tlast <= 0;
    end else begin
        if(s00_axis_tvalid && s00_axis_tready)begin
@@ -79,9 +80,12 @@ always_ff @(posedge s00_axis_aclk)begin
            m00_axis_tdata <= alpha;
            m00_axis_tvalid <= 1'b1;
            m00_axis_tlast <= s00_axis_tlast;
-           m00_axis_tstrb <= 255;
+           //m00_axis_tstrb <= 255;
        end else begin
-           m00_axis_tvalid <= 1'b0;
+            if(m00_axis_tready && m00_axis_tvalid)begin // check for valid transaction
+                m00_axis_tvalid <= 1'b0;
+            end
+
        end
    end
 end

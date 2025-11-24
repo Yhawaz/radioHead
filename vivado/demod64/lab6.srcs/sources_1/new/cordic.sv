@@ -102,18 +102,21 @@ module cordic #(
     assign flips_i_0 = (pre_x_i_0<=0 && pre_y_i_0<=0);
 
     always_ff @(posedge s00_axis_aclk) begin
+        if (m00_axis_tready) begin
             tvalid_i[0] <= s00_axis_tvalid;
             tlast_i[0] <= s00_axis_tlast;
             x_i[0] <= abs_scale(x_i_0);
             y_i[0] <= abs_scale(y_i_0);
             z_i[0] <= 0;
             flips_i[0] <= flips_i_0;
+        end
     end
 
     // Pipeline stages
     genvar i;
     generate for (i = 0; i < C_NUM_CORDIC_ITERATIONS; i = i + 1) begin: cordic_iteration
         always_ff @(posedge s00_axis_aclk) begin
+            if (m00_axis_tready) begin
                 tvalid_i[i+1] <= tvalid_i[i];
                 tlast_i[i+1] <= tlast_i[i];
                 flips_i[i+1] <= flips_i[i];
@@ -127,6 +130,7 @@ module cordic #(
                     z_i[i+1] <= z_i[i] + angles[i];
                 end
             end
+        end
     end endgenerate
 
     logic [15:0] mag;
