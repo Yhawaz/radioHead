@@ -15,7 +15,6 @@ module demo_shim #(
 
     // ports of axi master bus interface m00_axis
     input wire m00_axis_tready,
-	input wire [3:0] sw,
     output logic m00_axis_tvalid,
     output logic m00_axis_tlast,
     output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
@@ -25,10 +24,10 @@ module demo_shim #(
 	logic meow_ready;
 	logic meow_valid;
 	logic meow_last;
-	logic [C_M00_AXIS_TDATA_WIDTH-1:0] meow_data; 
-	logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] meow_strb;
+	logic [63:0] meow_data; 
+	logic [7:0] meow_strb;
 
-	cordic angle_maker(
+	demod64 demod(
 		.s00_axis_aclk(s00_axis_aclk),
 		.s00_axis_aresetn(s00_axis_aresetn),
 		.s00_axis_tlast(s00_axis_tlast),
@@ -44,21 +43,20 @@ module demo_shim #(
 		.m00_axis_tstrb(meow_strb)
 	);
 
-	demodulate dmoder(
+	cordic angle_time(
 		.s00_axis_aclk(s00_axis_aclk),
 		.s00_axis_aresetn(s00_axis_aresetn),
 		.s00_axis_tlast(meow_last),
 		.s00_axis_tvalid(meow_valid),
-		.s00_axis_tdata(meow_data),
-		.s00_axis_tstrb(meow_strb),
+		.s00_axis_tdata({meow_data[63:48],meow_data[31:16]}),
+		.s00_axis_tstrb(meow_strb[3:0]),
 		.s00_axis_tready(meow_ready),
 
 		.m00_axis_tready(m00_axis_tready),
 		.m00_axis_tvalid(m00_axis_tvalid),
 		.m00_axis_tlast(m00_axis_tlast),
 		.m00_axis_tdata(m00_axis_tdata),
-		.m00_axis_tstrb(m00_axis_tstrb),
-		.sw(sw)
+		.m00_axis_tstrb(m00_axis_tstrb)
 	);
 
 endmodule

@@ -1,0 +1,9 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1764021506" />
+    <testcase name="test_a" classname="test_demo_shim" file="/home/yabi/projs/radioHead/sim/test_demo_shim.py" lineno="295" time="0.0049152374267578125" sim_time_ns="15.001" ratio_time="3051.938024058983">
+      <failure message="Test failed with RANDOM_SEED=1764021506" />
+    </testcase>
+    <testcase name="test_b" classname="test_demo_shim" file="/home/yabi/projs/radioHead/sim/test_demo_shim.py" lineno="392" time="100.89833974838257" sim_time_ns="30010.001" ratio_time="297.4280951979794" />
+  </testsuite>
+</testsuites>

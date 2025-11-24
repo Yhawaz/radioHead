@@ -1,0 +1,132 @@
+/*
+
+AMD Vivado v2025.1 (64-bit) [Major: 2025, Minor: 1]
+SW Build: 6140274 on Wed May 21 22:58:25 MDT 2025
+IP Build: 6138677 on Thu May 22 03:10:11 MDT 2025
+IP Build: 6138677 on Thu May 22 03:10:11 MDT 2025
+
+Process ID (PID): 55353
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Sat Nov 22 02:31:52 EST 2025
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Ubuntu
+OS Version: 6.14.0-36-generic
+OS Architecture: amd64
+Available processors (cores): 8
+LSB Release Description: Ubuntu 24.04.3 LTS
+
+Display: 0
+Screen size: 1920x1080
+Local screen bounds: x = 66, y = 32, width = 1854, height = 1048
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+OS font scaling: 100%
+Anti-Alias Enabled: false
+
+Java version: 	21.0.1 64-bit
+
+Java home: 	/opt/xilinx/2025.1/tps/lnx64/jre21.0.1_12
+Java executable: 	/opt/xilinx/2025.1/tps/lnx64/jre21.0.1_12/bin/java
+Java arguments: 	[-Dsun.java2d.pmoffscreen=false, -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2, -Dsun.java2d.xrender=false, -Dsun.java2d.uiScale.enabled=false, -Dswing.aatext=true, -XX:-UsePerfData, -Djdk.map.althashing.threshold=512, -XX:StringTableSize=4072, -XX:+UseStringDeduplication, -XX:MaxGCPauseMillis=200, -XX:ParallelGCThreads=4, -XX:+ParallelRefProcEnabled, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.desktop/sun.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/java.awt.event=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.base/java.nio=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.table=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED, --add-exports=java.base/sun.security.action=ALL-UNNAMED, --add-exports=java.desktop/sun.font=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, -XX:NewSize=80m, -XX:MaxNewSize=80m, -Xms812m, -Xmx6144m, -Xss10m, -Xrs]
+Java initial memory (-Xms): 	812 MB
+Java maximum memory (-Xmx):	 6 GB
+
+User name: 	yabi
+User home directory: /home/yabi
+User working directory: /home/yabi/projs/radioHead/sim
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /opt/xilinx/2025.1
+HDI_APPROOT: /opt/xilinx/2025.1/Vivado
+RDI_DATADIR: /opt/xilinx/2025.1/SharedData/data:/opt/xilinx/2025.1/Vivado/data
+RDI_BINDIR: /opt/xilinx/2025.1/Vivado/bin
+
+Vivado preferences file: /home/yabi/.Xilinx/Vivado/2025.1/vivado.xml
+Vivado preferences directory: /home/yabi/.Xilinx/Vivado/2025.1/
+Vivado layouts directory: /home/yabi/.Xilinx/Vivado/2025.1/data/layouts
+PlanAhead jar file: 	/opt/xilinx/2025.1/Vivado/lib/classes/planAhead.jar
+Vivado log file: 	/home/yabi/projs/radioHead/sim/vivado.log
+Vivado journal file: 	/home/yabi/projs/radioHead/sim/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-55353-yabi-ThinkPad-T490
+Non-Default Parameters:	[]
+
+Xilinx & AMD Environment Variables
+--------------------------------------------------------------------------------------------
+GNOME_SHELL_SESSION_MODE: ubuntu
+RDI_APPROOT: /opt/xilinx/2025.1/Vivado
+RDI_BASEROOT: /opt/xilinx/2025.1
+RDI_BINROOT: /opt/xilinx/2025.1/Vivado/bin
+RDI_BUILD: yes
+RDI_DATADIR: /opt/xilinx/2025.1/SharedData/data:/opt/xilinx/2025.1/Vivado/data
+RDI_INSTALLROOT: /opt/xilinx
+RDI_INSTALLVER: Vivado
+RDI_JAVA_PLATFORM: 
+RDI_JAVA_VERSION: 21.0.1_12
+RDI_LIBDIR: /opt/xilinx/2025.1/Vivado/lib/lnx64.o/Ubuntu/24:/opt/xilinx/2025.1/Vivado/lib/lnx64.o/Ubuntu:/opt/xilinx/2025.1/Vivado/lib/lnx64.o
+RDI_OPT_EXT: .o
+RDI_PATCHROOT: 
+RDI_PLATFORM: lnx64
+RDI_PREPEND_PATH: /opt/xilinx/2025.1/Vitis/bin:/opt/xilinx/2025.1/Vivado/ids_lite/ISE/bin/lin64
+RDI_PROG: /opt/xilinx/2025.1/Vivado/bin/unwrapped/lnx64.o/vivado
+RDI_SESSION_INFO: /home/yabi/projs/radioHead/sim:yabi-ThinkPad-T490_1763796688_55261
+RDI_SHARED_DATA: /opt/xilinx/2025.1/SharedData/data
+RDI_TPS_ROOT: /opt/xilinx/2025.1/Vivado/tps/lnx64
+RDI_USE_JDK21: True
+SHELL: /bin/bash
+XILINX: /opt/xilinx/2025.1/Vivado/ids_lite/ISE
+XILINX_DSP: /opt/xilinx/2025.1/Vivado/ids_lite/ISE
+XILINX_HLS: /opt/xilinx/2025.1/Vitis
+XILINX_PLANAHEAD: /opt/xilinx/2025.1/Vivado
+XILINX_SDK: /opt/xilinx/2025.1/Vitis
+XILINX_VITIS: /opt/xilinx/2025.1/Vitis
+XILINX_VIVADO: /opt/xilinx/2025.1/Vivado
+
+
+GUI allocated memory:	812 MB
+GUI max memory:		6,144 MB
+Engine allocated memory: 1,881 MB
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,881 MB. GUI used memory: 66 MB. Current time: 11/22/25, 2:31:53 AM EST
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_PROJECT, "Open Project"); // t (PAResourceEtoH.GettingStartedView_OPEN_PROJECT)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_PROJECT
+setFileChooser("/home/yabi/projs/radioHead/vivado/demod64/lab6.xpr");
+// [GUI Memory]: 106 MB (+108509kb) [00:00:27]
+// [Engine Memory]: 1,871 MB (+1809992kb) [00:00:27]
+// CommandFailedException: ERROR: [Project 1-596] Project part 'xczu48dr-ffvg1517-2-e' is not available. Use '-part' with a valid part. Use the get_parts command to see a list of valid parts. 
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2025.1 (64-bit)
+# SW Build: 6140274 on Wed May 21 22:58:25 MDT 2025
+# IP Build: 6138677 on Thu May 22 03:10:11 MDT 2025
+# SharedData Build: 6139179 on Tue May 20 17:58:58 MDT 2025
+# Current time: Sat Nov 22 02:32:02 EST 2025
+# Process ID (PID): 55353
+# OS: Ubuntu
+# User: yabi
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+ui.frmwork.cmd.CommandFailedException: ERROR: [Project 1-596] Project part 'xczu48dr-ffvg1517-2-e' is not available. Use '-part' with a valid part. Use the get_parts command to see a list of valid parts.
+ (See /home/yabi/projs/radioHead/sim/vivado_pid55353.debug)
+*/
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_PROJECT, "Open Project"); // t (PAResourceEtoH.GettingStartedView_OPEN_PROJECT)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_PROJECT
+// HOptionPane Error: 'ERROR: [Project 1-596] Project part 'xczu48dr-ffvg1517-2-e' is not available. Use '-part' with a valid part. Use the get_parts command to see a list of valid parts. (Vivado v2025.1 (64-bit))'
+dismissFileChooser();
+selectButton("OptionPane.button", "OK", "Vivado v2025.1 (64-bit)"); // JButton (OptionPane.button)

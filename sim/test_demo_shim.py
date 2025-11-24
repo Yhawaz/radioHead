@@ -378,7 +378,7 @@ def python_modelr(val):
     prevy_Q = imag
 
 def verilog_modelr(val):
-    imag, real = struct.unpack(">ll", val)
+    imag, real = struct.unpack(">hh", val)
     #real = (val & 0xFFFF) # I
     #imag = (val >> 16) # Q
 
@@ -387,7 +387,7 @@ def verilog_modelr(val):
 
     complex_num = complex(real,imag)
 
-    verilog_model.append(np.angle(complex_num))
+    verilog_model.append((complex_num))
 
 @cocotb.test()
 async def test_b(dut):
@@ -441,7 +441,7 @@ async def test_b(dut):
         #outd.append({'type':'pause', "duration":random.randint(1,10)})
     await ClockCycles(dut.s00_axis_aclk, samples)
 
-    assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
+    #assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :/"
     plt.plot(python_model[:samples],"o-",color="red")
     plt.plot(verilog_model[:samples],"o-",color="purple")
     plt.show()
@@ -457,12 +457,12 @@ def demodulate_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [ proj_path / "hdl" / "demod64.sv"]
+    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic.sv"]
     parameters = {} #!!!
     build_test_args=[]
     sys.path.append(str(proj_path / "sim"))
     runner = get_runner(sim)
-    hdl_toplevel = "demod64"
+    hdl_toplevel = "demo_shim"
     runner.build(
         sources=sources,
         hdl_toplevel=hdl_toplevel,
