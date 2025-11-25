@@ -21,7 +21,7 @@ module AXI_monitor #(
     input logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb,
 
     // Ports of second Axi Master Bus Interface M01_AXIS
-    input wire m01_axis_tready, // this signal has to be ignored becauset this module cannot convey back pressure
+    input wire m01_axis_tready, // this signal has to be ignored because this module cannot convey back pressure
     output logic m01_axis_tvalid,
     output logic m01_axis_tlast,
     output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m01_axis_tdata,
@@ -32,7 +32,8 @@ module AXI_monitor #(
     logic valid_handshake;
     always_comb begin
         // check for valid handshake for intaking data from cordic
-	m01_axis_tstrb = 4'b1111;
+	    m01_axis_tstrb = 4'b1111;
+        valid_handshake = s00_axis_tvalid && m00_axis_tready;
     end
 
     always_ff @(posedge s00_axis_aclk)begin
@@ -43,9 +44,15 @@ module AXI_monitor #(
 	end else begin
 		// this module will cannot accept backpressure to not interfer
 		// with the upstream data stream
-		m01_axis_tvalid <= s00_axis_tvalid;
-		m01_axis_tdata <= s00_axis_tdata[31:16]; // grabbing the angle
-		m01_axis_tlast <= s00_axis_tlast;
+        // however it should only update when there is a valid transaction
+        if(valid_handshake)begin
+            m01_axis_tvalid <= s00_axis_tvalid;
+		    m01_axis_tdata <= s00_axis_tdata[31:16]; // grabbing the angle
+            m01_axis_tlast <= s00_axis_tlast;
+        end else begin
+            // after a valid transction the valid should drop to 0
+            m01_axis_tvalid <= 1'b0;
+        end
 	end
     end
 
