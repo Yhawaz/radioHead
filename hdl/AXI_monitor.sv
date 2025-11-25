@@ -20,14 +20,33 @@ module AXI_monitor #(
     input logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
     input logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb,
 
-    output logic [C_M00_AXIS_TDATA_WIDTH-1:0] snooped_data,
-    output logic snooped_valid,
+    // Ports of second Axi Master Bus Interface M01_AXIS
+    input wire m01_axis_tready, // this signal has to be ignored becauset this module cannot convey back pressure
+    output logic m01_axis_tvalid,
+    output logic m01_axis_tlast,
+    output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m01_axis_tdata,
+    output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m01_axis_tstrb
 );
 
     // this module can consume the same data from cordic but it cannot put back pressure
+    logic valid_handshake;
     always_comb begin
-        // check for valid handshake
-        
+        // check for valid handshake for intaking data from cordic
+	m01_axis_tstrb = 4'b1111;
+    end
+
+    always_ff @(posedge s00_axis_aclk)begin
+	if(s00_axis_aresetn == 1'b0)begin
+		// active low reset
+		snooped_data <= 0;
+		snooped_valid <= 1'b1;
+	end else begin
+		// this module will cannot accept backpressure to not interfer
+		// with the upstream data stream
+		m01_axis_tvalid <= s00_axis_tvalid;
+		m01_axis_tdata <= s00_axis_tdata[31:16]; // grabbing the angle
+		m01_axis_tlast <= s00_axis_tlast;
+	end
     end
 
 endmodule
