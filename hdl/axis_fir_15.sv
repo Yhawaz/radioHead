@@ -25,7 +25,7 @@ module axis_fir_15 #
         output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1: 0] m00_axis_tstrb
     );
  
-    localparam NUM_COEFFS = 15;
+    localparam NUM_COEFFS = 101;
     //i previously used some intermediate terms and then inialized them all
     //to zero
     logic signed [31:0] intmdt_term [NUM_COEFFS -1:0];

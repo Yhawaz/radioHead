@@ -17,7 +17,7 @@ from cocotb_bus.monitors import BusMonitor
 from cocotb_bus.scoreboard import Scoreboard
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import lfilter,lfiltic
+from scipy.signal import lfilter,lfiltic,firwin
 
 test_file = os.path.basename(__file__).replace(".py","")
 
@@ -149,7 +149,7 @@ async def drive_coeffs(dut,coeffs):
 
     # Setting the coefficients
     # code to put the packed array into a full 2d array:
-    for i in range(15):
+    for i in range(len(coeffs)):
         for b in range(8):
             dut.coeffs[b+8*i].value = (coeffs[i]>>b)&0x1
 
@@ -180,9 +180,14 @@ sig_out_act = [] #contains list of expected outputs (Growing)
 # Coefficients for the test
 #coeffs = [-2,-3,-4,0,9,21,32,36,32,21,9,0,-4,-3,-2]
 #coeffs = [-3,14,-20,6,16,-5,-41,68,-41,-5,16,6,-20,14,-3]
-coeffs = [3,14,21,21,15,40,75,102,75,40,15,21,21,14,3]
+#coeffs = [3,14,21,21,15,40,75,102,75,40,15,21,21,14,3]
+# These coeffs are the ones that correspond to the line:
+taps = firwin(numtaps=101, cutoff=6.25e3, fs=250e3)
+max = np.max(abs(taps))
+k = 127/max
+coeffs = [round(k * tap) for tap in taps]
 count = 0
-initial = [0 for i in range(14)]
+initial = [0 for i in range(len(coeffs))]
 expected = []
 # Creaing the input data
 
@@ -200,7 +205,7 @@ def model_fir_filter(sample):
     # you have to append one of the results to the sig out exp array
     global initial,count
     if count == 0:
-        initial = [0 for i in range(14)]
+        initial = [0 for i in range(len(coeffs)-1)]
     #print(f"This is initial:{initial} and {count}")
     a = lfilter(coeffs,[1.0],[sample],zi=initial)
     
