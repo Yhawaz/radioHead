@@ -58,6 +58,8 @@ def unpack_32bits(packed):
 
     #im just using the dtype cause that makes my life easier it dosen't matter if the test cases are slow
     high = np.array([high], dtype=np.uint16).view(np.int16)[0]
+    real_verilog_plot.append(real)
+    imag_verilog_plot.append(imag)
     low = np.array([low], dtype=np.uint16).view(np.int16)[0]
 
     return high, low
@@ -354,8 +356,6 @@ def python_modelr(val):
     real = twos_comp(real,16)
     imag = twos_comp(imag,16)
 
-    real_plot.append(real)
-    imag_plot.append(imag)
     
     #real,imag = struct.unpack("hh",val)
 
@@ -368,7 +368,7 @@ def python_modelr(val):
         cur_num = complex(real,imag)
         prevy_num = complex(prevy_I,prevy_Q)
 
-        perf_prod = np.angle(cur_num * np.conjugate(prevy_num))
+        perf_prod = np.angle(cur_num * np.conjugate(prevy_num))/(2**3)
 
         #print(perf_prod)
         #print(perf_prod.real,perf_prod.imag)
@@ -446,8 +446,6 @@ async def test_b(dut):
     plt.plot(verilog_model[:samples],"o-",color="purple")
     plt.show()
     #plt.plot(verilog_model)
-    plt.plot(real_plot[0:10000],"o-",color="red")
-    plt.plot(imag_plot[0:10000],"o-",color="blue")
     plt.show()
 
 def demodulate_runner():
@@ -457,7 +455,7 @@ def demodulate_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic.sv"]
+    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic.sv", proj_path / "hdl" / "axis_cordic.sv",]
     parameters = {} #!!!
     build_test_args=[]
     sys.path.append(str(proj_path / "sim"))

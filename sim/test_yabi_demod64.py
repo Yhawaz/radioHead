@@ -333,8 +333,11 @@ verilog_model=[]
 prevy_I = None
 prevy_Q = None
 
-real_plot =[]
-imag_plot = []
+real_verilog_plot =[]
+imag_verilog_plot = []
+
+real_python_plot =[]
+imag_python_plot = []
 
 ac_plot =[]
 ad_plot =[]
@@ -354,8 +357,7 @@ def python_modelr(val):
     real = twos_comp(real,16)
     imag = twos_comp(imag,16)
 
-    real_plot.append(real)
-    imag_plot.append(imag)
+
     
     #real,imag = struct.unpack("hh",val)
 
@@ -368,12 +370,15 @@ def python_modelr(val):
         cur_num = complex(real,imag)
         prevy_num = complex(prevy_I,prevy_Q)
 
-        perf_prod = np.angle(cur_num * np.conjugate(prevy_num))
+        perf_prod = (cur_num * np.conjugate(prevy_num))/(2**3)
+        real_python_plot.append(perf_prod.real)
+        imag_python_plot.append(perf_prod.imag)
+        
 
         #print(perf_prod)
         #print(perf_prod.real,perf_prod.imag)
 
-        python_model.append(perf_prod) 
+        python_model.append(np.angle(perf_prod))
     prevy_I = real
     prevy_Q = imag
 
@@ -385,6 +390,8 @@ def verilog_modelr(val):
     #real = twos_comp(real,16)
     #imag = twos_comp(imag,16)
 
+    real_verilog_plot.append(real)
+    imag_verilog_plot.append(imag)
     complex_num = complex(real,imag)
 
     verilog_model.append(np.angle(complex_num))
@@ -445,9 +452,13 @@ async def test_b(dut):
     plt.plot(python_model[:samples],"o-",color="red")
     plt.plot(verilog_model[:samples],"o-",color="purple")
     plt.show()
-    #plt.plot(verilog_model)
-    plt.plot(real_plot[0:10000],"o-",color="red")
-    plt.plot(imag_plot[0:10000],"o-",color="blue")
+
+    plt.plot(real_python_plot[0:10000],"o-",color="red")
+    plt.plot(imag_python_plot[0:10000],"o-",color="blue")
+
+    plt.plot(real_verilog_plot[0:10000],"o-",color="purple")
+    plt.plot(imag_verilog_plot[0:10000],"o-",color="green")
+
     plt.show()
 
 def demodulate_runner():

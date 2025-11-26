@@ -21,11 +21,16 @@ module demo_shim #(
     output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb
 );
 
-	logic meow_ready;
-	logic meow_valid;
-	logic meow_last;
-	logic [63:0] meow_data; 
-	logic [7:0] meow_strb;
+	logic demod_to_cordic_ready;
+	logic demod_to_cordic_valid;
+	logic demod_to_cordic_last;
+	logic [63:0] demod_to_cordic_data; 
+	logic [63:0] demod_to_cordic_data_shifted; 
+	logic [7:0] demod_to_cordic_strb;
+
+    always_comb begin
+       demod_to_cordic_data_shifted = {demod_to_cordic_data[63:32]<<8,demod_to_cordic_data[31:0]<<8}; 
+    end
 
 	demod64 demod(
 		.s00_axis_aclk(s00_axis_aclk),
@@ -36,21 +41,21 @@ module demo_shim #(
 		.s00_axis_tstrb(s00_axis_tstrb),
 		.s00_axis_tready(s00_axis_tready),
 
-		.m00_axis_tready(meow_ready),
-		.m00_axis_tvalid(meow_valid),
-		.m00_axis_tlast(meow_last),
-		.m00_axis_tdata(meow_data),
-		.m00_axis_tstrb(meow_strb)
+		.m00_axis_tready(demod_to_cordic_ready),
+		.m00_axis_tvalid(demod_to_cordic_valid),
+		.m00_axis_tlast(demod_to_cordic_last),
+		.m00_axis_tdata(demod_to_cordic_data),
+		.m00_axis_tstrb(demod_to_cordic_strb)
 	);
 
 	cordic angle_time(
 		.s00_axis_aclk(s00_axis_aclk),
 		.s00_axis_aresetn(s00_axis_aresetn),
-		.s00_axis_tlast(meow_last),
-		.s00_axis_tvalid(meow_valid),
-		.s00_axis_tdata({meow_data[63:48],meow_data[31:16]}),
-		.s00_axis_tstrb(meow_strb[3:0]),
-		.s00_axis_tready(meow_ready),
+		.s00_axis_tlast(demod_to_cordic_last),
+		.s00_axis_tvalid(demod_to_cordic_valid),
+		.s00_axis_tdata({demod_to_cordic_data_shifted[63:48],demod_to_cordic_data_shifted[31:16]}),
+		.s00_axis_tstrb(demod_to_cordic_strb[3:0]),
+		.s00_axis_tready(demod_to_cordic_ready),
 
 		.m00_axis_tready(m00_axis_tready),
 		.m00_axis_tvalid(m00_axis_tvalid),

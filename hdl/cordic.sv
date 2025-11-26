@@ -102,14 +102,12 @@ module cordic #(
     assign flips_i_0 = (pre_x_i_0<=0 && pre_y_i_0<=0);
 
     always_ff @(posedge s00_axis_aclk) begin
-        if (m00_axis_tready) begin
             tvalid_i[0] <= s00_axis_tvalid;
             tlast_i[0] <= s00_axis_tlast;
             x_i[0] <= abs_scale(x_i_0);
             y_i[0] <= abs_scale(y_i_0);
             z_i[0] <= 0;
             flips_i[0] <= flips_i_0;
-        end
     end
 
     // Pipeline stages

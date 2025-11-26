@@ -1,10 +1,10 @@
 $date
-   Fri Nov 21 16:01:52 2025
+   Tue Nov 25 20:19:01 2025
 $end
 
 $version
   2025.1.0
-  $dumpfile ("/home/yhawaz/radioHead/sim/sim_build/demod64.fst") 
+  $dumpfile ("/home/yabi/projs/radioHead/sim/sim_build/demod64.fst") 
 $end
 
 $timescale
@@ -47,12 +47,12 @@ $dumpvars
 0$
 b0 %
 b1111 &
-1'
+0'
 0(
 0)
 0*
 b0 +
-b0 ,
+b11111111 ,
 b0 -
 b0 .
 b0 /
@@ -73,19 +73,21 @@ $end
 #10000
 1!
 1"
+1'
 1(
 
 #15000
 0!
 1$
-b1111100111 %
-b1111100111 3
+b110111001 %
+b110111001 3
 
 #15001
 1!
 0"
 0$
 b0 %
+0'
 0(
 b0 3
 
@@ -95,6 +97,7 @@ b0 3
 #25001
 1!
 1"
+1'
 1(
 
 #30001
@@ -104,7 +107,6 @@ b0 3
 #35001
 1!
 1)
-b11111111 ,
 
 #40001
 0!

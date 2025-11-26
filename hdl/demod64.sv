@@ -82,9 +82,7 @@ always_ff @(posedge s00_axis_aclk)begin
            m00_axis_tlast <= s00_axis_tlast;
            //m00_axis_tstrb <= 255;
        end else begin
-            if(m00_axis_tready && m00_axis_tvalid)begin // check for valid transaction
                 m00_axis_tvalid <= 1'b0;
-            end
 
        end
    end
