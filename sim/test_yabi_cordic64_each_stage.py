@@ -24,6 +24,9 @@ import numpy as np
 #import matplotlib.pyplot as plt
 from scipy.signal import lfilter,lfiltic
 
+
+
+
 test_file = os.path.basename(__file__).replace(".py","")
 
 # TODO: Implement test with back pressure
@@ -259,8 +262,8 @@ def model_cordic(sample):
 
     x = twos_comp(sample & 0xFFFF_FFFF,32)
     y = twos_comp((sample & 0xFFFF_FFFF_0000_0000)>>32,32) # shift everything that uses this
-    print("oi bruv")
-    print(x,y)
+    #print("oi bruv")
+    #print(x,y)
     # y is upper 15
     exp_angle = float(np.atan2(y,x)*180/np.pi)
     if exp_angle < 0:
@@ -279,7 +282,7 @@ def model_cordic(sample):
 
 @cocotb.test()
 async def test_a(dut):
-    global initial,count
+    global initial,count, pbp
     """cocotb test for CORDIC"""
     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_cordic)
     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
@@ -302,7 +305,6 @@ async def test_a(dut):
     angle_epsilon = 0.1
     magnitude_epsilon = 3
     for i in range(samples):
-
         # Test for all positive numbers
         # x = random.getrandbits(15)
         # y = random.getrandbits(15)
@@ -310,17 +312,23 @@ async def test_a(dut):
         # y_vals.append(y)
 
         real = random.getrandbits(31) # TODO: change to allow negative values
-        imag = random.getrandbits(32) # TODO: change to allow negative values
-        # real = 3
-        # imag  = 4
+        imag = random.getrandbits(31) # TODO: change to allow negative values
+        #real = 0b0000_0000_0000_0000_0000_0000_0000_0011 # 3
+        #imag  = 0b1111_1111_1111_1111_1111_1111_1111_1100 # -4
 
         # x is lower 32 and y is upper 32
-        bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
-        #print(f"bin: {bin_val},{len(bin_val)}")
+        #bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
+
         # inputs.append(int(bin_val,2))
-        bin_val = 14608250150298505197 # x = 647417837, y = -893719011 
-        a = 0b1100_1010_1011_1010_1110_1110_0001_1101_0010_0110_1001_0110_1100_1111_1110_1101
-        inputs.append(bin_val)
+        
+        # test_val = 5384878113443729389
+        # test_val = 14608250150298505197 # x = 647417837, y = -893719011 
+        # real = test_val & 0xffff_ffff
+        # imag = (test_val & 0xffff_ffff_0000_0000) >> 32
+        bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
+        #a = 0b0100_1010_1011_1010_1110_1110_0001_1101_0010_0110_1001_0110_1100_1111_1110_1101
+        print(f"bin: {bin_val},{len(bin_val)}")
+        inputs.append(int(bin_val,2))
 
         #dut._log.info(f"Sending x:{twos_comp(x,16)} and y:{twos_comp(y,16)} as {int(bin_val,2)}")
 
@@ -351,26 +359,30 @@ async def test_a(dut):
 
         act_list.append((mag,ang))
 
-    dut._log.info(f"Play by play recreation:\n")
-    dut._log.info(f"State of the registers:\n")
+
     # for i in range(17):
     #     for let in ["x","y","z"]:
     #         print(f"{let}_i{i} = {getattr(dut,f"{let}_i{i}").value.signed_integer}") # using get attr so I can use for loops
     #     print("\n")
 
-    for i in range(17):
-        x = getattr(dut,f"x_i{i}").value.signed_integer
-        y = getattr(dut,f"y_i{i}").value.signed_integer
-        z = getattr(dut,f"z_i{i}").value.signed_integer
+    pbp = 1
+    if pbp:
+        dut._log.info(f"Play by play recreation:\n")
+        dut._log.info(f"State of the registers:\n")
 
-        mag = np.sqrt(x**2 + y**2)
-        ang = z / (2**32-1) * 360
-        if ang < 0:
-            ang = ang + 360
+        for i in range(17):
+            x = getattr(dut,f"x_i{i}").value.signed_integer
+            y = getattr(dut,f"y_i{i}").value.signed_integer
+            z = getattr(dut,f"z_i{i}").value.signed_integer
 
-        print(f"Stage {i}:\n")
-        print(f"x:{x}, y:{y}, z:{z}\n")
-        print(f"mag:{mag}, ang:{ang} \n") 
+            mag = np.sqrt(x**2 + y**2)
+            ang = z / (2**32-1) * 360
+            if ang < 0:
+                ang = ang + 360
+
+            print(f"Stage {i}:\n")
+            print(f"x:{x}, y:{y}, z:{z}\n")
+            print(f"mag:{mag}, ang:{ang} \n") 
 
 def cordic_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
@@ -382,12 +394,12 @@ def cordic_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [proj_path / "hdl" / "cordic.sv"]
+    sources = [proj_path / "hdl" / "cordic64.sv"]
     build_test_args = ["-Wall"]
     parameters = {} #!!!
     sys.path.append(str(proj_path / "sim"))
     runner = get_runner(sim)
-    hdl_toplevel = "cordic"
+    hdl_toplevel = "cordic64"
     runner.build(
         sources=sources,
         hdl_toplevel=hdl_toplevel, #fir_15
