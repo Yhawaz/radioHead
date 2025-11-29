@@ -46,10 +46,10 @@ def twos_comp(val, bits):
     return val   
 
 def bit_2_degree(bit_angle):
-    return (360*bit_angle)/(2**8)
+    return (360*bit_angle)/(2**32-1)
 
 def degree_2_bit(real_angle):
-        return (real_angle/360)*(2**16-1)
+        return (real_angle/360)*(2**32-1)
 
 #this was named wrong, this just unapcks a high low
 def unpack_32bits(packed):
@@ -378,16 +378,14 @@ def python_modelr(val):
     prevy_Q = imag
 
 def verilog_modelr(val):
-    imag, real = struct.unpack(">hh", val)
+    ang,mag = struct.unpack(">ii", val)
     #real = (val & 0xFFFF) # I
     #imag = (val >> 16) # Q
 
     #real = twos_comp(real,16)
     #imag = twos_comp(imag,16)
 
-    complex_num = complex(real,imag)
-
-    verilog_model.append((complex_num))
+    verilog_model.append(bit_2_degree(ang))
 
 @cocotb.test()
 async def test_b(dut):
@@ -431,7 +429,7 @@ async def test_b(dut):
 ##        imag_prod = np.int16(complex_num.imag)
 ##        res = int((imag_prod.astype(np.int32) << 16) | (real_prod.astype(np.int32) & 0xFFFF))
         res = int(c_data[i])
-        print("res",hex(res))
+        #print("res",hex(res))
 
         data = {'type':'write_single', "contents":{"data": res,"last":0}}
         ind.append(data)
