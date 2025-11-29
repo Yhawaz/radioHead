@@ -279,10 +279,11 @@ def model_cordic(sample):
     #print(exp1)
 
 
+samples = 1000
 
 @cocotb.test()
 async def test_a(dut):
-    global initial,count, pbp
+    global initial,count, pbp,samples
     """cocotb test for CORDIC"""
     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_cordic)
     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
@@ -297,40 +298,14 @@ async def test_a(dut):
 
     # making the input data
     inputs = []
-    x_vals = []
-    y_vals = []
     act_list = []
-    samples = 1000
 
-    angle_epsilon = 0.1
-    magnitude_epsilon = 3
+
     for i in range(samples):
-        # Test for all positive numbers
-        # x = random.getrandbits(15)
-        # y = random.getrandbits(15)
-        # x_vals.append(x)
-        # y_vals.append(y)
-
         real = random.getrandbits(32)
         imag = random.getrandbits(32) 
-        # imag = 0b1111_1111_1111_1111_1111_1111_1111_0110 # -10
-        # real  = 0b1111_1111_1111_1111_1111_1111_1111_0110 # -10
-
-        # x is lower 32 and y is upper 32
-        #bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
-
-        # inputs.append(int(bin_val,2))
-        
-        # test_val = 5384878113443729389
-        # test_val = 14608250150298505197 # x = 647417837, y = -893719011 
-        # real = test_val & 0xffff_ffff
-        # imag = (test_val & 0xffff_ffff_0000_0000) >> 32
         bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
-        #a = 0b0100_1010_1011_1010_1110_1110_0001_1101_0010_0110_1001_0110_1100_1111_1110_1101
-        #print(f"bin: {bin_val},{len(bin_val)}")
         inputs.append(int(bin_val,2))
-
-        #dut._log.info(f"Sending x:{twos_comp(x,16)} and y:{twos_comp(y,16)} as {int(bin_val,2)}")
 
     #(pts)
     #assert 1 == 2
@@ -351,20 +326,6 @@ async def test_a(dut):
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
-    for sig in sig_out_act:
-        #print(f"angle: {(sig & 0xFFFF0000) >> 16},ang: {(sig & 0xFFFF)/2**16*2*np.pi}")
-        #print(f"mag:{(sig & 0xFFFF)}, ang:{ ((sig & 0xFFFF0000)>>16)/(2**16)*360}")
-        mag = sig & 0xFFFF_FFFF
-        ang = ((sig & 0xFFFF_FFFF_0000_0000)>>32)/(2**32-1)*360
-
-        act_list.append((mag,ang))
-
-
-    # for i in range(17):
-    #     for let in ["x","y","z"]:
-    #         print(f"{let}_i{i} = {getattr(dut,f"{let}_i{i}").value.signed_integer}") # using get attr so I can use for loops
-    #     print("\n")
-
     pbp = 0
     if pbp:
         dut._log.info(f"Play by play recreation:\n")
@@ -383,6 +344,43 @@ async def test_a(dut):
             print(f"Stage {i}:\n")
             print(f"x:{x}, y:{y}, z:{z}\n")
             print(f"mag:{mag}, ang:{ang} \n") 
+
+@cocotb.test()
+async def test_b(dut):
+    global initial,count, pbp,samples
+    """cocotb test for CORDIC"""
+    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_cordic)
+    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+    # Create a scoreboard on the stream_out bus
+    scoreboard = ScoreGuy(dut,fail_immediately=False)
+    scoreboard.add_interface(outm, sig_out_exp)
+    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+
+    inputs = []
+
+    for i in range(samples):
+        real = random.getrandbits(32)
+        imag = random.getrandbits(32) 
+        bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
+        inputs.append(int(bin_val,2))
+
+    #feed the driver on the M Side:
+    for i in range(samples):
+        data = {'type':'write_single', "contents":{"data": int(inputs[i]),"last":0}}
+        ind.append(data)
+        pause = {"type":"pause","duration":random.randint(1,6)}
+        ind.append(pause)
+    ind.append({'type':'write_burst', "contents": {"data": inputs[0:99]}})
+    ind.append({'type':'pause','duration':2}) #end with pause
+    #feed the driver on the S Side with on/off backpressure!
+    for i in range(samples):
+        outd.append({'type':'read', "duration":random.randint(1,10)})
+        outd.append({'type':'pause', "duration":random.randint(1,10)})
+    await ClockCycles(dut.s00_axis_aclk, 10*samples)
+    assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
 def cordic_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
