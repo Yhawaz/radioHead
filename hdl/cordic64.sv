@@ -157,6 +157,7 @@ module cordic64 #(
     logic signed [C_CORDIC_FIXED_WIDTH-1:0] z_i [0:C_NUM_CORDIC_ITERATIONS];
     logic  flips_i [0:C_NUM_CORDIC_ITERATIONS];
     logic y_neg_i [0:C_NUM_CORDIC_ITERATIONS];
+    logic x_neg_i [0:C_NUM_CORDIC_ITERATIONS];
     logic tvalid_i [0:C_NUM_CORDIC_ITERATIONS];
     logic tlast_i [0:C_NUM_CORDIC_ITERATIONS];
 
@@ -165,6 +166,7 @@ module cordic64 #(
     logic signed [C_S00_AXIS_TDATA_WIDTH/2-1:0] x_i_0, y_i_0, z_i_0;
     logic flips_i_0;
     logic y_neg;
+    logic x_neg;
     assign pre_x_i_0 = $signed(s00_axis_tdata[(C_S00_AXIS_TDATA_WIDTH/2)-1:0]);
     assign pre_y_i_0 = $signed(s00_axis_tdata[(C_S00_AXIS_TDATA_WIDTH-1):(C_S00_AXIS_TDATA_WIDTH/2)]);
     assign x_i_0 = $signed(pre_x_i_0)<0?-pre_x_i_0:pre_x_i_0;
@@ -172,6 +174,7 @@ module cordic64 #(
     assign z_i_0 = 0;
     assign flips_i_0 = (pre_x_i_0<=0 && pre_y_i_0<=0);
     assign y_neg = $signed(pre_y_i_0) < 0;
+    assign x_neg = $signed(pre_x_i_0) < 0;
     always_ff @(posedge s00_axis_aclk) begin
         if (m00_axis_tready) begin
             tvalid_i[0] <= s00_axis_tvalid;
@@ -181,6 +184,7 @@ module cordic64 #(
             z_i[0] <= 0;
             flips_i[0] <= flips_i_0;
             y_neg_i[0] <= y_neg;
+            x_neg_i[0] <= x_neg;
         end
     end
 
@@ -193,6 +197,7 @@ module cordic64 #(
                 tlast_i[i+1] <= tlast_i[i];
                 flips_i[i+1] <= flips_i[i];
                 y_neg_i[i+1] <= y_neg_i[i];
+                x_neg_i[i+1] <= x_neg_i[i];
                 if ($signed(y_i[i]) < 0) begin
                     x_i[i+1] <= x_i[i] - rnd2zerodiv(y_i[i], i);
                     y_i[i+1] <= y_i[i] + rnd2zerodiv(x_i[i], i);
@@ -207,10 +212,11 @@ module cordic64 #(
     end endgenerate
 
     logic [31:0] mag;
-    logic [31:0] rotate_angle, regular_angle, y_neg_angle;
+    logic [31:0] rotate_angle, regular_angle, y_neg_angle,x_neg_angle;
     assign rotate_angle     = z_i[C_NUM_CORDIC_ITERATIONS]-2147483648;
     assign regular_angle    =  z_i[C_NUM_CORDIC_ITERATIONS];
     assign y_neg_angle = 32'hffff_ffff - regular_angle;
+    assign x_neg_angle = 32'hffff_ffff - rotate_angle;
     assign mag =  x_i[C_NUM_CORDIC_ITERATIONS][C_CORDIC_FIXED_WIDTH-2:C_CORDIC_FRAC_WIDTH-1]; // this is supposed to do the right shifting
     assign m00_axis_tvalid = tvalid_i[C_NUM_CORDIC_ITERATIONS];
     assign m00_axis_tlast = tlast_i[C_NUM_CORDIC_ITERATIONS];
@@ -221,6 +227,8 @@ module cordic64 #(
         end else begin
             if(y_neg_i[C_NUM_CORDIC_ITERATIONS])begin
                 m00_axis_tdata = {y_neg_angle, mag};
+            end else if (x_neg_i[C_NUM_CORDIC_ITERATIONS]) begin
+                m00_axis_tdata = {x_neg_angle, mag};
             end else begin
                 m00_axis_tdata = {regular_angle, mag};
             end

@@ -311,10 +311,10 @@ async def test_a(dut):
         # x_vals.append(x)
         # y_vals.append(y)
 
-        real = random.getrandbits(31) # TODO: change to allow negative values
-        imag = random.getrandbits(31) # TODO: change to allow negative values
-        #real = 0b0000_0000_0000_0000_0000_0000_0000_0011 # 3
-        #imag  = 0b1111_1111_1111_1111_1111_1111_1111_1100 # -4
+        #real = random.getrandbits(31) # TODO: change to allow negative values
+        #imag = random.getrandbits(31) # TODO: change to allow negative values
+        imag = 0b0000_0000_0000_0000_0000_0000_0000_0101 # 5
+        real  = 0b1111_1111_1111_1111_1111_1111_1111_0100 # -12
 
         # x is lower 32 and y is upper 32
         #bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
