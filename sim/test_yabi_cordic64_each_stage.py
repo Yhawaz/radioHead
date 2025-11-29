@@ -10,8 +10,8 @@ from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout
 from cocotb.utils import get_sim_time as gst
 
-from cocotb.runner import get_runner
-#from vicoco.vivado_runner import get_runner
+#from cocotb.runner import get_runner
+from vicoco.vivado_runner import get_runner
 
 from cocotb_bus.bus import Bus
 from cocotb_bus.drivers import BusDriver
@@ -386,8 +386,8 @@ def cordic_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     
-    sim = os.getenv("SIM", "icarus")
-    #sim = os.getenv("SIM", "vivado")
+    #sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM", "vivado")
 
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
