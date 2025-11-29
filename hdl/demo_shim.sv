@@ -2,7 +2,7 @@
 `default_nettype none
 module demo_shim #(
     parameter integer C_S00_AXIS_TDATA_WIDTH = 32,
-    parameter integer C_M00_AXIS_TDATA_WIDTH = 32
+    parameter integer C_M00_AXIS_TDATA_WIDTH = 64
 )(
     // ports of axi slave bus interface s00_axis
     input wire s00_axis_aclk,
@@ -48,13 +48,13 @@ module demo_shim #(
 		.m00_axis_tstrb(demod_to_cordic_strb)
 	);
 
-	cordic angle_time(
+	cordic64 angle_time(
 		.s00_axis_aclk(s00_axis_aclk),
 		.s00_axis_aresetn(s00_axis_aresetn),
 		.s00_axis_tlast(demod_to_cordic_last),
 		.s00_axis_tvalid(demod_to_cordic_valid),
-		.s00_axis_tdata({demod_to_cordic_data_shifted[63:48],demod_to_cordic_data_shifted[31:16]}),
-		.s00_axis_tstrb(demod_to_cordic_strb[3:0]),
+		.s00_axis_tdata(demod_to_cordic_data),
+		.s00_axis_tstrb(demod_to_cordic_strb),
 		.s00_axis_tready(demod_to_cordic_ready),
 
 		.m00_axis_tready(m00_axis_tready),
