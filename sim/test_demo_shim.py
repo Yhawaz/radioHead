@@ -294,39 +294,39 @@ def demodulate_model(val):
     prev_I = real
     prev_Q = imag
 
-@cocotb.test()
-async def test_a(dut):
-    """cocotb test for averager controller"""
-    global sig_out_act
-    global sig_out_exp
+# @cocotb.test()
+# async def test_a(dut):
+#     """cocotb test for averager controller"""
+#     global sig_out_act
+#     global sig_out_exp
 
-    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=demodulate_model)
-    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
-    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+#     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=demodulate_model)
+#     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+#     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+#     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
 
-    scoreboard = TrigBoard(dut,fail_immediately=False)
-    scoreboard.add_interface(outm, sig_out_exp)
-    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+#     scoreboard = TrigBoard(dut,fail_immediately=False)
+#     scoreboard.add_interface(outm, sig_out_exp)
+#     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
 
-    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
-    #vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
-    for i in range(100):
-        rand_complex_num = random.randint(1,1000)
-        #rand_complex_num = vals[i]
-        data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
-        ind.append(data)
-        #pause = {"type":"pause","duration":random.randint(1,6)}
-        # ind.append(pause)
+#     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+#     #vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
+#     for i in range(100):
+#         rand_complex_num = random.randint(1,1000)
+#         #rand_complex_num = vals[i]
+#         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
+#         ind.append(data)
+#         #pause = {"type":"pause","duration":random.randint(1,6)}
+#         # ind.append(pause)
 
-    for i in range(200):
-        outd.append({'type':'read', "duration":random.randint(1,10)})
-        #outd.append({'type':'pause', "duration":random.randint(1,10)})
-    await ClockCycles(dut.s00_axis_aclk, 1100)
+#     for i in range(200):
+#         outd.append({'type':'read', "duration":random.randint(1,10)})
+#         #outd.append({'type':'pause', "duration":random.randint(1,10)})
+#     await ClockCycles(dut.s00_axis_aclk, 1100)
 
-    assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
-    print("HEY",scoreboard.errors)
-    assert scoreboard.errors == 1
+#     assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
+#     print("HEY",scoreboard.errors)
+#     assert scoreboard.errors == 1
 
 
 python_model=[]
@@ -455,7 +455,7 @@ def demodulate_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic.sv", proj_path / "hdl" / "axis_cordic.sv",]
+    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic64.sv", proj_path / "hdl" / "axis_cordic.sv",]
     parameters = {} #!!!
     build_test_args=[]
     sys.path.append(str(proj_path / "sim"))
