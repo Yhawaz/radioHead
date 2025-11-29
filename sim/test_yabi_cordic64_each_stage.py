@@ -45,7 +45,7 @@ class ScoreGuy(Scoreboard):
         got = got
         # Now scoreboard prints the mag and angle instead of raw binary
         rec_mag, rec_angle = get_mag_ang(got)
-        print(f"this is what im expecting:{exp}")
+        #print(f"this is what im expecting:{exp}")
         exp_mag = 0xFFFF_FFFF & exp
         exp_angle = ((0xFFFF_FFFF_0000_0000 & exp ) >> 32) * 360/(2**32-1)
 
@@ -276,7 +276,7 @@ def model_cordic(sample):
     sig_in.append(sample)
     sig_out_exp.append(int(bin_val,2))
     exp1.append((exp_mag,exp_angle))
-    print(exp1)
+    #print(exp1)
 
 
 
@@ -300,7 +300,7 @@ async def test_a(dut):
     x_vals = []
     y_vals = []
     act_list = []
-    samples = 1
+    samples = 1000
 
     angle_epsilon = 0.1
     magnitude_epsilon = 3
@@ -311,10 +311,10 @@ async def test_a(dut):
         # x_vals.append(x)
         # y_vals.append(y)
 
-        #real = random.getrandbits(31) # TODO: change to allow negative values
-        #imag = random.getrandbits(31) # TODO: change to allow negative values
-        imag = 0b0000_0000_0000_0000_0000_0000_0000_0101 # 5
-        real  = 0b1111_1111_1111_1111_1111_1111_1111_0100 # -12
+        real = random.getrandbits(32)
+        imag = random.getrandbits(32) 
+        # imag = 0b1111_1111_1111_1111_1111_1111_1111_0110 # -10
+        # real  = 0b1111_1111_1111_1111_1111_1111_1111_0110 # -10
 
         # x is lower 32 and y is upper 32
         #bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
@@ -327,7 +327,7 @@ async def test_a(dut):
         # imag = (test_val & 0xffff_ffff_0000_0000) >> 32
         bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
         #a = 0b0100_1010_1011_1010_1110_1110_0001_1101_0010_0110_1001_0110_1100_1111_1110_1101
-        print(f"bin: {bin_val},{len(bin_val)}")
+        #print(f"bin: {bin_val},{len(bin_val)}")
         inputs.append(int(bin_val,2))
 
         #dut._log.info(f"Sending x:{twos_comp(x,16)} and y:{twos_comp(y,16)} as {int(bin_val,2)}")
@@ -344,10 +344,10 @@ async def test_a(dut):
 
     #feed the driver on the S Side:
     #always be ready to receive data:
-    outd.append({'type':'read', "duration":samples})
+    outd.append({'type':'read', "duration":samples*2})
 
     #await ClockCycles(dut.s00_axis_aclk, 110*1000*2)
-    await ClockCycles(dut.s00_axis_aclk, 2000)
+    await ClockCycles(dut.s00_axis_aclk, 10*samples)
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
@@ -365,7 +365,7 @@ async def test_a(dut):
     #         print(f"{let}_i{i} = {getattr(dut,f"{let}_i{i}").value.signed_integer}") # using get attr so I can use for loops
     #     print("\n")
 
-    pbp = 1
+    pbp = 0
     if pbp:
         dut._log.info(f"Play by play recreation:\n")
         dut._log.info(f"State of the registers:\n")

@@ -10,101 +10,19 @@ from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout
 from cocotb.utils import get_sim_time as gst
 
-#from cocotb.runner import get_runner
-from vicoco.vivado_runner import get_runner
+from cocotb.runner import get_runner
+#from vicoco.vivado_runner import get_runner
 
 from cocotb_bus.bus import Bus
 from cocotb_bus.drivers import BusDriver
 from cocotb_bus.monitors import Monitor
 from cocotb_bus.monitors import BusMonitor
 from cocotb_bus.scoreboard import Scoreboard
-
-from scapy.utils import hexdump, hexdiff
 import numpy as np
 #import matplotlib.pyplot as plt
 from scipy.signal import lfilter,lfiltic
 
 test_file = os.path.basename(__file__).replace(".py","")
-
-# TODO: Implement test with back pressure
-# TODO: Run with vicoco
-# TODO: Run with more data
-
-def get_mag_ang(input):
-    mag = input & 0xFFFF_FFFF # magnitude is the bottom bits
-    pre_angle = (input & 0xFFFF_FFFF_0000_0000)>>32 # angle is the top bits
-    act_angle = pre_angle/(2**32-1)*360
-    return (mag,act_angle)
-
-class ScoreGuy(Scoreboard):
-    def compare(self, got, exp, log, strict_type=True):
-        # Compare the types
-        got = got
-        # Now scoreboard prints the mag and angle instead of raw binary
-        rec_mag, rec_angle = get_mag_ang(got)
-        print(f"this is what im expecting:{exp}")
-        exp_mag, exp_angle = get_mag_ang(exp)
-
-        correct = (abs(exp_mag - rec_mag) < 10) and (abs(exp_angle - rec_angle) < 1)
-
-        strict_type=False
-
-        if strict_type and type(got) != type(exp):
-            self.errors += 1
-            log.error("Received transaction type is different than expected")
-            log.info("Received: %s but expected %s" % (str(type(got)), str(type(exp))))
-            if self._imm:
-                assert False, (
-                    "Received transaction of wrong type. "
-                    "Set strict_type=False to avoid this."
-                )
-            return
-        # Or convert to a string before comparison
-        elif not strict_type:
-            got, exp = str(got), str(exp)
-
-        # Compare directly
-        if not correct:
-            self.errors += 1
-
-            # Try our best to print out something useful
-            #strgot, strexp = str(degree_2_bit(got)), str(degree_2_bit(exp))
-            strgot, strexp = str(got), str(exp)
-
-            log.error("Received transaction differed from expected output")
-            # if not strict_type:
-            #     log.info("Expected:\n" + hexdump(strexp, dump=True))
-            # else:
-            log.info(f"Expected magnitude of {exp_mag} with angle of {exp_angle} degrees\n")
-            if not isinstance(exp, str):
-                try:
-                    for word in exp:
-                        log.info(str(word))
-                except Exception:
-                    pass
-            # if not strict_type:
-            #     log.info("Received:\n" + hexdump(strgot, dump=True))
-            # else:
-            log.info(f"Received magnitude of {rec_mag} with angle of {rec_angle} degrees\n")
-            if not isinstance(got, str):
-                try:
-                    for word in got:
-                        log.info(str(word))
-                except Exception:
-                    pass
-            log.warning("Difference:")
-            # NOTE: scapy.utils.hexdiff doesn't return a string but prints!
-            #hexdiff(strexp, strgot)
-            if self._imm:
-                assert False, "Received transaction differed from expected transaction"
-        else:
-            # Don't want to fail the test
-            # if we're passed something without __len__
-            try:
-                log.debug("Received expected transaction %d bytes" % (len(got)))
-                log.debug(repr(got))
-            except Exception:
-                pass
 
 class AXIS_Monitor(BusMonitor):
     """
@@ -137,8 +55,7 @@ class AXIS_Monitor(BusMonitor):
                 self.transactions+=1
                 thing = dict(data=data.signed_integer,last=last,
                              name=self.name,count=self.transactions)
-                mag,angle = get_mag_ang(thing['data'])
-                self.dut._log.info(f"{self.name}: {thing} Magnitude of {mag} @ {round(angle,2)} deg")
+                self.dut._log.info(f"{self.name}: {thing}")
                 self._recv(data.signed_integer)
 
 class AXIS_Driver(BusDriver):
@@ -247,32 +164,26 @@ def twos_comp(val, bits):
         val = val - (1 << bits)        # compute negative value
     return val   
 
-exp1 = []
+exp = []
 
 
 def model_cordic(sample):
-    global exp1
-    # now I am getting a 64 bit iq value
-    # real is lower 32
-    # imag is upper 32
-
-    x = twos_comp(sample & 0xFFFF_FFFF,32)
-    y = twos_comp((sample & 0xFFFF_FFFF_0000_0000)>>32,32) # shift everything that uses this
-    print("oi bruv")
-    print(x,y)
+    global exp
+    # x is lower 15
+    x = twos_comp(sample & 0xFFFF,16)
+    y = twos_comp((sample & 0xFFFF0000)>>16,16) # shift everything that uses this
+    
     # y is upper 15
     exp_angle = float(np.atan2(y,x)*180/np.pi)
     if exp_angle < 0:
         exp_angle = exp_angle + 360
 
     exp_mag = round(np.sqrt(x**2 + y**2))
-    bin_val = format(round(exp_angle/360*(2**32-1)), f'0{32}b') + format(exp_mag, f'0{32}b')
-    #bin_val = bin(round(exp_angle)).replace("0b","") + bin(exp_mag).replace("0b","")
+    bin_val = bin(round(exp_angle)).replace("0b","") + bin(round(exp_mag)).replace("0b","")
     # Adding to all the arrays
     sig_in.append(sample)
     sig_out_exp.append(int(bin_val,2))
-    exp1.append((exp_mag,exp_angle))
-    print(exp1)
+    exp.append((exp_mag,exp_angle))
 
 
 
@@ -285,7 +196,7 @@ async def test_a(dut):
     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
     # Create a scoreboard on the stream_out bus
-    scoreboard = ScoreGuy(dut,fail_immediately=False)
+    scoreboard = Scoreboard(dut,fail_immediately=False)
     scoreboard.add_interface(outm, sig_out_exp)
     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
@@ -296,7 +207,7 @@ async def test_a(dut):
     x_vals = []
     y_vals = []
     act_list = []
-    samples = 1
+    samples = 100
 
     angle_epsilon = 0.1
     magnitude_epsilon = 3
@@ -308,18 +219,15 @@ async def test_a(dut):
         # x_vals.append(x)
         # y_vals.append(y)
 
-        real = random.getrandbits(31) # TODO: change to allow negative values
-        imag = random.getrandbits(32) # TODO: change to allow negative values
-        # real = 3
-        # imag  = 4
+        x = random.getrandbits(16)
+        y = random.getrandbits(16)
+        x_vals.append(twos_comp(x,16))
+        y_vals.append(twos_comp(y,16))
 
-        # x is lower 32 and y is upper 32
-        bin_val = format(imag, f'0{32}b') + format(real, f'0{32}b')
+        # x is lower 15 and y is upper 15
+        bin_val = format(y, f'0{16}b') + format(x, f'0{16}b')
         #print(f"bin: {bin_val},{len(bin_val)}")
-        # inputs.append(int(bin_val,2))
-        bin_val = -3838493923411046419
-        inputs.append(bin_val)
-
+        inputs.append(int(bin_val,2))
         #dut._log.info(f"Sending x:{twos_comp(x,16)} and y:{twos_comp(y,16)} as {int(bin_val,2)}")
 
     #(pts)
@@ -337,35 +245,48 @@ async def test_a(dut):
     outd.append({'type':'read', "duration":samples})
 
     #await ClockCycles(dut.s00_axis_aclk, 110*1000*2)
-    await ClockCycles(dut.s00_axis_aclk, 2000)
+    await ClockCycles(dut.s00_axis_aclk, 17*samples)
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
     for sig in sig_out_act:
         #print(f"angle: {(sig & 0xFFFF0000) >> 16},ang: {(sig & 0xFFFF)/2**16*2*np.pi}")
         #print(f"mag:{(sig & 0xFFFF)}, ang:{ ((sig & 0xFFFF0000)>>16)/(2**16)*360}")
-        mag = sig & 0xFFFF_FFFF
-        ang = ((sig & 0xFFFF_FFFF_0000_0000)>>32)/(2**32-1)*360
-
+        mag = sig & 0xFFFF
+        ang = ((sig & 0xFFFF0000)>>16)/(2**16)*360
         act_list.append((mag,ang))
 
+    # Since the angles and magnitudes are not exactly the same, the lists will be iterated through and verified.
+    # side stepping the score board
+    for i in range(samples):
+        act = act_list[i]
+        act_mag = act[0]
+        act_ang = act[1]
+
+        expexcted = exp[i]
+        exp_mag = expexcted[0]
+        exp_ang = expexcted[1]
+
+        assert abs(act_ang - exp_ang) < angle_epsilon, f"Oops. It seems the angle was wrong. Expected:{exp_ang}, Actual:{act_ang}"
+        assert abs(act_mag - exp_mag) < magnitude_epsilon, f"Oops. It seems the magnitude was wrong. Expected:{exp_mag}, Actual:{act_mag}"
+    dut._log.info(f"Successfully verified {samples} sample(s)!")
 
 def cordic_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     
-    #sim = os.getenv("SIM", "icarus")
-    sim = os.getenv("SIM", "vivado")
+    sim = os.getenv("SIM", "icarus")
+    #sim = os.getenv("SIM", "vivado")
 
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [proj_path / "hdl" / "cordic64.sv"]
+    sources = [proj_path / "hdl" / "cordic.sv"]
     build_test_args = ["-Wall"]
     parameters = {} #!!!
     sys.path.append(str(proj_path / "sim"))
     runner = get_runner(sim)
-    hdl_toplevel = "cordic64"
+    hdl_toplevel = "cordic"
     runner.build(
         sources=sources,
         hdl_toplevel=hdl_toplevel, #fir_15
