@@ -58,10 +58,19 @@ N = len(samples)
 phase = 0
 freq = 0
 # These next two params is what to adjust, to make the feedback loop faster or slower (which impacts stability)
-alpha = 8.0
-beta = 0.02
+alpha = 100
+beta = 0.5
 out = np.zeros(N, dtype=np.complex64)
 freq_log = []
+
+
+sel = samples[700:900]   # or some other 100–200 sample window
+
+plt.figure()
+plt.scatter(np.real(sel), np.imag(sel),color="blue")  # constellation
+plt.axis([-.03,.03,-.03,.03])
+plt.grid(True)
+
 for i in range(N):
     out[i] = samples[i] * np.exp(-1j*phase) # adjust the input sample by the inverse of the estimated phase offset
     error = np.real(out[i]) * np.imag(out[i]) # This is the error formula for 2nd order Costas Loop (e.g. for BPSK)
@@ -77,6 +86,15 @@ for i in range(N):
     while phase < 0:
         phase += 2*np.pi
 x = out
+
+rawr = x[700:900] 
+print(rawr)
+
+plt.figure()
+plt.scatter(np.real(rawr), np.imag(rawr),color="red")  # constellation
+plt.grid(True)
+plt.axis([-.03,.03,-.03,.03])
+plt.show()
 
 # Demod BPSK
 bits = (np.real(x) > 0).astype(int) # 1's and 0's
