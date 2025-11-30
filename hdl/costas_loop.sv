@@ -36,11 +36,39 @@ module costas_loop #(
     logic [16:0] alpha;
     logic [16:0] phase;
     logic [16:0] freq;
+    logic [32:0] error;
+    
+    logic [32:0] cur_imag;
+    logic [32:0] cur_real;
+    
+    logic [16:0] sin_val;
+    logic [16:0] cos_val;
 
+    logic [48:0] new_imag;
+    logic [48:0] new_real;
+
+    logic signed [48:0] ac;
+    logic signed [48:0] bd;
+
+    logic signed [48:0] bc;
+    logic signed [48:0] ad;
     always_comb begin
     
         //TODO FIGURE THIS LINE TF OUT out= s00_axis_tdata*nco(phase);
         //mixing is a muliplying the signals by their complex values, fuck my CHUNGUS LIFE
+        cur_imag=s00_axis_tdata[63:32];
+        cur_real=s00_axis_tdata[31:0]; //which gets multiplied by sine which gets multiplied by cosine
+
+        ac = ($signed(cur_real) * $signed(sin_val)) >>> 3; 
+        bd = ($signed(cur_imag) * $signed(cos_val)) >>> 3;
+
+        bc = ($signed(cur_imag) * $signed(sin_val)) >>> 3;
+        ad = ($signed(cur_real) * $signed(cos_val)) >>> 3;
+
+        new_real  = $signed(ac + bd);
+        new_imag  = $signed(bc - ad);
+        
+        //its so cooked bro
         error = new_i*new_q; 
     end
 
@@ -64,7 +92,7 @@ module costas_loop #(
                phase<=phase+freq+(alpha*error);
                freq<=freq+freq+(beta*error);
            end else begin
-                    m00_axis_tvalid <= 1'b0;
+               m00_axis_tvalid <= 1'b0;
            end
        end
     end
