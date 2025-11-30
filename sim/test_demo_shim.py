@@ -270,7 +270,7 @@ def demodulate_model(val):
 
     real = (val & 0xFFFF) # I
     imag = (val >> 16) # Q
-    print(f"Driving complex value: {real} + {imag} j")
+    #print(f"Driving complex value: {real} + {imag} j")
 
     if prev_I is None:
         res = val
@@ -350,16 +350,16 @@ def python_modelr(val):
     sig_in.append(val)
     # takes in 32 bit complex I and Q value with I "real" bits on the bottom and Q on the top
 
-    real = (val & 0xFFFF) # I
-    imag = (val >> 16) # Q
+    real = (val & 0xffff_ffff) # I
+    imag = (val >> 32) # Q
 
-    real = twos_comp(real,16)
-    imag = twos_comp(imag,16)
+    real = twos_comp(real,32)
+    imag = twos_comp(imag,32)
 
     
     #real,imag = struct.unpack("hh",val)
 
-    print(f"Driving complex value: {real} + {imag} j")
+    #print(f"Driving complex value: {real} + {imag} j")
 
     if prevy_I is None:
         res = val
@@ -368,7 +368,7 @@ def python_modelr(val):
         cur_num = complex(real,imag)
         prevy_num = complex(prevy_I,prevy_Q)
 
-        perf_prod = np.angle(cur_num * np.conjugate(prevy_num))/(2**3)
+        perf_prod = np.angle(cur_num * np.conjugate(prevy_num)) * 180/np.pi
 
         #print(perf_prod)
         #print(perf_prod.real,perf_prod.imag)
@@ -421,17 +421,13 @@ async def test_b(dut):
     #real_prod = np.int16(c_data.real)
     #plt.plot(real_prod[:100])
 
-    samples=3000
+    samples=5000
 
     for i in range(samples):
-##        complex_num = c_data[i]
-##        real_prod = np.int16(complex_num.real)
-##        imag_prod = np.int16(complex_num.imag)
-##        res = int((imag_prod.astype(np.int32) << 16) | (real_prod.astype(np.int32) & 0xFFFF))
-        res = int(c_data[i])
+        real = int(c_data[i].real) # replacing cast to int to be more clear
         #print("res",hex(res))
 
-        data = {'type':'write_single', "contents":{"data": res,"last":0}}
+        data = {'type':'write_single', "contents":{"data": real,"last":0}}
         ind.append(data)
 
     for i in range(samples):
