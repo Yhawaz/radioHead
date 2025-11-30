@@ -49,7 +49,7 @@ def bit_2_degree(bit_angle):
     return (360*bit_angle)/(2**32-1)
 
 def degree_2_bit(real_angle):
-        return (real_angle/360)*(2**32-1)
+        return (real_angle/360)*(2**16-1)
 
 #this was named wrong, this just unapcks a high low
 def unpack_32bits(packed):
@@ -270,7 +270,7 @@ def demodulate_model(val):
 
     real = (val & 0xFFFF) # I
     imag = (val >> 16) # Q
-    #print(f"Driving complex value: {real} + {imag} j")
+    print(f"Driving complex value: {real} + {imag} j")
 
     if prev_I is None:
         res = val
@@ -294,39 +294,39 @@ def demodulate_model(val):
     prev_I = real
     prev_Q = imag
 
-# @cocotb.test()
-# async def test_a(dut):
-#     """cocotb test for averager controller"""
-#     global sig_out_act
-#     global sig_out_exp
+@cocotb.test()
+async def test_a(dut):
+    """cocotb test for averager controller"""
+    global sig_out_act
+    global sig_out_exp
 
-#     inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=demodulate_model)
-#     outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
-#     ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-#     outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=demodulate_model)
+    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
 
-#     scoreboard = TrigBoard(dut,fail_immediately=False)
-#     scoreboard.add_interface(outm, sig_out_exp)
-#     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+    scoreboard = TrigBoard(dut,fail_immediately=False)
+    scoreboard.add_interface(outm, sig_out_exp)
+    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
 
-#     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
-#     #vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
-#     for i in range(100):
-#         rand_complex_num = random.randint(1,1000)
-#         #rand_complex_num = vals[i]
-#         data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
-#         ind.append(data)
-#         #pause = {"type":"pause","duration":random.randint(1,6)}
-#         # ind.append(pause)
+    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+    #vals = [0x0000_0001,0x0001_0001,0x0001_0000,0x0000_ffff,0xffff_0000,0x0000_0000]
+    for i in range(100):
+        rand_complex_num = random.randint(1,1000)
+        #rand_complex_num = vals[i]
+        data = {'type':'write_single', "contents":{"data": rand_complex_num,"last":0}}
+        ind.append(data)
+        #pause = {"type":"pause","duration":random.randint(1,6)}
+        # ind.append(pause)
 
-#     for i in range(200):
-#         outd.append({'type':'read', "duration":random.randint(1,10)})
-#         #outd.append({'type':'pause', "duration":random.randint(1,10)})
-#     await ClockCycles(dut.s00_axis_aclk, 1100)
+    for i in range(200):
+        outd.append({'type':'read', "duration":random.randint(1,10)})
+        #outd.append({'type':'pause', "duration":random.randint(1,10)})
+    await ClockCycles(dut.s00_axis_aclk, 1100)
 
-#     assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
-#     print("HEY",scoreboard.errors)
-#     assert scoreboard.errors == 1
+    assert inm.transactions-1==outm.transactions, f"Transaction Count doesn't match! :/"
+    print("HEY",scoreboard.errors)
+    assert scoreboard.errors == 1
 
 
 python_model=[]
@@ -350,16 +350,16 @@ def python_modelr(val):
     sig_in.append(val)
     # takes in 32 bit complex I and Q value with I "real" bits on the bottom and Q on the top
 
-    real = (val & 0xffff_ffff) # I
-    imag = (val >> 32) # Q
+    real = (val & 0xFFFF) # I
+    imag = (val >> 16) # Q
 
-    real = twos_comp(real,32)
-    imag = twos_comp(imag,32)
+    real = twos_comp(real,16)
+    imag = twos_comp(imag,16)
 
     
     #real,imag = struct.unpack("hh",val)
 
-    #print(f"Driving complex value: {real} + {imag} j")
+    print(f"Driving complex value: {real} + {imag} j")
 
     if prevy_I is None:
         res = val
@@ -378,12 +378,14 @@ def python_modelr(val):
     prevy_Q = imag
 
 def verilog_modelr(val):
-    ang,mag = struct.unpack(">ii", val)
+    ang, mag = struct.unpack(">ii", val)
     #real = (val & 0xFFFF) # I
     #imag = (val >> 16) # Q
 
     #real = twos_comp(real,16)
     #imag = twos_comp(imag,16)
+
+    #complex_num = complex(real,imag)
 
     verilog_model.append(bit_2_degree(ang))
 
@@ -421,13 +423,17 @@ async def test_b(dut):
     #real_prod = np.int16(c_data.real)
     #plt.plot(real_prod[:100])
 
-    samples=5000
+    samples=3000
 
     for i in range(samples):
-        real = int(c_data[i].real) # replacing cast to int to be more clear
-        #print("res",hex(res))
+##        complex_num = c_data[i]
+##        real_prod = np.int16(complex_num.real)
+##        imag_prod = np.int16(complex_num.imag)
+##        res = int((imag_prod.astype(np.int32) << 16) | (real_prod.astype(np.int32) & 0xFFFF))
+        res = int(c_data[i])
+        print("res",hex(res))
 
-        data = {'type':'write_single', "contents":{"data": real,"last":0}}
+        data = {'type':'write_single', "contents":{"data": res,"last":0}}
         ind.append(data)
 
     for i in range(samples):
@@ -449,7 +455,7 @@ def demodulate_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
-    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic64.sv", proj_path / "hdl" / "axis_cordic.sv",]
+    sources = [ proj_path / "hdl" / "demo_shim.sv", proj_path / "hdl" / "demod64.sv",proj_path / "hdl" / "cordic.sv", proj_path / "hdl" / "cordic64.sv",]
     parameters = {} #!!!
     build_test_args=[]
     sys.path.append(str(proj_path / "sim"))
@@ -474,3 +480,4 @@ def demodulate_runner():
 
 if __name__ == "__main__":
    demodulate_runner()
+
