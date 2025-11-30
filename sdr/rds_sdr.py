@@ -58,8 +58,11 @@ N = len(samples)
 phase = 0
 freq = 0
 # These next two params is what to adjust, to make the feedback loop faster or slower (which impacts stability)
-alpha = 100
-beta = 0.5
+
+#alpha = 8
+#beta = 0.02
+alpha=100.0
+beta=0.02
 out = np.zeros(N, dtype=np.complex64)
 freq_log = []
 
@@ -88,7 +91,6 @@ for i in range(N):
 x = out
 
 rawr = x[700:900] 
-print(rawr)
 
 plt.figure()
 plt.scatter(np.real(rawr), np.imag(rawr),color="red")  # constellation
