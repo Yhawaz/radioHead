@@ -1,20 +1,20 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "design_1_cordic_w_0_0",
-    "cell_name": "cordic_w_0",
-    "component_reference": "xilinx.com:module_ref:cordic_w:1.0",
+    "xci_name": "design_1_demo_shim_w_0_0",
+    "cell_name": "demo_shim_w_0",
+    "component_reference": "xilinx.com:module_ref:demo_shim_w:1.0",
     "ip_revision": "1",
-    "gen_directory": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_cordic_w_0_0",
+    "gen_directory": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_demo_shim_w_0_0",
     "parameters": {
       "component_parameters": {
-        "C_S00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_M00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "Component_Name": [ { "value": "design_1_cordic_w_0_0", "resolve_type": "user", "usage": "all" } ]
+        "C_S00_AXIS_TDATA_WIDTH": [ { "value": "32", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_M00_AXIS_TDATA_WIDTH": [ { "value": "64", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "Component_Name": [ { "value": "design_1_demo_shim_w_0_0", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
         "C_S00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_M00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ]
+        "C_M00_AXIS_TDATA_WIDTH": [ { "value": "64", "resolve_type": "generated", "format": "long", "usage": "all" } ]
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "zynquplusRFSOC" } ],
@@ -33,7 +33,7 @@
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
         "IPREVISION": [ { "value": "1" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_cordic_w_0_0" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_demo_shim_w_0_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
         "SWVERSION": [ { "value": "2025.1" } ],
@@ -53,8 +53,8 @@
         "m00_axis_tready": [ { "direction": "in", "driver_value": "1" } ],
         "m00_axis_tvalid": [ { "direction": "out" } ],
         "m00_axis_tlast": [ { "direction": "out" } ],
-        "m00_axis_tdata": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
-        "m00_axis_tstrb": [ { "direction": "out", "size_left": "3", "size_right": "0" } ]
+        "m00_axis_tdata": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
+        "m00_axis_tstrb": [ { "direction": "out", "size_left": "7", "size_right": "0" } ]
       },
       "interfaces": {
         "m00_axis": {
@@ -62,7 +62,7 @@
           "abstraction_type": "xilinx.com:interface:axis_rtl:1.0",
           "mode": "master",
           "parameters": {
-            "TDATA_NUM_BYTES": [ { "value": "4", "value_src": "auto", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "TDATA_NUM_BYTES": [ { "value": "8", "value_src": "auto", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TDEST_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TID_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
