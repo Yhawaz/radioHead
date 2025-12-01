@@ -2,7 +2,7 @@
 `default_nettype none
 module AXI_monitor #(
     parameter integer C_S00_AXIS_TDATA_WIDTH = 64,
-    parameter integer C_M00_AXIS_TDATA_WIDTH = 64,
+    parameter integer C_M00_AXIS_TDATA_WIDTH = 64
 )(
     // Ports of Axi Slave Bus Interface S00_AXIS
     input wire s00_axis_aclk,
@@ -20,7 +20,7 @@ module AXI_monitor #(
     input logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
     input logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb,
 
-    output logic [C_S00_AXIS_TDATA_WIDTH-1:0] snooped_tdata,
+    output logic [C_S00_AXIS_TDATA_WIDTH-1:0] snooped_tdata
 );
 
     // this module can consume the same data from cordic but it cannot put back pressure
