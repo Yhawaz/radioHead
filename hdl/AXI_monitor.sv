@@ -4,18 +4,23 @@ module AXI_monitor #(
     parameter integer C_S00_AXIS_TDATA_WIDTH = 64,
     parameter integer C_M00_AXIS_TDATA_WIDTH = 64
 )(
+    // Ports of Axi Slave Bus Interface S00_AXIS
     input wire s00_axis_aclk,
     input wire s00_axis_aresetn,
+    input wire s00_axis_tlast,
+    input wire s00_axis_tvalid,
+    input wire [C_S00_AXIS_TDATA_WIDTH-1:0] s00_axis_tdata,
+    input wire [(C_S00_AXIS_TDATA_WIDTH/8)-1:0] s00_axis_tstrb,
+    input logic s00_axis_tready,
+
     // Ports of Axi Master Bus Interface M00_AXIS
     input wire m00_axis_tready,
     input logic m00_axis_tvalid,
+    input logic m00_axis_tlast,
     input logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
+    input logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb,
 
-<<<<<<< Updated upstream
     output logic [C_S00_AXIS_TDATA_WIDTH-1:0] snooped_tdata
-=======
-    output logic [C_M00_AXIS_TDATA_WIDTH/2-1:0] snooped_tdata
->>>>>>> Stashed changes
 );
 
     // this module can consume the same data from cordic but it cannot put back pressure
@@ -30,7 +35,7 @@ module AXI_monitor #(
 		// with the upstream data stream
         // however it should only update when there is a valid transaction
         if(valid_handshake)begin
-		    snooped_tdata <= m00_axis_tdata[63:32]; // grabbing the angle
+		    snooped_tdata <= s00_axis_tdata[63:32]; // grabbing the angle
         end
     end
 
