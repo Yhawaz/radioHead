@@ -2,7 +2,7 @@
 `default_nettype none
 module AXI_monitor #(
     parameter integer C_S00_AXIS_TDATA_WIDTH = 32,
-    parameter integer C_M00_AXIS_TDATA_WIDTH = 32,
+    parameter integer C_M00_AXIS_TDATA_WIDTH = 64,
 )(
     // Ports of Axi Slave Bus Interface S00_AXIS
     input wire s00_axis_aclk,
@@ -20,40 +20,23 @@ module AXI_monitor #(
     input logic [C_M00_AXIS_TDATA_WIDTH-1:0] m00_axis_tdata, // [15:0] is magnitude (unsigned 16-bit integer). [31:16] is angle.
     input logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m00_axis_tstrb,
 
-    // Ports of second Axi Master Bus Interface M01_AXIS
-    input wire m01_axis_tready, // this signal has to be ignored because this module cannot convey back pressure
-    output logic m01_axis_tvalid,
-    output logic m01_axis_tlast,
-    output logic [C_M00_AXIS_TDATA_WIDTH-1:0] m01_axis_tdata,
-    output logic [(C_M00_AXIS_TDATA_WIDTH/8)-1:0] m01_axis_tstrb
+    output logic [C_S00_AXIS_TDATA_WIDTH-1:0] snooped_tdata,
 );
 
     // this module can consume the same data from cordic but it cannot put back pressure
     logic valid_handshake;
     always_comb begin
         // check for valid handshake for intaking data from cordic
-	    m01_axis_tstrb = 4'b1111;
-        valid_handshake = s00_axis_tvalid && m00_axis_tready;
+        valid_handshake = m00_axis_tready & m00_axis_tvalid;
     end
 
     always_ff @(posedge s00_axis_aclk)begin
-	if(s00_axis_aresetn == 1'b0)begin
-		// active low reset
-		snooped_data <= 0;
-		snooped_valid <= 1'b1;
-	end else begin
-		// this module will cannot accept backpressure to not interfer
+		// this module will cannot accept backpressure to not interfe
 		// with the upstream data stream
         // however it should only update when there is a valid transaction
         if(valid_handshake)begin
-            m01_axis_tvalid <= s00_axis_tvalid;
-		    m01_axis_tdata <= s00_axis_tdata[31:16]; // grabbing the angle
-            m01_axis_tlast <= s00_axis_tlast;
-        end else begin
-            // after a valid transction the valid should drop to 0
-            m01_axis_tvalid <= 1'b0;
+		    snooped_tdata <= s00_axis_tdata[63:32]; // grabbing the angle
         end
-	end
     end
 
 endmodule
