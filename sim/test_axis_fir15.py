@@ -251,8 +251,8 @@ async def test_a(dut):
     t,si = generate_signed_8bit_sine_waves(
     sample_rate=100e6,
     duration=100e-6,
-    frequencies=[15e3,35e6, 50e6],
-    amplitudes=[0.5,0.1, 0.7]
+    frequencies=[3e3,15e3,35e6, 50e6],
+    amplitudes=[0.5,0.5,0.1, 0.7]
     )
 
     #(pts)
@@ -269,26 +269,26 @@ async def test_a(dut):
     outd.append({'type':'read', "duration":10000000})
 
     #await ClockCycles(dut.s00_axis_aclk, 110*1000*2)
-    await ClockCycles(dut.s00_axis_aclk, 500)
+    await ClockCycles(dut.s00_axis_aclk, 200000)
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
-#     # fig, axs = plt.subplots(3, 1, figsize=(8, 8), sharex=True)
+    # fig, axs = plt.subplots(3, 1, figsize=(8, 8), sharex=True)
     
-#     # # Plot each signal on its own axis
-#     # axs[0].plot(t, sig_out_act, label="Signal 1", color="r")
-#     # axs[0].set_ylabel("Module Output")
-#     # axs[0].legend()
+    # # Plot each signal on its own axis
+    # axs[0].plot(t, sig_out_act[::2], label="Signal 1", color="r")
+    # axs[0].set_ylabel("Module Output")
+    # axs[0].legend()
 
-#     # axs[2].plot(t, si, label="Signal 3", color="b")
-#     # axs[2].set_ylabel("Input Signal")
-#     # axs[2].set_xlabel("Time")
-#     # axs[2].legend()
+    # axs[2].plot(t, si, label="Signal 3", color="b")
+    # axs[2].set_ylabel("Input Signal")
+    # axs[2].set_xlabel("Time")
+    # axs[2].legend()
 
-#     # plt.tight_layout()
-#     # plt.show()
-#     # print(f"sig_in \n {sig_in}")
-#     # print(f"sig_out_exp \n {sig_out_exp}")
-#     # print(f"sig_out_act \n {sig_out_act}")
+    # plt.tight_layout()
+    # plt.show()
+    # print(f"sig_in \n {sig_in}")
+    # print(f"sig_out_exp \n {sig_out_exp}")
+    # print(f"sig_out_act \n {sig_out_act}")
 
 # Resetting the global variables
 count = 0

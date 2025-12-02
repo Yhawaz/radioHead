@@ -2,8 +2,8 @@
  
 module axis_fir_15 #
     (
-        parameter integer C_S00_AXIS_TDATA_WIDTH    = 32,
-        parameter integer C_M00_AXIS_TDATA_WIDTH    = 32
+        parameter integer C_S00_AXIS_TDATA_WIDTH    = 64,
+        parameter integer C_M00_AXIS_TDATA_WIDTH    = 64
     )
     (
  
@@ -28,7 +28,7 @@ module axis_fir_15 #
     localparam NUM_COEFFS = 101;
     //i previously used some intermediate terms and then inialized them all
     //to zero
-    logic signed [31:0] intmdt_term [NUM_COEFFS -1:0];
+    logic signed [C_S00_AXIS_TDATA_WIDTH-1:0] intmdt_term [NUM_COEFFS -1:0];
     initial begin
         for(int i=0; i<NUM_COEFFS; i++)begin
             intmdt_term[i] = 0;
