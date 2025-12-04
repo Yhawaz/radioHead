@@ -245,14 +245,14 @@ async def test_a(dut):
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
     # Set the coefficients
-    await drive_coeffs(dut,coeffs)
+    #await drive_coeffs(dut,coeffs)
 
     # Generate the sine input data
     t,si = generate_signed_8bit_sine_waves(
     sample_rate=100e6,
     duration=100e-6,
-    frequencies=[15e3,35e6, 50e6],
-    amplitudes=[0.5,0.1, 0.7]
+    frequencies=[3e3,15e3,35e6, 50e6],
+    amplitudes=[0.5,0.5,0.1, 0.7]
     )
 
     #(pts)
@@ -261,7 +261,7 @@ async def test_a(dut):
     for i in range(len(t)):
         ind.append({'type':'write_single', "contents":{"data": int(si[i]),"last":0}})
         ind.append({"type":"pause","duration":10})
-    ind.append({'type':'write_burst', "contents": {"data": si}})
+    ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
     ind.append({'type':'pause','duration':2}) #end with pause
 
     #feed the driver on the S Side:
@@ -269,26 +269,26 @@ async def test_a(dut):
     outd.append({'type':'read', "duration":10000000})
 
     #await ClockCycles(dut.s00_axis_aclk, 110*1000*2)
-    await ClockCycles(dut.s00_axis_aclk, 500)
+    await ClockCycles(dut.s00_axis_aclk, 200000)
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
-#     # fig, axs = plt.subplots(3, 1, figsize=(8, 8), sharex=True)
+    fig, axs = plt.subplots(3, 1, figsize=(8, 8), sharex=True)
     
-#     # # Plot each signal on its own axis
-#     # axs[0].plot(t, sig_out_act, label="Signal 1", color="r")
-#     # axs[0].set_ylabel("Module Output")
-#     # axs[0].legend()
+    # Plot each signal on its own axis
+    axs[0].plot(t, sig_out_act[0:len(t)], label="Signal 1", color="r")
+    axs[0].set_ylabel("Module Output")
+    axs[0].legend()
 
-#     # axs[2].plot(t, si, label="Signal 3", color="b")
-#     # axs[2].set_ylabel("Input Signal")
-#     # axs[2].set_xlabel("Time")
-#     # axs[2].legend()
+    axs[2].plot(t, si, label="Signal 3", color="b")
+    axs[2].set_ylabel("Input Signal")
+    axs[2].set_xlabel("Time")
+    axs[2].legend()
 
-#     # plt.tight_layout()
-#     # plt.show()
-#     # print(f"sig_in \n {sig_in}")
-#     # print(f"sig_out_exp \n {sig_out_exp}")
-#     # print(f"sig_out_act \n {sig_out_act}")
+    plt.tight_layout()
+    plt.show()
+    print(f"sig_in \n {sig_in}")
+    print(f"sig_out_exp \n {sig_out_exp}")
+    print(f"sig_out_act \n {sig_out_act}")
 
 # Resetting the global variables
 count = 0
@@ -314,7 +314,7 @@ async def test_b(dut):
    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
    count = 0
    initial = [0 for i in range(14)]
-   await drive_coeffs(dut,coeffs)
+   #await drive_coeffs(dut,coeffs)
 # Generate the sine input data
    t,si = generate_signed_8bit_sine_waves(
    sample_rate=100e6,
@@ -322,27 +322,20 @@ async def test_b(dut):
    frequencies=[15e3,35e6, 50e6],
    amplitudes=[0.5,0.1, 0.7]
 )
-   
-   t2,si2 = generate_signed_8bit_sine_waves(
-   sample_rate=100e6,
-   duration=100e-6,
-   frequencies=[17e3,24e6, 25e6],
-   amplitudes=[0.5,0.1, 0.7]
-)
 
    #feed the driver on the M Side:
-   for i in range(50):
+   for i in range(len(t)):
        data = {'type':'write_single', "contents":{"data": int(si[i]),"last":0}}
        ind.append(data)
        pause = {"type":"pause","duration":random.randint(1,6)}
        ind.append(pause)
-   ind.append({'type':'write_burst', "contents": {"data": si2[0:99]}})
+   ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
    ind.append({'type':'pause','duration':2}) #end with pause
    #feed the driver on the S Side with on/off backpressure!
-   for i in range(50):
+   for i in range(len(t)):
        outd.append({'type':'read', "duration":random.randint(1,10)})
        outd.append({'type':'pause', "duration":random.randint(1,10)})
-   await ClockCycles(dut.s00_axis_aclk, 50000)
+   await ClockCycles(dut.s00_axis_aclk, len(t)*3)
    assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
 def fir_runner():
