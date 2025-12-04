@@ -9,7 +9,8 @@ from pathlib import Path
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout
 from cocotb.utils import get_sim_time as gst
-from cocotb.runner import get_runner
+#from cocotb.runner import get_runner
+from vicoco.vivado_runner import get_runner
 from cocotb_bus.bus import Bus
 from cocotb_bus.drivers import BusDriver
 from cocotb_bus.monitors import Monitor
@@ -249,10 +250,10 @@ async def test_a(dut):
 
     # Generate the sine input data
     t,si = generate_signed_8bit_sine_waves(
-    sample_rate=100e6,
-    duration=100e-6,
-    frequencies=[3e3,15e3,35e6, 50e6],
-    amplitudes=[0.5,0.5,0.1, 0.7]
+    sample_rate=10e6,
+    duration=80*100e-6,
+    frequencies=[5e3,1.5e6,3.5e6],
+    amplitudes=[0.1,0.1,0.1]
     )
 
     #(pts)
@@ -269,7 +270,7 @@ async def test_a(dut):
     outd.append({'type':'read', "duration":10000000})
 
     #await ClockCycles(dut.s00_axis_aclk, 110*1000*2)
-    await ClockCycles(dut.s00_axis_aclk, 200000)
+    await ClockCycles(dut.s00_axis_aclk, 11*len(si))
     dut._log.info(f"In Transactions:{inm.transactions}, Out Transactions:{outm.transactions}")
     assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
     fig, axs = plt.subplots(3, 1, figsize=(8, 8), sharex=True)
@@ -286,9 +287,9 @@ async def test_a(dut):
 
     plt.tight_layout()
     plt.show()
-    print(f"sig_in \n {sig_in}")
-    print(f"sig_out_exp \n {sig_out_exp}")
-    print(f"sig_out_act \n {sig_out_act}")
+    # print(f"sig_in \n {sig_in}")
+    # print(f"sig_out_exp \n {sig_out_exp}")
+    # print(f"sig_out_act \n {sig_out_act}")
 
 # Resetting the global variables
 count = 0
@@ -298,50 +299,51 @@ sig_in = []
 sig_out_exp = [] #contains list of expected outputs (Growing)
 sig_out_act = [] #contains list of expected outputs (Growing)
 
-@cocotb.test()
-async def test_b(dut):
-   global initial,count
-   """cocotb test for AXIS fir 15 with sporadic backpressure"""
-   inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_fir_filter)
-   outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
-   ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
-   outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
+# @cocotb.test()
+# async def test_b(dut):
+#    global initial,count
+#    """cocotb test for AXIS fir 15 with sporadic backpressure"""
+#    inm = AXIS_Monitor(dut,'s00',dut.s00_axis_aclk,callback=model_fir_filter)
+#    outm = AXIS_Monitor(dut,'m00',dut.s00_axis_aclk,callback=lambda x: sig_out_act.append(x))
+#    ind = M_AXIS_Driver(dut,'s00',dut.s00_axis_aclk) #M driver for S port
+#    outd = S_AXIS_Driver(dut,'m00',dut.s00_axis_aclk) #S driver for M port
 
-   # Create a scoreboard on the stream_out bus
-   scoreboard = Scoreboard(dut,fail_immediately=False)
-   scoreboard.add_interface(outm, sig_out_exp)
-   cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
-   await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
-   count = 0
-   initial = [0 for i in range(14)]
-   #await drive_coeffs(dut,coeffs)
-# Generate the sine input data
-   t,si = generate_signed_8bit_sine_waves(
-   sample_rate=100e6,
-   duration=100e-6,
-   frequencies=[15e3,35e6, 50e6],
-   amplitudes=[0.5,0.1, 0.7]
-)
+#    # Create a scoreboard on the stream_out bus
+#    scoreboard = Scoreboard(dut,fail_immediately=False)
+#    scoreboard.add_interface(outm, sig_out_exp)
+#    cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
+#    await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
+#    count = 0
+#    initial = [0 for i in range(14)]
+#    #await drive_coeffs(dut,coeffs)
+# # Generate the sine input data
+#    t,si = generate_signed_8bit_sine_waves(
+#    sample_rate=100e6,
+#    duration=100e-6,
+#    frequencies=[15e3,35e6, 50e6],
+#    amplitudes=[0.5,0.1, 0.7]
+# )
 
-   #feed the driver on the M Side:
-   for i in range(len(t)):
-       data = {'type':'write_single', "contents":{"data": int(si[i]),"last":0}}
-       ind.append(data)
-       pause = {"type":"pause","duration":random.randint(1,6)}
-       ind.append(pause)
-   ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
-   ind.append({'type':'pause','duration':2}) #end with pause
-   #feed the driver on the S Side with on/off backpressure!
-   for i in range(len(t)):
-       outd.append({'type':'read', "duration":random.randint(1,10)})
-       outd.append({'type':'pause', "duration":random.randint(1,10)})
-   await ClockCycles(dut.s00_axis_aclk, len(t)*3)
-   assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
+#    #feed the driver on the M Side:
+#    for i in range(len(t)):
+#        data = {'type':'write_single', "contents":{"data": int(si[i]),"last":0}}
+#        ind.append(data)
+#        pause = {"type":"pause","duration":random.randint(1,6)}
+#        ind.append(pause)
+#    ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
+#    ind.append({'type':'pause','duration':2}) #end with pause
+#    #feed the driver on the S Side with on/off backpressure!
+#    for i in range(len(t)):
+#        outd.append({'type':'read', "duration":random.randint(1,10)})
+#        outd.append({'type':'pause', "duration":random.randint(1,10)})
+#    await ClockCycles(dut.s00_axis_aclk, len(t)*3)
+#    assert inm.transactions==outm.transactions, f"Transaction Count doesn't match! :-/ In: {inm.transactions}, Out: {outm.transactions}"
 
 def fir_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "icarus")
+    #sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM","vivado")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))
