@@ -36,11 +36,6 @@ print(len(triple))
 orig_57=orig_57[:len(triple)]
 mixed_down=orig_57*triple
 
-
-
-
-
-
 val_to_fft= orig_57 
 
 low_pass_taps = firwin(numtaps=501, cutoff=2e3, fs=sample_rate)

@@ -3,12 +3,17 @@ from scipy.signal import resample_poly, firwin, bilinear, lfilter
 import matplotlib.pyplot as plt
 
 # Read in signal
-x = np.fromfile('fm_rds_250k_1Msamples.iq', dtype=np.complex64)
+x = np.fromfile('gqrx1.raw', dtype=np.complex64)
 sample_rate = 250e3
-center_freq = 99.5e6
-
+center_freq = 88.1e6
+num_samples=len(x)
 # Quadrature Demod
 x = 0.5 * np.angle(x[0:-1] * np.conj(x[1:])) # see https://wiki.gnuradio.org/index.php/Quadrature_Demod
+
+fft_data=np.fft.fft(x)
+freqs=np.fft.fftfreq(num_samples-1,d=1/sample_rate)
+plt.plot(freqs,abs(fft_data))
+plt.show()
 
 # Freq shift
 N = len(x)
@@ -59,20 +64,14 @@ phase = 0
 freq = 0
 # These next two params is what to adjust, to make the feedback loop faster or slower (which impacts stability)
 
-#alpha = 8
-#beta = 0.02
-alpha=100.0
-beta=0.02
+alpha = 8
+beta = 0.02
 out = np.zeros(N, dtype=np.complex64)
 freq_log = []
 
 
 sel = samples[700:900]   # or some other 100–200 sample window
 
-plt.figure()
-plt.scatter(np.real(sel), np.imag(sel),color="blue")  # constellation
-plt.axis([-.03,.03,-.03,.03])
-plt.grid(True)
 
 for i in range(N):
     out[i] = samples[i] * np.exp(-1j*phase) # adjust the input sample by the inverse of the estimated phase offset
@@ -90,13 +89,7 @@ for i in range(N):
         phase += 2*np.pi
 x = out
 
-rawr = x[700:900] 
 
-plt.figure()
-plt.scatter(np.real(rawr), np.imag(rawr),color="red")  # constellation
-plt.grid(True)
-plt.axis([-.03,.03,-.03,.03])
-plt.show()
 
 # Demod BPSK
 bits = (np.real(x) > 0).astype(int) # 1's and 0's
