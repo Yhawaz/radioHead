@@ -70,7 +70,6 @@ out = np.zeros(N, dtype=np.complex64)
 freq_log = []
 
 
-sel = samples[700:900]   # or some other 100–200 sample window
 
 
 for i in range(N):
