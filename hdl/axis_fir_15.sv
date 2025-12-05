@@ -172,9 +172,9 @@ module axis_fir_15 #
                 // FIR Stuff
                 for(int i = 0; i<NUM_COEFFS;i++)begin
                     if(i == NUM_COEFFS-1)begin
-                        intmdt_term[i] <= $signed(coeffs[i]) * $signed(s00_axis_tdata); // s data should be data_in
+                        intmdt_term[i] <= $signed(coeffs[i]) * $signed(s00_axis_tdata[63:32]); // s data should be data_in
                     end else begin
-                        intmdt_term[i] <= $signed(coeffs[i]) * $signed(s00_axis_tdata) + $signed(intmdt_term[i+1]);
+                        intmdt_term[i] <= $signed(coeffs[i]) * $signed(s00_axis_tdata[63:32]) + $signed(intmdt_term[i+1]);
                     end
                 end
 
