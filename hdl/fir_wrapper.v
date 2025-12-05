@@ -37,19 +37,23 @@ module fir_wrapper#(
     input wire  m00_axis_tready,
     output wire  m00_axis_tvalid, m00_axis_tlast,
     output wire [C_M00_AXIS_TDATA_WIDTH - 1:0] m00_axis_tdata,
-    output wire [(C_M00_AXIS_TDATA_WIDTH/8)-1: 0] m00_axis_tstrb
+    output wire [(C_M00_AXIS_TDATA_WIDTH/8)-1: 0] m00_axis_tstrb,
+
+    input wire [3:0] shift
 
     );
 
     wire [3:0] scaler;
     wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0] fir_out;
-    reg [C_M00_AXIS_TDATA_WIDTH - 1:0]  m00_axis_tdata_reg;
+    wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata;
     reg m00_axis_tvalid_reg;
     assign scaler = 4'd12; // determined precompile
-
+    wire [7:0] shft_amt;
+    assign shft_amt = scaler + 2*shift;
     assign m00_axis_tready = s00_axis_tready;
-    assign m00_axis_tdata = $signed(fir_out >>> scaler);
-
+    assign pre_tdata = $signed(fir_out >>> shft_amt);
+    //assign m00_axis_tdata = $signed({pre_tdata[C_M00_AXIS_TDATA_WIDTH - 1],pre_tdata[6:0]}); // dac can only take 8 bits
+    assign m00_axis_tdata = $signed(pre_tdata[7:0]) + 127; // need to offset because data cannot have signedness
 
     axis_fir_15 filter(     .s00_axis_aclk(s00_axis_aclk),
                 .s00_axis_aresetn(s00_axis_aresetn),
