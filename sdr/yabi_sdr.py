@@ -2,52 +2,47 @@ import numpy as np
 from numpy.fft import fft
 from scipy.signal import resample_poly, firwin, bilinear, lfilter
 import matplotlib.pyplot as plt
+import scipy
+
+def plot_fft_real(real_signal, sample_rate, title = ""):
+    fft = np.fft.fft(real_signal)
+    fft = np.fft.fftshift(fft)
+    freq_bins = np.linspace(-sample_rate / 2, sample_rate / 2, num = len(fft))
+    plt.plot(freq_bins, np.log10(abs(fft)))
+    plt.xlim(0, sample_rate / 2)
+    plt.xlabel("Baseband Frequency [Hz]")
+    plt.ylabel("Amplitude [dBFS]")
+    plt.title(title)
+    plt.show()
 
 #yoink signal
-x = np.fromfile('fm_rds_250k_1Msamples.iq', dtype=np.complex64)
+x = np.fromfile('gqrx1.raw', dtype=np.complex64)
 sample_rate = 250e3
-center_freq = 99.5e6
 
 #  Demod
-x = 0.5 * np.angle(x[0:-1] * np.conj(x[1:])) 
-demoded_sig=x
+demoded_sig = 0.5 * np.angle(x[0:-1] * np.conj(x[1:]))
 
-# bandpass
-taps = firwin(numtaps=101, cutoff=[17e3,21e3], fs=sample_rate,pass_zero=False)
-x = np.convolve(x, taps, 'valid')
-
-#tripled 
-triple=[]
-for val in x:
-    triple.append(val**3)
-
-band_pass_taps = firwin(numtaps=101, cutoff=[55e3,59e3], fs=sample_rate,pass_zero=False)
-triple = np.convolve(triple, band_pass_taps, 'valid')
+plot_fft_real(demoded_sig,250e3)
 
 
-#fix it
+pilot_tone_bandpass = scipy.signal.firwin(numtaps = 5001, cutoff = [17e3, 19e3], fs = sample_rate, pass_zero = "bandpass")
+pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
 
-orig_57=np.convolve(demoded_sig, band_pass_taps, 'valid')
+pilot_tone_peak = np.max(pilot_tone_extracted)
+pilot_tone_clipped = np.clip(pilot_tone_extracted, -pilot_tone_peak / 2, pilot_tone_peak / 2)
 
-#mixed_down_57=orig_57*triple
-print(len(orig_57))
-print(len(triple))
+rds_carrier_bandpass = scipy.signal.firwin(numtaps = 5001, cutoff = [57e3 - 1e3, 57e3 + 1e3], fs = sample_rate, pass_zero = "bandpass")
+pilot_tone_tripled_extracted = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], pilot_tone_clipped)
 
-orig_57=orig_57[:len(triple)]
-mixed_down=orig_57*triple
+rds_signal = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], demoded_sig)
 
-val_to_fft= orig_57 
+mixed = rds_signal * pilot_tone_tripled_extracted
 
-low_pass_taps = firwin(numtaps=501, cutoff=2e3, fs=sample_rate)
-mixed_down=np.convolve(mixed_down,low_pass_taps,'valid')
-plt.plot(mixed_down)
+lowpass = scipy.signal.firwin(numtaps = 5001, cutoff = 2e3, fs = sample_rate)
+lowpassed_mixed = scipy.signal.lfilter(lowpass, [1.0], mixed)
+
+plt.plot(lowpassed_mixed)
+plt.xlabel("Samples")
+plt.ylabel("Amplitude")
+plt.title("Recovered BPSK Data")
 plt.show()
-
-#fft plotting i like
-num_samples=len(val_to_fft)
-fft_time=np.fft.rfft(val_to_fft)
-
-freqs=np.fft.rfftfreq(num_samples,d=1/sample_rate)
-plt.plot(freqs,fft_time*fft_time)
-plt.show()
-
