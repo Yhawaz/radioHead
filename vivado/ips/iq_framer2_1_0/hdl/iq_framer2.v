@@ -61,17 +61,20 @@
 	reg [31:0] small_counter;
 	reg [31:0] big_counter;
 	
-	assign m00_axis_tlast=(control[3]==1)? small_counter==65535:big_counter==2000000;
+	
+	assign m00_axis_tlast=(control[3]==1)? small_counter==65535:big_counter==500000;
 	assign m00_axis_tdata = control==1?{small_counter, small_counter}:control==3?{big_counter, big_counter}: {s00_axis_tdata, s01_axis_tdata};
 	assign m00_axis_tvalid = s00_axis_tvalid ;
 	assign m00_axis_tstrb = 4'b1111;
 	
+	
+	
 
 	always @(posedge s00_axis_aclk)begin
 	
-	   if(m00_axis_tready && m00_axis_tvalid) begin
+	   if(m00_axis_tvalid && m00_axis_tready) begin
 	       small_counter<=(small_counter==65535)? 0:small_counter+1;
-	       big_counter<=(big_counter==2000000)? 0:big_counter+1;
+	       big_counter<=(big_counter==500000)? 0:big_counter+1;
 	   end
 	end
 
