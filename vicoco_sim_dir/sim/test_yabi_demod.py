@@ -23,8 +23,6 @@ from cocotb_bus.monitors import BusMonitor
 from cocotb_bus.scoreboard import Scoreboard
 import numpy as np
 
-from cocotb_coverage.coverage import CoverCross, CoverPoint, coverage_db, coverage_section
-import constraint
 test_file = os.path.basename(__file__).replace(".py","")
 
 #sometimes letting go is part of getting better

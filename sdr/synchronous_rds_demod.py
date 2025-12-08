@@ -24,12 +24,12 @@ x = np.fromfile('npr.raw', dtype=np.complex64)
 sample_rate = 250e3
 
 duration_s = len(x) / sample_rate
-print(f"Recording is {duration_s} s long.")
+##print(f"Recording is {duration_s} s long.")
 
 #  Demod
 demoded_sig = 0.5 * np.angle(x[0:-1] * np.conj(x[1:]))
 
-plot_fft_real(demoded_sig,250e3)
+#plot_fft_real(demoded_sig,250e3)
 
 pilot_tone_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [16e3, 22e3], fs = sample_rate, pass_zero = "bandpass")
 pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
@@ -42,6 +42,7 @@ pilot_tone_peak = np.max(pilot_tone_extracted)
 pilot_tone_clipped = np.clip(pilot_tone_extracted, -pilot_tone_peak / 2, pilot_tone_peak / 2)
 
 rds_carrier_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [57e3 - 3e3, 57e3 + 3e3], fs = sample_rate, pass_zero = "bandpass")
+print(rds_carrier_bandpass)
 pilot_tone_tripled_extracted = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], pilot_tone_clipped)
 
 rds_signal = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], demoded_sig)
@@ -68,8 +69,8 @@ for counter_start in range(0, 32, 8):
             if counter % 32 == 0: # 16 samples per symbol, but there are 2 zero-crossings per cycle, so divide by 32.
                 symbol_clock[i] = 1
             counter += 1
-    if counter_start == 31:
-        print(f"Average symbol clock frequency: {float(sum(symbol_clock.astype(np.uint32))) / duration_s} symbols/second")
+    ##if counter_start == 31:
+       ## print(f"Average symbol clock frequency: {float(sum(symbol_clock.astype(np.uint32))) / duration_s} symbols/second")
     #plt.plot(times, symbol_clock, '*')
     #plt.show()
 
