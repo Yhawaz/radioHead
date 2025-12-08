@@ -20,6 +20,46 @@ import scipy
 #cheap way to get the name of current file for runner:
 test_file = os.path.basename(__file__).replace(".py","")
 
+def generate_signed_32bit_sine_waves(sample_rate, duration,frequencies, amplitudes):
+    """
+    frequencies (float): The frequency of the sine waves in Hz.
+    relative amplitudes (float) of the sinewaves (0 to 1.0).
+    sample_rate (int): The number of samples per second.
+    duration (float): The duration of the time series in seconds.
+    """
+    num_samples = int(sample_rate * duration)
+    time_points = np.arange(num_samples) / sample_rate
+    # Generate a sine wave with amplitude 1.0
+    result = np.zeros(num_samples, dtype=int)
+    assert len(frequencies) == len(amplitudes), "frequencies must match amplitudes"
+    for i in range(len(frequencies)):
+        sine_wave = amplitudes[i]*np.sin(2 * np.pi * frequencies[i] * time_points)
+        # Scale the sine wave to the 8-bit signed range [-128, 127]
+        scaled_wave = sine_wave * 32767
+        # make 8bit signed integers:
+        result+=scaled_wave.astype(np.int32)
+    return (time_points,result)
+
+def generate_signed_8bit_sine_waves(sample_rate, duration,frequencies, amplitudes):
+    """
+    frequencies (float): The frequency of the sine waves in Hz.
+    relative amplitudes (float) of the sinewaves (0 to 1.0).
+    sample_rate (int): The number of samples per second.
+    duration (float): The duration of the time series in seconds.
+    """
+    num_samples = int(sample_rate * duration)
+    time_points = np.arange(num_samples) / sample_rate
+    # Generate a sine wave with amplitude 1.0
+    result = np.zeros(num_samples, dtype=int)
+    assert len(frequencies) == len(amplitudes), "frequencies must match amplitudes"
+    for i in range(len(frequencies)):
+        sine_wave = amplitudes[i]*np.sin(2 * np.pi * frequencies[i] * time_points)
+        # Scale the sine wave to the 8-bit signed range [-128, 127]
+        scaled_wave = sine_wave * 127
+        # make 8bit signed integers:
+        result+=scaled_wave.astype(np.int8)
+    return (time_points,result)
+
 
 
 async def drive_reset(rst_val):
@@ -31,27 +71,38 @@ async def drive_reset(rst_val):
 @cocotb.test()
 async def first_test(dut):
     rawr=[]
+    meow=[]
     cocotb.start_soon(Clock(dut.clk, 10, units="ns").start(start_high=False))
-    dut.trigger.value=0
-    dut.rst.value=0
-    dut.data_in.value=0
-    received_messages = []
-    cocotb.start_soon(model_spi_device(dut,received_messages) )
-    cocotb.start_soon(assert_spi_clk(dut))
-    await ClockCycles(dut.clk,1)
-    await drive_reset(dut.rst)
+    dut.reset.value=0
+    dut.dataIn.value=0
     dut.clk_enable.value=1
+    dut.validIn.value=0
+    received_messages = []
+    await ClockCycles(dut.clk,1)
+    await drive_reset(dut.reset)
+    #dut.clk_enable.value=1
     dut.validIn.value=1
-    for(i in range(len(1000))):
-        dut.dataIn.value=
+    t,si = generate_signed_8bit_sine_waves(
+    sample_rate=250e3,
+    duration=10,
+    frequencies=[19e3,100e3,42e3],
+    amplitudes=[1,0.5,0.1]
+    )
+    print(len(si))
+
+    for i in range(10000):
+        dut.dataIn.value=int(si[i])
         if(dut.validOut.value==1):
-            rawr.append(dut.dataOut.value)
+            rawr.append(dut.dataOut.value.signed_integer)
+        await ClockCycles(dut.clk,1)
+    #pilot_tone_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [16e3, 22e3], fs = sample_rate, pass_zero = "bandpass")
+    #pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
     
-            
-            
-        
-
-
+    plt.plot(rawr,color="blue")
+    plt.show()
+    plt.plot(si[:10000],color="red")
+    plt.show()
+    
 # boiler plate
 """the code below should largely remain unchanged in structure, though the specific files and things
 specified should get updated for different simulations.
@@ -62,7 +113,13 @@ def fm_filter_runner():
     sim = os.getenv("SIM", "icarus")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
-    sources = [proj_path / "hdl" / "fm_filter.sv"] #grow/modify this as needed.
+    sources = [proj_path / "hdl" / "fm_filter.v",
+    proj_path / "hdl" / "Filter.v",
+    proj_path / "hdl" / "FilterCoef.v",
+    proj_path / "hdl" / "FilterTapSystolicPreAddWvlIn.v",
+    proj_path / "hdl" / "dsphdl_FIRFilter.v",
+    proj_path / "hdl" / "subFilter.v"] 
+    #grow/modify this as needed.
     hdl_toplevel = "fm_filter"
     build_test_args = ["-Wall"]#,"COCOTB_RESOLVE_X=ZEROS"]
     parameters = {}
