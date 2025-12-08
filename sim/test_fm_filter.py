@@ -20,6 +20,17 @@ import scipy
 #cheap way to get the name of current file for runner:
 test_file = os.path.basename(__file__).replace(".py","")
 
+def plot_fft_real(real_signal, sample_rate, title = ""):
+    fft = np.fft.fft(real_signal)
+    fft = np.fft.fftshift(fft)
+    freq_bins = np.linspace(-sample_rate / 2, sample_rate / 2, num = len(fft))
+    plt.plot(freq_bins, np.log10(abs(fft)))
+    plt.xlim(0, sample_rate / 2)
+    plt.xlabel("Baseband Frequency [Hz]")
+    plt.ylabel("Amplitude [dBFS]")
+    plt.title(title)
+    plt.show()
+
 def generate_signed_32bit_sine_waves(sample_rate, duration,frequencies, amplitudes):
     """
     frequencies (float): The frequency of the sine waves in Hz.
@@ -74,12 +85,14 @@ async def first_test(dut):
     meow=[]
     cocotb.start_soon(Clock(dut.clk, 10, units="ns").start(start_high=False))
     dut.reset.value=0
+    dut.resetIn.value=0
     dut.dataIn.value=0
     dut.clk_enable.value=1
     dut.validIn.value=0
     received_messages = []
     await ClockCycles(dut.clk,1)
     await drive_reset(dut.reset)
+    await drive_reset(dut.resetIn)
     #dut.clk_enable.value=1
     dut.validIn.value=1
     t,si = generate_signed_8bit_sine_waves(
@@ -98,8 +111,7 @@ async def first_test(dut):
     #pilot_tone_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [16e3, 22e3], fs = sample_rate, pass_zero = "bandpass")
     #pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
     
-    plt.plot(rawr,color="blue")
-    plt.show()
+    plot_fft_real(rawr,250e3)
     plt.plot(si[:10000],color="red")
     plt.show()
     
@@ -113,14 +125,14 @@ def fm_filter_runner():
     sim = os.getenv("SIM", "icarus")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
-    sources = [proj_path / "hdl" / "fm_filter.v",
+    sources = [proj_path / "hdl" / "fm32_filter.v",
     proj_path / "hdl" / "Filter.v",
     proj_path / "hdl" / "FilterCoef.v",
     proj_path / "hdl" / "FilterTapSystolicPreAddWvlIn.v",
     proj_path / "hdl" / "dsphdl_FIRFilter.v",
     proj_path / "hdl" / "subFilter.v"] 
     #grow/modify this as needed.
-    hdl_toplevel = "fm_filter"
+    hdl_toplevel = "fm32_filter"
     build_test_args = ["-Wall"]#,"COCOTB_RESOLVE_X=ZEROS"]
     parameters = {}
     sys.path.append(str(proj_path / "sim"))
