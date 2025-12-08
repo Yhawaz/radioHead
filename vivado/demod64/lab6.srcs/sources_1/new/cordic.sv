@@ -148,7 +148,7 @@ module cordic #(
     end
 
     // Pass through ready and strb
-    assign s00_axis_tready = m00_axis_tready;
+    assign s00_axis_tready = 1'b1;
     assign m00_axis_tstrb = 4'hf;
 endmodule
 
