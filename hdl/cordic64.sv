@@ -176,7 +176,7 @@ module cordic64 #(
     assign y_neg = $signed(pre_y_i_0) < 0;
     assign x_neg = $signed(pre_x_i_0) < 0;
     always_ff @(posedge s00_axis_aclk) begin
-        if (m00_axis_tready) begin
+        //if (m00_axis_tready) begin
             tvalid_i[0] <= s00_axis_tvalid;
             tlast_i[0] <= s00_axis_tlast;
             x_i[0] <= abs_scale(x_i_0);
@@ -185,14 +185,14 @@ module cordic64 #(
             flips_i[0] <= flips_i_0;
             y_neg_i[0] <= y_neg;
             x_neg_i[0] <= x_neg;
-        end
+        //end
     end
 
     // Pipeline stages
     genvar i;
     generate for (i = 0; i < C_NUM_CORDIC_ITERATIONS; i = i + 1) begin: cordic_iteration
         always_ff @(posedge s00_axis_aclk) begin
-            if (m00_axis_tready) begin
+           // if (m00_axis_tready) begin
                 tvalid_i[i+1] <= tvalid_i[i];
                 tlast_i[i+1] <= tlast_i[i];
                 flips_i[i+1] <= flips_i[i];
@@ -207,7 +207,7 @@ module cordic64 #(
                     y_i[i+1] <= y_i[i] - rnd2zerodiv(x_i[i], i);
                     z_i[i+1] <= $signed(z_i[i]) + $signed(angles[i]);
                 end
-            end
+            //end
         end
     end endgenerate
 
