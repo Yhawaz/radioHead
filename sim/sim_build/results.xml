@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1765231350" />
+    <testcase name="first_test" classname="test_fm_filter" file="/home/yabi/projs/radioHead/sim/test_fm_filter.py" lineno="82" time="241.8892011642456" sim_time_ns="100035.001" ratio_time="413.5571183770005" />
+  </testsuite>
+</testsuites>

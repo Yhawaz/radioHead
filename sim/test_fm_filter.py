@@ -85,14 +85,12 @@ async def first_test(dut):
     meow=[]
     cocotb.start_soon(Clock(dut.clk, 10, units="ns").start(start_high=False))
     dut.reset.value=0
-    dut.resetIn.value=0
     dut.dataIn.value=0
     dut.clk_enable.value=1
     dut.validIn.value=0
     received_messages = []
     await ClockCycles(dut.clk,1)
     await drive_reset(dut.reset)
-    await drive_reset(dut.resetIn)
     #dut.clk_enable.value=1
     dut.validIn.value=1
     t,si = generate_signed_8bit_sine_waves(
@@ -125,14 +123,14 @@ def fm_filter_runner():
     sim = os.getenv("SIM", "icarus")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
-    sources = [proj_path / "hdl" / "fm32_filter.v",
+    sources = [proj_path / "hdl" / "fm32bit_19kHz_filter.v",
     proj_path / "hdl" / "Filter.v",
     proj_path / "hdl" / "FilterCoef.v",
     proj_path / "hdl" / "FilterTapSystolicPreAddWvlIn.v",
     proj_path / "hdl" / "dsphdl_FIRFilter.v",
     proj_path / "hdl" / "subFilter.v"] 
     #grow/modify this as needed.
-    hdl_toplevel = "fm32_filter"
+    hdl_toplevel = "fm32bit_19kHz_filter"
     build_test_args = ["-Wall"]#,"COCOTB_RESOLVE_X=ZEROS"]
     parameters = {}
     sys.path.append(str(proj_path / "sim"))
