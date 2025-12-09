@@ -34,7 +34,7 @@ module fir_wrapper#(
     wire flipped_bit;
     wire [7:0] shft_amt;
 
-    assign shft_amt = scaler + shift;
+    assign shft_amt = shift + scaler;
     assign flipped_vals = ~fir_out;
     assign flipped_bit = flipped_vals[C_M00_AXIS_TDATA_WIDTH - 1];
     assign pre_tdata = {flipped_bit, fir_out[C_M00_AXIS_TDATA_WIDTH - 2:0]}; // flipping the msb to perform binary offset
@@ -42,7 +42,7 @@ module fir_wrapper#(
     assign shifted_val = (fir_out >>> shft_amt);
     //assign m00_axis_tdata = $signed({pre_tdata[C_M00_AXIS_TDATA_WIDTH - 1],pre_tdata[6:0]}); // dac can only take 8 bits
 
-    assign m00_axis_tdata = $signed(shifted_val[7:0]); // dac can only take 8 bits
+    assign m00_axis_tdata = {~shifted_val[7],shifted_val[6:0]}; // dac can only take 8 bits
 
     axis_fir_15 filter(     .s00_axis_aclk(s00_axis_aclk),
                 .s00_axis_aresetn(s00_axis_aresetn),

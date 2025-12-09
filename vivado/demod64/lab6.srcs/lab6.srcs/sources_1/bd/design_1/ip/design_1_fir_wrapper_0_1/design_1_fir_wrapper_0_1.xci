@@ -8,11 +8,13 @@
     "gen_directory": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_fir_wrapper_0_1",
     "parameters": {
       "component_parameters": {
+        "NUM_COEFFS": [ { "value": "101", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_S00_AXIS_TDATA_WIDTH": [ { "value": "64", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_M00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "Component_Name": [ { "value": "design_1_fir_wrapper_0_1", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
+        "NUM_COEFFS": [ { "value": "101", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_S00_AXIS_TDATA_WIDTH": [ { "value": "64", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_M00_AXIS_TDATA_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ]
       },
