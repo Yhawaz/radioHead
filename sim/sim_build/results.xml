@@ -1,9 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1765165018" />
-    <testcase name="test_a" classname="test_yabi_demod64" file="/home/yabi/projs/radioHead/sim/test_yabi_demod64.py" lineno="295" time="0.00644373893737793" sim_time_ns="15.001" ratio_time="2327.9962372442374">
-      <failure message="Test failed with RANDOM_SEED=1765165018" />
-    </testcase>
-    <testcase name="test_b" classname="test_yabi_demod64" file="/home/yabi/projs/radioHead/sim/test_yabi_demod64.py" lineno="399" time="13.893045902252197" sim_time_ns="30010.001" ratio_time="2160.073551267479" />
+    <property name="random_seed" value="1765231350" />
+    <testcase name="first_test" classname="test_fm_filter" file="/home/yabi/projs/radioHead/sim/test_fm_filter.py" lineno="82" time="241.8892011642456" sim_time_ns="100035.001" ratio_time="413.5571183770005" />
   </testsuite>
 </testsuites>
