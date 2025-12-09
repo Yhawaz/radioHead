@@ -277,7 +277,7 @@ async def test_a(dut):
     )
 
     await FallingEdge(dut.s00_axis_aclk)
-    dut.shift.value = 3
+    dut.shift.value = 4
 
     #(pts)
     #assert 1 == 2

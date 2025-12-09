@@ -18,7 +18,7 @@ module fir_wrapper#(
     output wire  m00_axis_tvalid, m00_axis_tlast,
     output wire [C_M00_AXIS_TDATA_WIDTH - 1:0] m00_axis_tdata,
     output wire [(C_M00_AXIS_TDATA_WIDTH/8)-1: 0] m00_axis_tstrb,
-    output wire [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals,
+    //output wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals,
 
     input wire [3:0] shift
     //input wire signed [NUM_COEFFS-1:0][7:0] coeffs
@@ -27,6 +27,7 @@ module fir_wrapper#(
     //localparam NUM_COEFFS = 101;
     wire [3:0] scaler;
     wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0] fir_out;
+    wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals;
     //wire [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals;
     //reg m00_axis_tvalid_reg;
     assign scaler = 4'd12; // determined precompile
@@ -37,11 +38,11 @@ module fir_wrapper#(
     assign flipped_vals = ~fir_out;
     assign flipped_bit = flipped_vals[C_M00_AXIS_TDATA_WIDTH - 1];
     assign pre_tdata = {flipped_bit, fir_out[C_M00_AXIS_TDATA_WIDTH - 2:0]}; // flipping the msb to perform binary offset
-    assign shifted_val = pre_tdata >> shft_amt;
-    //assign shifted_val = (fir_out >>> shft_amt);
+    //assign shifted_val = pre_tdata >> shft_amt;
+    assign shifted_val = (fir_out >>> shft_amt);
     //assign m00_axis_tdata = $signed({pre_tdata[C_M00_AXIS_TDATA_WIDTH - 1],pre_tdata[6:0]}); // dac can only take 8 bits
 
-    assign m00_axis_tdata = shifted_val[7:0]; // dac can only take 8 bits
+    assign m00_axis_tdata = $signed(shifted_val[7:0]); // dac can only take 8 bits
 
     axis_fir_15 filter(     .s00_axis_aclk(s00_axis_aclk),
                 .s00_axis_aresetn(s00_axis_aresetn),
