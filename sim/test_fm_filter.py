@@ -124,11 +124,11 @@ def fm_filter_runner():
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sources = [proj_path / "hdl" / "fm32bit_19kHz_filter.v",
-    proj_path / "hdl" / "Filter.v",
-    proj_path / "hdl" / "FilterCoef.v",
-    proj_path / "hdl" / "FilterTapSystolicPreAddWvlIn.v",
-    proj_path / "hdl" / "dsphdl_FIRFilter.v",
-    proj_path / "hdl" / "subFilter.v"] 
+    proj_path / "hdl" / "Filter19.v",
+    proj_path / "hdl" / "FilterCoef19.v",
+    proj_path / "hdl" / "FilterTapSystolicPreAddWvlIn19.v",
+    proj_path / "hdl" / "dsphdl_FIRFilter19.v",
+    proj_path / "hdl" / "subFilter19.v"] 
     #grow/modify this as needed.
     hdl_toplevel = "fm32bit_19kHz_filter"
     build_test_args = ["-Wall"]#,"COCOTB_RESOLVE_X=ZEROS"]
