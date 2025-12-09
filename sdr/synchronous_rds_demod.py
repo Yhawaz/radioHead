@@ -23,6 +23,7 @@ def plot_fft_real(real_signal, sample_rate, title = ""):
 x = np.fromfile('hw_demoded_data.npy', dtype=np.int32)
 sample_rate = 250e3
 
+x = x[33000:]
 duration_s = len(x) / sample_rate
 ##print(f"Recording is {duration_s} s long.")
 
@@ -30,7 +31,7 @@ duration_s = len(x) / sample_rate
 #demoded_sig = 0.5 * np.angle(x[0:-1] * np.conj(x[1:]))
 demoded_sig = x
 
-plot_fft_real(demoded_sig,250e3)
+#plot_fft_real(demoded_sig,250e3)
 
 pilot_tone_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [16e3, 22e3], fs = sample_rate, pass_zero = "bandpass")
 pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
@@ -47,6 +48,7 @@ pilot_tone_tripled_extracted = scipy.signal.lfilter(rds_carrier_bandpass, [1.0],
 
 rds_signal = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], demoded_sig)
 
+plot_fft_real(rds_signal,250e3)
 
 synchronous_mixed = rds_signal * pilot_tone_tripled_extracted
 
@@ -64,7 +66,7 @@ times = np.linspace(0, duration_s, len(lowpassed_synchronous_mixed))
 plt.legend()
 plt.show()
 
-for counter_start in range(0, 32, 2):
+for counter_start in range(0, 32, 8):
     symbol_clock = np.zeros((len(pilot_tone_extracted),), dtype = np.uint8)
     counter = counter_start
     for i in range(len(pilot_tone_zero_crossings)):
@@ -72,10 +74,10 @@ for counter_start in range(0, 32, 2):
             if counter % 32 == 0: # 16 samples per symbol, but there are 2 zero-crossings per cycle, so divide by 32.
                 symbol_clock[i] = 1
             counter += 1
-    if counter_start == 31:
+    if counter_start == 0:
         print(f"Average symbol clock frequency: {float(sum(symbol_clock.astype(np.uint32))) / duration_s} symbols/second")
-    plt.plot(times, symbol_clock, '*')
-    plt.show()
+    #plt.plot(times, symbol_clock, '*')
+    #plt.show()
 
     bits = ((lowpassed_synchronous_mixed > 0)[symbol_clock == 1]).astype(np.uint8)
     rds_decode.rds_decode(bits)

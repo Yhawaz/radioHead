@@ -20,7 +20,7 @@ def plot_fft_real(real_signal, sample_rate, title = ""):
     plt.show()
 
 #yoink signal
-x = np.fromfile('npr.raw', dtype=np.complex64)
+x = np.fromfile('wmbr_fixed.raw', dtype=np.complex64)
 sample_rate = 250e3
 
 duration_s = len(x) / sample_rate
@@ -30,7 +30,7 @@ duration_s = len(x) / sample_rate
 demoded_sig = 0.5 * np.angle(x[0:-1] * np.conj(x[1:]))
 #demoded_sig = x
 
-plot_fft_real(demoded_sig,250e3)
+#plot_fft_real(demoded_sig,250e3)
 
 pilot_tone_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [16e3, 22e3], fs = sample_rate, pass_zero = "bandpass")
 pilot_tone_extracted = scipy.signal.lfilter(pilot_tone_bandpass, [1.0], demoded_sig)
@@ -46,6 +46,7 @@ rds_carrier_bandpass = scipy.signal.firwin(numtaps = 501, cutoff = [57e3 - 3e3, 
 pilot_tone_tripled_extracted = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], pilot_tone_clipped)
 
 rds_signal = scipy.signal.lfilter(rds_carrier_bandpass, [1.0], demoded_sig)
+plot_fft_real(rds_signal,250e3)
 
 
 synchronous_mixed = rds_signal * pilot_tone_tripled_extracted
