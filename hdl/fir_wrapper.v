@@ -1,28 +1,8 @@
 `timescale 1ns / 1ps
 `default_nettype none
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:  Joe Steinmeyer
-//
-// Create Date: 09/12/2025 05:11:30 AM
-// Module Name: fir_wrapper
-// Project Name: week03 6.S965 Fall 2025
-// Target Devices: 7000 series Zynq (7020 on Pynq Z2)
-// Tool Versions: (Vivado 2025.1)
-// Description:  wraps up three separate fir_15 devices (one for each color channel
-// handles splitting the pixel up into channels and putting back together
-// as well as having spots for offset binary conversion, shifting the outputs of the
-// FIR and doing clipping (completed by student).
-//
-// Dependencies: fir_15 from work earlier in week.
-//
-// Revision:
-// Revision 0.01 - File Created
-//
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module fir_wrapper#(    
+        parameter integer NUM_COEFFS = 101,
         parameter integer C_S00_AXIS_TDATA_WIDTH    = 64,
         parameter integer C_M00_AXIS_TDATA_WIDTH    = 32
     )(
@@ -38,22 +18,31 @@ module fir_wrapper#(
     output wire  m00_axis_tvalid, m00_axis_tlast,
     output wire [C_M00_AXIS_TDATA_WIDTH - 1:0] m00_axis_tdata,
     output wire [(C_M00_AXIS_TDATA_WIDTH/8)-1: 0] m00_axis_tstrb,
+    //output wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals,
 
     input wire [3:0] shift
+    //input wire signed [NUM_COEFFS-1:0][7:0] coeffs
 
     );
-
+    //localparam NUM_COEFFS = 101;
     wire [3:0] scaler;
     wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0] fir_out;
-    wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata;
-    reg m00_axis_tvalid_reg;
+    wire signed [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals;
+    //wire [C_M00_AXIS_TDATA_WIDTH - 1:0]  pre_tdata, shifted_val,flipped_vals;
+    //reg m00_axis_tvalid_reg;
     assign scaler = 4'd12; // determined precompile
+    wire flipped_bit;
     wire [7:0] shft_amt;
-    assign shft_amt = scaler + 2*shift;
-    assign m00_axis_tready = s00_axis_tready;
-    assign pre_tdata = $signed(fir_out >>> shft_amt);
+
+    assign shft_amt = scaler + shift;
+    assign flipped_vals = ~fir_out;
+    assign flipped_bit = flipped_vals[C_M00_AXIS_TDATA_WIDTH - 1];
+    assign pre_tdata = {flipped_bit, fir_out[C_M00_AXIS_TDATA_WIDTH - 2:0]}; // flipping the msb to perform binary offset
+    //assign shifted_val = pre_tdata >> shft_amt;
+    assign shifted_val = (fir_out >>> shft_amt);
     //assign m00_axis_tdata = $signed({pre_tdata[C_M00_AXIS_TDATA_WIDTH - 1],pre_tdata[6:0]}); // dac can only take 8 bits
-    assign m00_axis_tdata = $signed(pre_tdata[7:0]) + 127; // need to offset because data cannot have signedness
+
+    assign m00_axis_tdata = $signed(shifted_val[7:0]); // dac can only take 8 bits
 
     axis_fir_15 filter(     .s00_axis_aclk(s00_axis_aclk),
                 .s00_axis_aresetn(s00_axis_aresetn),
@@ -66,6 +55,7 @@ module fir_wrapper#(
                 .m00_axis_tvalid(m00_axis_tvalid),
                 .m00_axis_tstrb(m00_axis_tstrb),
                 .m00_axis_tlast(m00_axis_tlast)
+                //.coeffs(coeffs)
         );
     // always @(posedge s00_axis_aclk)begin
     //     if (s00_axis_aresetn)begin
@@ -83,5 +73,6 @@ endmodule
 
 
 `default_nettype wire
+
 
 

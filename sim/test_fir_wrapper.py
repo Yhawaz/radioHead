@@ -203,7 +203,7 @@ sig_out_act = [] #contains list of expected outputs (Growing)
 #coeffs = [-3,14,-20,6,16,-5,-41,68,-41,-5,16,6,-20,14,-3]
 #coeffs = [3,14,21,21,15,40,75,102,75,40,15,21,21,14,3]
 # These coeffs are the ones that correspond to the line:
-taps = firwin(numtaps=101, cutoff=6.25e3, fs=250e3)
+taps = firwin(numtaps=101, cutoff=6.25e3, fs=250e3, pass_zero=False)
 max = np.max(abs(taps))
 k = 127/max
 coeffs = [round(k * tap) for tap in taps]
@@ -265,15 +265,15 @@ async def test_a(dut):
     cocotb.start_soon(Clock(dut.s00_axis_aclk, 10, units="ns").start())
     await reset(dut.s00_axis_aclk, dut.s00_axis_aresetn,2,0)
 
-    # Set the coefficients
+    #Set the coefficients
     #await drive_coeffs(dut,coeffs)
 
     # Generate the sine input data
     t,si = generate_signed_32bit_sine_waves(
-    sample_rate=10e6,
-    duration=4*100e-6,
-    frequencies=[5e3,1.5e6,3.5e6],
-    amplitudes=[0.5,0.5,0.1]
+    sample_rate=250e3,
+    duration=1e-3,
+    frequencies=[5e3,20e3,75e3,100e3],
+    amplitudes=[0.5,0.5,0.5,0.5]
     )
 
     await FallingEdge(dut.s00_axis_aclk)
@@ -283,7 +283,7 @@ async def test_a(dut):
     #assert 1 == 2
     #feed the driver on the M Side:
     for i in range(len(t)):
-        ind.append({'type':'write_single', "contents":{"data": int(si[i]),"last":0}})
+        ind.append({'type':'write_single', "contents":{"data": int(si[i]<<32),"last":0}})
         ind.append({"type":"pause","duration":10})
     ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
     ind.append({'type':'pause','duration':2}) #end with pause
@@ -303,6 +303,10 @@ async def test_a(dut):
         axs[0].plot(t, sig_out_act[0:len(t)], label="Signal 1", color="r")
         axs[0].set_ylabel("Module Output")
         axs[0].legend()
+
+        axs[1].plot(t, expected[0:len(t)], label="Signal 2", color="g")
+        axs[1].set_ylabel("Expected Value")
+        axs[1].legend()
 
         axs[2].plot(t, si, label="Signal 3", color="b")
         axs[2].set_ylabel("Input Signal")
