@@ -4,7 +4,7 @@
     "xci_name": "design_1_iq_framer2_1_0",
     "cell_name": "iq_framer2_1",
     "component_reference": "user.org:user:iq_framer2:1.0",
-    "ip_revision": "24",
+    "ip_revision": "27",
     "gen_directory": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_iq_framer2_1_0",
     "parameters": {
       "component_parameters": {
@@ -35,7 +35,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "24" } ],
+        "IPREVISION": [ { "value": "27" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../../../lab6.gen/sources_1/bd/design_1/ip/design_1_iq_framer2_1_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
