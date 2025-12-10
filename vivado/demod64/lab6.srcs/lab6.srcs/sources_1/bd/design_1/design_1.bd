@@ -23,7 +23,6 @@
       "cic_compiler_0": "",
       "cic_compiler_1": "",
       "demo_shim_w_0": "",
-      "ila_0": "",
       "ilslice_0": "",
       "ilconstant_0": "",
       "ramp_0": "",
@@ -3185,7 +3184,7 @@
       },
       "iq_framer2_0": {
         "vlnv": "user.org:user:iq_framer2:1.0",
-        "ip_revision": "24",
+        "ip_revision": "27",
         "xci_name": "design_1_iq_framer2_0_0",
         "xci_path": "ip/design_1_iq_framer2_0_0/design_1_iq_framer2_0_0.xci",
         "inst_hier_path": "iq_framer2_0",
@@ -3710,45 +3709,14 @@
           }
         }
       },
-      "ila_0": {
-        "vlnv": "xilinx.com:ip:ila:6.2",
-        "ip_revision": "18",
-        "xci_name": "design_1_ila_0_0",
-        "xci_path": "ip/design_1_ila_0_0/design_1_ila_0_0.xci",
-        "inst_hier_path": "ila_0",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "C_DATA_DEPTH": {
-            "value": "2048"
-          },
-          "C_MONITOR_TYPE": {
-            "value": "Native"
-          },
-          "C_NUM_OF_PROBES": {
-            "value": "10"
-          },
-          "C_PROBE0_WIDTH": {
-            "value": "32"
-          },
-          "C_PROBE1_WIDTH": {
-            "value": "64"
-          },
-          "C_PROBE8_WIDTH": {
-            "value": "8"
-          },
-          "C_PROBE9_WIDTH": {
-            "value": "32"
-          },
-          "C_SLOT_0_AXI_PROTOCOL": {
-            "value": "AXI4S"
-          }
-        }
-      },
       "ilslice_0": {
         "vlnv": "xilinx.com:inline_hdl:ilslice:1.0",
         "parameters": {
           "DIN_FROM": {
             "value": "7"
+          },
+          "DIN_WIDTH": {
+            "value": "64"
           }
         }
       },
@@ -3853,7 +3821,7 @@
       },
       "iq_framer2_1": {
         "vlnv": "user.org:user:iq_framer2:1.0",
-        "ip_revision": "24",
+        "ip_revision": "27",
         "xci_name": "design_1_iq_framer2_1_0",
         "xci_path": "ip/design_1_iq_framer2_1_0/design_1_iq_framer2_1_0.xci",
         "inst_hier_path": "iq_framer2_1",
@@ -4096,7 +4064,7 @@
             "vlnv": "xilinx.com:interface:axis_rtl:1.0",
             "parameters": {
               "TDATA_NUM_BYTES": {
-                "value": "4",
+                "value": "8",
                 "value_src": "auto"
               },
               "TDEST_WIDTH": {
@@ -4140,13 +4108,13 @@
               "TDATA": {
                 "physical_name": "m00_axis_tdata",
                 "direction": "O",
-                "left": "31",
+                "left": "63",
                 "right": "0"
               },
               "TSTRB": {
                 "physical_name": "m00_axis_tstrb",
                 "direction": "O",
-                "left": "3",
+                "left": "7",
                 "right": "0"
               },
               "TLAST": {
@@ -4414,8 +4382,7 @@
       "axis_data_fifo_0_s_axis_tready": {
         "ports": [
           "axis_data_fifo_0/s_axis_tready",
-          "demo_shim_w_0/m00_axis_tready",
-          "ila_0/probe6"
+          "demo_shim_w_0/m00_axis_tready"
         ]
       },
       "btn_1": {
@@ -4462,16 +4429,15 @@
           "cic_compiler_0/aclk",
           "demo_shim_w_0/s00_axis_aclk",
           "demo_shim_w_0/m00_axis_aclk",
-          "ila_0/clk",
           "demo_shim_w_1/s00_axis_aclk",
           "demo_shim_w_1/m00_axis_aclk",
+          "ramp_0/clk",
           "iq_framer2_0/s01_axis_aclk",
           "iq_framer2_0/s00_axis_aclk",
           "iq_framer2_0/m00_axis_aclk",
           "iq_framer2_1/s01_axis_aclk",
           "iq_framer2_1/s00_axis_aclk",
           "iq_framer2_1/m00_axis_aclk",
-          "ramp_0/clk",
           "fir_wrapper_1/s00_axis_aclk",
           "fir_wrapper_1/m00_axis_aclk"
         ]
@@ -4479,15 +4445,13 @@
       "demo_shim_w_0_m00_axis_tdata": {
         "ports": [
           "demo_shim_w_0/m00_axis_tdata",
-          "ila_0/probe1",
           "ilslice_1/Din"
         ]
       },
       "demo_shim_w_0_m00_axis_tlast": {
         "ports": [
           "demo_shim_w_0/m00_axis_tlast",
-          "axis_data_fifo_0/s_axis_tlast",
-          "ila_0/probe5"
+          "axis_data_fifo_0/s_axis_tlast"
         ]
       },
       "demo_shim_w_0_m00_axis_tstrb": {
@@ -4499,22 +4463,19 @@
       "demo_shim_w_0_m00_axis_tvalid": {
         "ports": [
           "demo_shim_w_0/m00_axis_tvalid",
-          "axis_data_fifo_0/s_axis_tvalid",
-          "ila_0/probe7"
+          "axis_data_fifo_0/s_axis_tvalid"
         ]
       },
       "demo_shim_w_0_s00_axis_tready": {
         "ports": [
           "demo_shim_w_0/s00_axis_tready",
-          "ila_0/probe4",
           "iq_framer2_0/m00_axis_tready"
         ]
       },
       "fir_wrapper_1_m00_axis_tdata": {
         "ports": [
           "fir_wrapper_1/m00_axis_tdata",
-          "ilslice_0/Din",
-          "ila_0/probe9"
+          "ilslice_0/Din"
         ]
       },
       "fir_wrapper_1_m00_axis_tvalid": {
@@ -4536,13 +4497,13 @@
           "demo_shim_w_0/s00_axis_aresetn",
           "usp_rf_data_converter_0/m2_axis_aresetn",
           "demo_shim_w_1/s00_axis_aresetn",
+          "ramp_0/reset",
           "iq_framer2_0/s01_axis_aresetn",
           "iq_framer2_0/s00_axis_aresetn",
           "iq_framer2_0/m00_axis_aresetn",
           "iq_framer2_1/s01_axis_aresetn",
           "iq_framer2_1/s00_axis_aresetn",
           "iq_framer2_1/m00_axis_aresetn",
-          "ramp_0/reset",
           "fir_wrapper_1/s00_axis_aresetn",
           "fir_wrapper_1/m00_axis_aresetn"
         ]
@@ -4557,8 +4518,7 @@
       "ilslice_0_Dout": {
         "ports": [
           "ilslice_0/Dout",
-          "ramp_0/good_data",
-          "ila_0/probe8"
+          "ramp_0/good_data"
         ]
       },
       "ilslice_1_Dout": {
@@ -4576,15 +4536,13 @@
       "iq_framer2_0_m00_axis_tdata": {
         "ports": [
           "iq_framer2_0/m00_axis_tdata",
-          "ila_0/probe0",
           "demo_shim_w_0/s00_axis_tdata"
         ]
       },
       "iq_framer2_0_m00_axis_tlast": {
         "ports": [
           "iq_framer2_0/m00_axis_tlast",
-          "demo_shim_w_0/s00_axis_tlast",
-          "ila_0/probe2"
+          "demo_shim_w_0/s00_axis_tlast"
         ]
       },
       "iq_framer2_0_m00_axis_tstrb": {
@@ -4596,8 +4554,7 @@
       "iq_framer2_0_m00_axis_tvalid": {
         "ports": [
           "iq_framer2_0/m00_axis_tvalid",
-          "demo_shim_w_0/s00_axis_tvalid",
-          "ila_0/probe3"
+          "demo_shim_w_0/s00_axis_tvalid"
         ]
       },
       "iq_framer2_0_probe": {

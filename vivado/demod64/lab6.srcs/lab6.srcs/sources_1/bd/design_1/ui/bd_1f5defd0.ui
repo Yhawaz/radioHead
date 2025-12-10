@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.717936",
-   "Default View_TopLeft":"3917,641",
+   "Default View_ScaleFactor":"0.824694",
+   "Default View_TopLeft":"3780,1017",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
 #  -string -flagsOSRD
@@ -9,77 +9,76 @@ preplace port sysref_in -pg 1 -lvl 0 -x 0 -y 750 -defaultsOSRD
 preplace port adc2_clk -pg 1 -lvl 0 -x 0 -y 520 -defaultsOSRD
 preplace port vin2_01 -pg 1 -lvl 0 -x 0 -y 550 -defaultsOSRD
 preplace port port-id_btn -pg 1 -lvl 0 -x 0 -y 1270 -defaultsOSRD
-preplace portBus led -pg 1 -lvl 15 -x 6510 -y 470 -defaultsOSRD
-preplace portBus sw -pg 1 -lvl 8 -x 3770 -y 2040 -defaultsOSRD -bot
-preplace portBus data -pg 1 -lvl 15 -x 6510 -y 1440 -defaultsOSRD
+preplace portBus led -pg 1 -lvl 15 -x 6930 -y 470 -defaultsOSRD
+preplace portBus sw -pg 1 -lvl 8 -x 3620 -y 2040 -defaultsOSRD -bot
+preplace portBus data -pg 1 -lvl 15 -x 6930 -y 1440 -defaultsOSRD
 preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 3 -x 1610 -y 900 -defaultsOSRD
-preplace inst axi_dma_0 -pg 1 -lvl 13 -x 6230 -y 1280 -defaultsOSRD
-preplace inst usp_rf_data_converter_0 -pg 1 -lvl 6 -x 2990 -y 960 -defaultsOSRD
-preplace inst axis_data_fifo_0 -pg 1 -lvl 11 -x 5350 -y 1090 -defaultsOSRD
+preplace inst axi_dma_0 -pg 1 -lvl 14 -x 6690 -y 1280 -defaultsOSRD
+preplace inst usp_rf_data_converter_0 -pg 1 -lvl 6 -x 2910 -y 960 -defaultsOSRD
+preplace inst axis_data_fifo_0 -pg 1 -lvl 11 -x 5590 -y 1150 -defaultsOSRD
 preplace inst proc_sys_reset_0 -pg 1 -lvl 2 -x 1090 -y 890 -defaultsOSRD
 preplace inst proc_sys_reset_1 -pg 1 -lvl 1 -x 590 -y 1050 -defaultsOSRD
-preplace inst iq_framer2_0 -pg 1 -lvl 8 -x 3880 -y 950 -defaultsOSRD
-preplace inst axi_smc -pg 1 -lvl 5 -x 2620 -y 890 -defaultsOSRD
+preplace inst iq_framer2_0 -pg 1 -lvl 8 -x 3730 -y 970 -defaultsOSRD
+preplace inst axi_smc -pg 1 -lvl 5 -x 2560 -y 890 -defaultsOSRD
 preplace inst axi_smc_1 -pg 1 -lvl 4 -x 2120 -y 940 -defaultsOSRD
-preplace inst cic_compiler_0 -pg 1 -lvl 7 -x 3410 -y 710 -defaultsOSRD
-preplace inst cic_compiler_1 -pg 1 -lvl 7 -x 3410 -y 850 -defaultsOSRD
-preplace inst demo_shim_w_0 -pg 1 -lvl 9 -x 4430 -y 1050 -defaultsOSRD
-preplace inst ila_0 -pg 1 -lvl 9 -x 4430 -y 600 -defaultsOSRD
-preplace inst ilslice_0 -pg 1 -lvl 12 -x 5770 -y 1500 -defaultsOSRD
-preplace inst ilconstant_0 -pg 1 -lvl 11 -x 5350 -y 1730 -defaultsOSRD
-preplace inst ramp_0 -pg 1 -lvl 12 -x 5770 -y 1300 -defaultsOSRD
-preplace inst ilconstant_1 -pg 1 -lvl 7 -x 3410 -y 1090 -defaultsOSRD
-preplace inst ilslice_1 -pg 1 -lvl 10 -x 4860 -y 970 -defaultsOSRD
-preplace inst iq_framer2_1 -pg 1 -lvl 8 -x 3880 -y 1500 -defaultsOSRD
-preplace inst demo_shim_w_1 -pg 1 -lvl 9 -x 4430 -y 1410 -defaultsOSRD
-preplace inst fir_wrapper_1 -pg 1 -lvl 10 -x 4860 -y 1410 -defaultsOSRD
-preplace inst ilslice_2 -pg 1 -lvl 10 -x 4860 -y 1070 -defaultsOSRD
-preplace netloc axis_data_fifo_0_s_axis_tready 1 8 3 4230 1190 4630 1130 5070
-preplace netloc btn_1 1 0 12 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 N 1270 5620
-preplace netloc clk_wiz_0_clk_out1 1 0 12 400 740 N 740 NJ 740 1920 750 NJ 750 2810 780 3170 630 3670 630 4110 1260 4670 1260 5180 1260 N
-preplace netloc demo_shim_w_0_m00_axis_tdata 1 8 2 4210 880 4650
-preplace netloc demo_shim_w_0_m00_axis_tlast 1 8 3 4220 1200 4650 1140 5050
-preplace netloc demo_shim_w_0_m00_axis_tvalid 1 8 3 4200 1210 4640 1150 5080
-preplace netloc demo_shim_w_0_s00_axis_tready 1 8 1 4070 600n
-preplace netloc ilconstant_1_dout 1 1 11 770 780 N 780 N 780 N 780 2790 820 3190 970 3650 1130 4080 1280 4640 1280 5170 1280 N
-preplace netloc ilconstant_1_dout1 1 7 1 3690 1070n
-preplace netloc ilslice_0_Dout 1 8 5 4190 1300 N 1300 5050 1310 5610 1400 5920
-preplace netloc iq_framer2_0_m00_axis_tdata 1 8 1 4080 520n
-preplace netloc iq_framer2_0_m00_axis_tlast 1 8 1 4150 560n
-preplace netloc iq_framer2_0_m00_axis_tstrb 1 8 1 4100 930n
-preplace netloc iq_framer2_0_m00_axis_tvalid 1 8 1 4160 580n
-preplace netloc iq_framer2_0_probe 1 8 7 4090J 910 4660 470 N 470 N 470 N 470 N 470 N
-preplace netloc proc_sys_reset_0_peripheral_aresetn 1 2 11 1270 1000 1940 830 2480J 800 2780 810 3210 960 3640 750 4130 790 N 790 N 790 N 790 5990
-preplace netloc ramp_0_ramp_out 1 12 3 5930J 1520 6450 1440 N
-preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 1 12 910 990 1310 1010 1970 840 2470 790 2800 800 3230 950 3620 740 4170 760 N 760 5160 1230 5530 1200 5980
-preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 4 410 870 900J 790 NJ 790 1910
-preplace netloc ilslice_1_Dout 1 10 1 5170 970n
-preplace netloc cic_compiler_0_m_axis_data_tdata 1 7 1 3680 710n
-preplace netloc cic_compiler_0_m_axis_data_tvalid 1 7 1 3660 730n
-preplace netloc cic_compiler_1_m_axis_data_tdata 1 7 1 3630 850n
-preplace netloc cic_compiler_1_m_axis_data_tvalid 1 7 1 3610 870n
-preplace netloc fir_wrapper_1_m00_axis_tvalid 1 10 2 5110 1300 NJ
-preplace netloc ilconstant_0_dout 1 10 2 NJ 1440 5520
-preplace netloc fir_wrapper_1_m00_axis_tdata 1 8 4 4180 1520 N 1520 5050J 1500 N
-preplace netloc sw_1 1 8 2 4210 1500 4660J
-preplace netloc ilslice_2_Dout 1 10 1 5060 1070n
-preplace netloc demo_shim_w_0_m00_axis_tstrb 1 9 1 4660 1040n
-preplace netloc adc2_clk_1 1 0 6 NJ 520 NJ 520 NJ 520 1960 730 NJ 730 2860J
-preplace netloc axi_smc_1_M00_AXI 1 2 3 1310 810 N 810 2260
-preplace netloc axi_smc_M00_AXI 1 5 8 2820 830 3200 940 3650 770 4120 780 N 780 N 780 N 780 6010
-preplace netloc axi_smc_M01_AXI 1 5 1 2840 890n
-preplace netloc axis_data_fifo_0_M_AXIS 1 11 2 N 1040 6000
-preplace netloc sysref_in_1 1 0 6 NJ 750 NJ 750 NJ 750 1910 760 NJ 760 2830J
-preplace netloc usp_rf_data_converter_0_m20_axis 1 6 1 3220 700n
-preplace netloc usp_rf_data_converter_0_m21_axis 1 6 1 3180 840n
-preplace netloc vin2_01_1 1 0 6 NJ 550 NJ 550 NJ 550 1950 740 NJ 740 2850J
-preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_FPD 1 3 2 1960 860 N
-preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM1_FPD 1 3 2 1950 850 2270
-preplace netloc iq_framer2_1_M00_AXIS 1 8 1 4070 1380n
-preplace netloc demo_shim_w_1_m00_axis 1 9 1 4650 1360n
-preplace netloc axi_dma_0_M_AXI_S2MM 1 3 11 1980 770 NJ 770 NJ 770 3240J 930 3580J 760 4140J 770 NJ 770 NJ 770 NJ 770 NJ 770 6450
-levelinfo -pg 1 0 590 1090 1610 2120 2620 2990 3410 3880 4430 4860 5350 5770 6230 6470 6510
-pagesize -pg 1 -db -bbox -sgen -120 -100 6930 2140
+preplace inst cic_compiler_0 -pg 1 -lvl 7 -x 3280 -y 710 -defaultsOSRD
+preplace inst cic_compiler_1 -pg 1 -lvl 7 -x 3280 -y 850 -defaultsOSRD
+preplace inst demo_shim_w_0 -pg 1 -lvl 9 -x 4380 -y 1050 -defaultsOSRD
+preplace inst ilslice_0 -pg 1 -lvl 12 -x 5940 -y 1500 -defaultsOSRD
+preplace inst ilconstant_0 -pg 1 -lvl 11 -x 5590 -y 1850 -defaultsOSRD
+preplace inst ramp_0 -pg 1 -lvl 12 -x 5940 -y 1300 -defaultsOSRD
+preplace inst ilconstant_1 -pg 1 -lvl 7 -x 3280 -y 1090 -defaultsOSRD
+preplace inst ilslice_1 -pg 1 -lvl 10 -x 4810 -y 970 -defaultsOSRD
+preplace inst iq_framer2_1 -pg 1 -lvl 8 -x 3730 -y 1500 -defaultsOSRD
+preplace inst demo_shim_w_1 -pg 1 -lvl 9 -x 4380 -y 1410 -defaultsOSRD
+preplace inst fir_wrapper_1 -pg 1 -lvl 10 -x 4810 -y 1410 -defaultsOSRD
+preplace inst ilslice_2 -pg 1 -lvl 10 -x 4810 -y 1070 -defaultsOSRD
+preplace netloc btn_1 1 0 12 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 NJ 1270 5000 1320 N
+preplace netloc clk_wiz_0_clk_out1 1 0 12 400 780 N 780 NJ 780 N 780 NJ 780 2750 780 3100 970 3530 1160 4160 1300 4590 1300 5420 1300 5780
+preplace netloc demo_shim_w_0_m00_axis_tdata 1 9 1 4610 970n
+preplace netloc demo_shim_w_0_s00_axis_tready 1 8 1 3920 1010n
+preplace netloc ilconstant_1_dout 1 1 11 770 740 N 740 1920 750 N 750 2720 820 3040 980 3460 1150 4180 1290 4600 1290 5410 1290 5790
+preplace netloc ilconstant_1_dout1 1 7 1 3480 1090n
+preplace netloc ilslice_0_Dout 1 11 2 5790 1410 6090
+preplace netloc iq_framer2_0_m00_axis_tdata 1 8 1 3970 930n
+preplace netloc iq_framer2_0_m00_axis_tlast 1 8 1 3950 970n
+preplace netloc iq_framer2_0_m00_axis_tstrb 1 8 1 3960 950n
+preplace netloc iq_framer2_0_m00_axis_tvalid 1 8 1 3940 990n
+preplace netloc iq_framer2_0_probe 1 8 7 3930J 750 N 750 N 750 N 750 N 750 N 750 6910
+preplace netloc proc_sys_reset_0_peripheral_aresetn 1 2 12 1270 1000 1960 840 2410J 800 2700 810 3080 960 3500 760 N 760 N 760 N 760 N 760 N 760 6460
+preplace netloc ramp_0_ramp_out 1 12 3 NJ 1300 6240 1520 6910
+preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 1 13 910 790 1300 810 1920 810 2400 790 2710 800 3090 950 3450 780 N 780 N 780 5400 1390 5780 1400 N 1400 6450
+preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 4 410 950 910J 1010 NJ 1010 1910
+preplace netloc cic_compiler_0_m_axis_data_tdata 1 7 1 3540 710n
+preplace netloc cic_compiler_0_m_axis_data_tvalid 1 7 1 3520 730n
+preplace netloc cic_compiler_1_m_axis_data_tdata 1 7 1 3490 850n
+preplace netloc cic_compiler_1_m_axis_data_tvalid 1 7 1 3470 870n
+preplace netloc fir_wrapper_1_m00_axis_tvalid 1 10 2 5420 1310 5790J
+preplace netloc ilconstant_0_dout 1 10 2 NJ 1440 5760
+preplace netloc fir_wrapper_1_m00_axis_tdata 1 10 2 NJ 1400 5770
+preplace netloc sw_1 1 8 2 3970 1500 4580J
+preplace netloc demo_shim_w_0_m00_axis_tstrb 1 9 1 4610 1040n
+preplace netloc ilslice_1_Dout 1 10 1 5420J 970n
+preplace netloc ilslice_2_Dout 1 10 1 5010J 1070n
+preplace netloc demo_shim_w_0_m00_axis_tlast 1 9 2 4600J 1140 5000J
+preplace netloc demo_shim_w_0_m00_axis_tvalid 1 9 2 4580 1170 NJ
+preplace netloc axis_data_fifo_0_s_axis_tready 1 9 2 4590 1130 NJ
+preplace netloc adc2_clk_1 1 0 6 NJ 520 NJ 520 NJ 520 1950 730 NJ 730 2780J
+preplace netloc axi_smc_1_M00_AXI 1 2 3 1310 800 N 800 2260
+preplace netloc axi_smc_M00_AXI 1 5 9 2730 830 3070 940 3510 790 N 790 N 790 N 790 N 790 N 790 6470
+preplace netloc axi_smc_M01_AXI 1 5 1 2760 890n
+preplace netloc axis_data_fifo_0_M_AXIS 1 11 3 N 1100 N 1100 6240
+preplace netloc sysref_in_1 1 0 6 NJ 750 NJ 750 NJ 750 1910 760 NJ 760 2740J
+preplace netloc usp_rf_data_converter_0_m20_axis 1 6 1 3060 700n
+preplace netloc usp_rf_data_converter_0_m21_axis 1 6 1 3050 840n
+preplace netloc vin2_01_1 1 0 6 NJ 550 NJ 550 NJ 550 1940 740 NJ 740 2770J
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_FPD 1 3 2 1910 850 2420
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM1_FPD 1 3 2 1970 860 2270
+preplace netloc iq_framer2_1_M00_AXIS 1 8 1 3920 1380n
+preplace netloc demo_shim_w_1_m00_axis 1 9 1 4620 1360n
+preplace netloc axi_dma_0_M_AXI_S2MM 1 3 12 1980 770 NJ 770 NJ 770 3110J 930 3480J 770 NJ 770 NJ 770 NJ 770 NJ 770 NJ 770 N 770 6910
+levelinfo -pg 1 0 590 1090 1610 2120 2560 2910 3280 3730 4380 4810 5590 5940 6220 6690 6930
+pagesize -pg 1 -db -bbox -sgen -120 -100 7040 2140
 "
 }
 {
