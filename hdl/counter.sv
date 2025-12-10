@@ -3,7 +3,7 @@ module counter(     input wire clk_in,
                     input wire [31:0] period_in,
                     output logic [31:0] count_out
               );
-   logic [31:0] count;
+   logic [63:0] count;
    always_comb begin
       if((rst_in == 1) || (count_out == period_in -1)) begin
          count = 0;
