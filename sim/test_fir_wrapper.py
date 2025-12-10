@@ -9,8 +9,8 @@ from pathlib import Path
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, ClockCycles, RisingEdge, FallingEdge, ReadOnly,with_timeout
 from cocotb.utils import get_sim_time as gst
-from cocotb.runner import get_runner
-#from vicoco.vivado_runner import get_runner
+#from cocotb.runner import get_runner
+from vicoco.vivado_runner import get_runner
 from cocotb_bus.bus import Bus
 from cocotb_bus.drivers import BusDriver
 from cocotb_bus.monitors import Monitor
@@ -18,7 +18,7 @@ from cocotb_bus.monitors import BusMonitor
 from cocotb_bus.scoreboard import Scoreboard
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import lfilter,lfiltic,firwin
+from scipy.signal import lfilter,lfiltic,firwin,freqz
 
 test_file = os.path.basename(__file__).replace(".py","")
 
@@ -210,6 +210,47 @@ coeffs = [round(k * tap) for tap in taps]
 count = 0
 initial = [0 for i in range(len(coeffs))]
 expected = []
+
+# code to plot bode plot of filter
+# coeffs1 = [
+#     -3, -1, -1, -1, -2, -2, -2, -2, -2, -2,
+#     -3, -3, -3, -3, -3, -3, -3, -3, -3, -3,
+#     -3, -3, -3, -2, -2, -2, -2, -1, -1, -1,
+#      0,  0,  0,  1,  1,  2,  2,  3,  3,  3,
+#      4,  4,  5,  5,  5,  5,  6,  6,  6,  6,
+#      6,  6,  6,  6,  6,  5,  5,  5,  5,  4,
+#      4,  3,  3,  3,  2,  2,  1,  1,  0,  0,
+#      0, -1, -1, -1, -2, -2, -2, -2, -3, -3,
+#     -3, -3, -3, -3, -3, -3, -3, -3, -3, -3,
+#     -3, -2, -2, -2, -2, -2, -2, -1, -1, -1,
+#     -3
+# ]
+
+# import numpy as np
+# from scipy.signal import freqz
+# import matplotlib.pyplot as plt
+
+# coeffs = np.array(coeffs1, dtype=float)
+
+# # Normalize so magnitude response is meaningful
+# coeffs /= np.sum(np.abs(coeffs))
+
+# w, h = freqz(coeffs)
+
+# fs = 250e3  # example
+# f_hz = w * fs / (2*np.pi)
+
+# plt.figure(figsize=(8,5))
+# plt.title("FIR Frequency Response")
+
+# plt.plot(f_hz, 20*np.log10(np.abs(h)))
+# plt.xlim(0, fs/2)
+# plt.ylim(-100, 5)
+# plt.grid(True)
+# plt.xlabel("Frequency (Hz)")
+# plt.ylabel("Magnitude (dB)")
+# plt.show()
+
 # Creaing the input data
 
 
@@ -269,21 +310,30 @@ async def test_a(dut):
     #await drive_coeffs(dut,coeffs)
 
     # Generate the sine input data
-    t,si = generate_signed_32bit_sine_waves(
-    sample_rate=250e3,
-    duration=1e-3,
-    frequencies=[5e3,20e3,75e3,100e3],
-    amplitudes=[0.5,0.5,0.5,0.5]
-    )
+    # t,si = generate_signed_32bit_sine_waves(
+    # sample_rate=250e3,
+    # duration=1e-3,
+    # frequencies=[3e3,20e3,75e3,100e3],
+    # amplitudes=[0.5,0.5,0.5,0.5]
+    # )
+
+    # Get real data
+    proj_path = Path(__file__).resolve().parent.parent
+    data_path = f"{proj_path}/anthony_ok/3khz_demodulated_data.npy"
+    si = np.load(rf"{data_path}")[3000:3199]
+    t = np.arange(0,len(si
+                        ))
+    #plt.plot(t[1000:3000],a[1000:3000])
+    #plt.show()
 
     await FallingEdge(dut.s00_axis_aclk)
-    dut.shift.value = 4
+    dut.shift.value = 7
 
     #(pts)
     #assert 1 == 2
     #feed the driver on the M Side:
     for i in range(len(t)):
-        ind.append({'type':'write_single', "contents":{"data": int(si[i]<<32),"last":0}})
+        ind.append({'type':'write_single', "contents":{"data": int(si[i])<<32,"last":0}})
         ind.append({"type":"pause","duration":10})
     ind.append({'type':'write_burst', "contents": {"data": si[0:99]}})
     ind.append({'type':'pause','duration':2}) #end with pause
@@ -372,8 +422,8 @@ sig_out_act = [] #contains list of expected outputs (Growing)
 def fir_runner():
     """Simulate the AXIS FIR 15 using the Python runner."""
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "icarus")
-    #sim = os.getenv("SIM","vivado")
+    #sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM","vivado")
     proj_path = Path(__file__).resolve().parent.parent
     sys.path.append(str(proj_path / "sim" / "model"))
     sys.path.append(str(proj_path / "hdl" ))

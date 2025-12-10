@@ -4,7 +4,7 @@
 module fir_wrapper#(    
         parameter integer NUM_COEFFS = 101,
         parameter integer C_S00_AXIS_TDATA_WIDTH    = 64,
-        parameter integer C_M00_AXIS_TDATA_WIDTH    = 32
+        parameter integer C_M00_AXIS_TDATA_WIDTH    = 64
     )(
     input wire  s00_axis_aclk, s00_axis_aresetn,
     input wire  s00_axis_tlast, s00_axis_tvalid,
@@ -37,7 +37,7 @@ module fir_wrapper#(
     wire flipped_bit;
     wire [7:0] shft_amt;
 
-    assign shft_amt = scaler + shift;
+    assign shft_amt = shift + 2*scaler;
 
     // new approach
     always @(*) begin
@@ -47,9 +47,10 @@ module fir_wrapper#(
         end else if (shifted_val < 0) begin
             m_tdata_reg = 0;
         end else begin
-            m_tdata_reg = $unsigned(shifted_val);
+            m_tdata_reg = shifted_val[7:0];
         end
     end
+
 
 
 
